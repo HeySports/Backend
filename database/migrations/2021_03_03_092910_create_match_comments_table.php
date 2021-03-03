@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDaNangTable extends Migration
+class CreateMatchCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateDaNangTable extends Migration
      */
     public function up()
     {
-        Schema::create('da_nang', function (Blueprint $table) {
+        Schema::create('match_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('name_district')->unique()->require();
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('id_match');
+            $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
             $table->string('description');
             $table->timestamps();
         });
@@ -28,6 +31,6 @@ class CreateDaNangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('da_nang');
+        Schema::dropIfExists('match_comments');
     }
 }

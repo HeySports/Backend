@@ -16,19 +16,18 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_roles');
-            $table->unsignedBigInteger('id_districts');
             $table->foreign('id_roles')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('id_districts')->references('id')->on('da_nang')->onDelete('cascade');
             $table->string('full_name')->require();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone_numbers')->require()->unique();
             $table->string('address');
             $table->string('avatar');
-            $table->date('date_of_birth');
+            $table->integer('age');
             $table->integer('matches_number');
-            $table->float('rating');
-            $table->string('status');
+            $table->float('skill_rating');
+            $table->float('attitude_rating');
+            $table->string('position_play');
             $table->string('description');
             $table->timestamps();
         });

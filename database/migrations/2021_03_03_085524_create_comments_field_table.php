@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDateTimeTable extends Migration
+class CreateCommentsFieldTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateDateTimeTable extends Migration
      */
     public function up()
     {
-        Schema::create('date_time', function (Blueprint $table) {
+        Schema::create('comments_field', function (Blueprint $table) {
             $table->id();
-            $table->string('name_date')->unique()->require();
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('id_field');
+            $table->foreign('id_field')->references('id')->on('fields')->onDelete('cascade');
             $table->string('description');
             $table->timestamps();
         });
@@ -28,6 +31,6 @@ class CreateDateTimeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('date_time');
+        Schema::dropIfExists('comments_field');
     }
 }
