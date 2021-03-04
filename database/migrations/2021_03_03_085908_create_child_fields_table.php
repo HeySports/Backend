@@ -19,8 +19,8 @@ class CreateChildFieldsTable extends Migration
             $table->foreign('id_field')->references('id')->on('fields')->onDelete('cascade');
             $table->string('name_field')->require();
             $table->string('type')->require();
-            $table->boolean('status');
-            $table->string('description');
+            $table->boolean('status')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

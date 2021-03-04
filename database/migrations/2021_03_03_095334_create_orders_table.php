@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->foreign('id_price_field')->references('id')->on('price_fields')->onDelete('cascade');
             $table->time('time_start')->require();
             $table->time('time_end')->require();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

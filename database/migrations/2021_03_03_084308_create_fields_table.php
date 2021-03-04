@@ -18,13 +18,13 @@ class CreateFieldsTable extends Migration
             $table->unsignedBigInteger('id_owner');
             $table->foreign('id_owner')->references('id')->on('users')->onDelete('cascade');
             $table->string('name')->unique()->require();
-            $table->float('rating');
-            $table->string('list_image');
+            $table->float('rating')->nullable();
+            $table->string('list_image')->nullable();
             $table->string('address')->unique()->require();
             $table->string('email_field')->require()->unique();
             $table->string('phone_numbers')->require()->unique();
-            $table->boolean('status');
-            $table->integer('quantities_field');
+            $table->boolean('status')->nullable();
+            $table->integer('quantities_field')->nullable();
             $table->timestamps();
         });
     }

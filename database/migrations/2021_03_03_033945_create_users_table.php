@@ -18,17 +18,17 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('id_roles');
             $table->foreign('id_roles')->references('id')->on('roles')->onDelete('cascade');
             $table->string('full_name')->require();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->string('phone_numbers')->require()->unique();
             $table->string('address');
-            $table->string('avatar');
-            $table->integer('age');
-            $table->integer('matches_number');
-            $table->float('skill_rating');
-            $table->float('attitude_rating');
-            $table->string('position_play');
-            $table->string('description');
+            $table->string('avatar')->nullable();
+            $table->integer('age')->nullable();
+            $table->integer('matches_number')->nullable();
+            $table->float('skill_rating')->nullable();
+            $table->float('attitude_rating')->nullable();
+            $table->string('position_play')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -19,9 +19,9 @@ class CreateDetailMatchesTable extends Migration
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_match');
             $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
-            $table->string('status_team');
-            $table->integer('numbers_user_added');
-            $table->string('address');
+            $table->string('status_team')->nullable();
+            $table->integer('numbers_user_added')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
