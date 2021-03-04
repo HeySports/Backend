@@ -20,7 +20,7 @@ class CreatePriceFieldsTable extends Migration
             $table->time('time_start')->require();
             $table->time('time_end')->require();
             $table->float('price')->require();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

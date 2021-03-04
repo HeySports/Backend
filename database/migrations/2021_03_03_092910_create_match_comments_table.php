@@ -19,7 +19,7 @@ class CreateMatchCommentsTable extends Migration
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_match');
             $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
