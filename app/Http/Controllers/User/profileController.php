@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\User;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
@@ -10,17 +8,20 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 class profileController extends Controller
 {
+    // user get profile
     function getProfile(){
         return response()->json(auth()->user());
      }
+     // get all user
      function getAllUser(){
         return response()->json(User::all(), 200);
     }
+    // user change password
     function userChangePassword(REQUEST $request){
         $validator = Validator::make($request->all(), [
             'password' => 'required:string|min:6',
             'new_password' => 'required|string|min:6',
-            'new_password_again' => 'required||same:new_password',
+            'confirm_password' => 'required||same:new_password',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -51,6 +52,7 @@ class profileController extends Controller
             }
         }
    }
+   // function user update profile 
    function userUpdateProfile(REQUEST $request){
     $input =$request->all();
     $rules = array(

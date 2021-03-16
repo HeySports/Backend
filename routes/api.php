@@ -23,8 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/auth/register', [authController::class, 'register']);
 Route::post('/auth/login',[authController::class,'login']);
 Route::get('/auth/logout',[authController::class,'logout']);
-Route::post('/auth/forgotPassword',[authController::class,'forgotPassword']);
-
+Route::put('/auth/forgotPassword',[authController::class,'forgotPassword']);
+Route::post('/auth/checkUser',[authController::class,'checkUser']);
 // Profile
 Route::get('/user/getProfile',[profileController::class,'getProfile']);
 Route::get('/user/getAll',[profileController::class,'getAllUser']);
