@@ -74,4 +74,7 @@ class authController extends Controller
    function forgotPassword(REQUEST $request){
    return $request->phone_number;
    }
+   function getAll(){
+      return response()->json(User::all());
+   }
 }
