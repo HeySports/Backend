@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\authController;
+use App\Http\Controllers\User\profileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 // Auth
-Route::post('/user/register', [authController::class, 'register']);
-Route::post('user/login',[authController::class,'login']);
-Route::post('user/forgotPassword',[authController::class,'forgotPassword']);
-
+Route::post('/auth/register', [authController::class, 'register']);
+Route::post('/auth/login',[authController::class,'login']);
+Route::get('/auth/logout',[authController::class,'logout']);
+Route::post('/auth/forgotPassword',[authController::class,'forgotPassword']);
 // Profile
+Route::get('/user/getProfile',[profileController::class,'getProfile']);

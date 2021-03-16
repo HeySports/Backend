@@ -1,18 +1,15 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use \Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Auth;
+use Validator;
+use JWTAuth;
 class authController extends Controller
 {
-     function myKey(){
-        return "DoYouLoveMy_DoanTienThanh_ILoveYou";
-     }
     function register(REQUEST $request){
      $full_name=$request->full_name;
      $id_role=$request->id_role;
@@ -41,37 +38,36 @@ class authController extends Controller
         $_newUser->password=$password;
         $_newUser->address=$address;
         $_newUser->save();
-        $id=  $_newUser->id;
-        $myKey =$this->myKey();
-        $data = array('id_user' => $id);
-        $token = JWT::encode($data, $myKey);
         $message="Đăng kí tài khoản thành công !";
-        $response = array('message'=>$message,'token' => $token, 'data'=>$requestData, 'error'=>null);
+        $response = array('message'=>$message,'data'=>$requestData, 'error'=>null);
         return  response()->json($response, 200);
    }
      }
-   // function Login
-   function login(REQUEST $request){
-          if (Auth::attempt(['phone_numbers' => $request->phone_number, 'password' => $request->password])) {
-               $user = Auth::user();
-               $id_user = $user->id;
-               $data = array('id_user' => $id_user);
-               $myKey = $this->myKey();
-               $token = JWT::encode($data, $myKey);
-               $message="Đăng nhập thành công !";
-               $requestDataSuccess=array('id_role'=>$user->id_roles,'full_name'=>$user->full_name,'phone_number'=>$user->phone_numbers,'password'=>$user->password, 'email'=>$user->email,'address'=>$user->address,'avatar'=>$user->avatar,'age'=>$user->age,'matches_number'=>$user->matches_number,'skill_rating'=>$user->skill_rating,'attitude_rating'=>$user->attitude_rating,'position_play'=>$user->position_play,'description'=>$user->description,'created_at'=>$user->created_at,'updated_at'=>$user->updated_at);
-               $response = array('message'=>$message,'token' => $token,'data'=>$requestDataSuccess,'error'=>null);
-               return  response()->json($response, 200);
-           } else {
-               $requestDataError=array('phone_number'=>$request->phone_number,'password'=>$request->password);
-               $message="Đăng nhập không thành công !";
-               $error="Your phone number or password is incorrect !";
-               $response = array('message'=>$message,'token' => null,'data'=>$requestDataError,'error'=>$error);
-               return  response()->json($response, 200);
-           }
+   public function login(Request $request){
+      $validator = Validator::make($request->all(), [
+           'phone_numbers' => 'required',
+           'password' => 'required|string|min:6',
+       ]);
+       if ($validator->fails()) {
+           return response()->json($validator->errors(), 422);
+       }
+       if (! $token = auth()->attempt($validator->validated())) {
+           return response()->json(['error' => 'Unauthorized'], 401);
+       }
+       return $this->createNewToken($token);
    }
-   // function Forgot password 
-   function forgotPassword(REQUEST $request){
-   return $request->phone_number;
-   }
-}
+   // function create a new  token ;
+   protected function createNewToken($token){
+      return response()->json([
+          'access_token' => $token,
+          'token_type' => 'bearer',
+          'expires_in' => auth()->factory()->getTTL() * 60,
+          'user' => auth()->user()
+      ]);
+  }
+  // function logout 
+  function logout(){
+   auth()->logout();
+   return response()->json(['message' => 'Bạn đã logout thành công !']);
+  }
+  }
