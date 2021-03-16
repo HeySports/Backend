@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use \Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use JWTAuth;
 class authController extends Controller
 {
     function register(REQUEST $request){
@@ -50,18 +49,22 @@ class authController extends Controller
        ]);
        if ($validator->fails()) {
            return response()->json($validator->errors(), 422);
-       }
-       if (! $token = auth()->attempt($validator->validated())) {
-           return response()->json(['error' => 'Unauthorized'], 401);
-       }
-       return $this->createNewToken($token);
+       }elseif (! $token = auth()->attempt($validator->validated())) {
+        $message= "Số điện thoại hoặc mật khẩu của bạn không đúng !";
+        $error="Your phone number or password incorrect !";
+        $response=['message'=>$message, 'error'=>$error];
+        return response()->json($response, 400);
+       }else{
+        return $this->createNewToken($token);
+       }  
    }
+
    // function create a new  token ;
    protected function createNewToken($token){
       return response()->json([
           'access_token' => $token,
           'token_type' => 'bearer',
-          'expires_in' => auth()->factory()->getTTL() * 60,
+          'expires_in' => auth()->factory()->getTTL() * 3600,
           'user' => auth()->user()
       ]);
   }

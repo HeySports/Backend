@@ -24,5 +24,8 @@ Route::post('/auth/register', [authController::class, 'register']);
 Route::post('/auth/login',[authController::class,'login']);
 Route::get('/auth/logout',[authController::class,'logout']);
 Route::post('/auth/forgotPassword',[authController::class,'forgotPassword']);
+
 // Profile
 Route::get('/user/getProfile',[profileController::class,'getProfile']);
+Route::post ('/user/update/password',[profileController::class,'userChangePassWord']);
+Route::get('/user/getAll',[profileController::class,'getAllUser']);
