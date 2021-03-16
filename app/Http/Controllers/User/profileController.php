@@ -51,5 +51,26 @@ class profileController extends Controller
             }
         }
    }
-
+   function userUpdateProfile(REQUEST $request){
+    $input =$request->all();
+    $rules = array(
+        'phone_numbers' => 'required|min:10|max:11',
+        'full_name' => 'required|min:6',
+        'email' => 'required|email',
+        'address' => 'string|min:10',
+        'position_play' => 'string',
+        'description' => 'string|max: 255',
+    );
+    $validator = Validator::make($input, $rules);
+    if ($validator->fails()) {
+        return response()->json($validator->errors(),400);
+    }else{
+        $idUser= auth()->user()->id;
+        User::where('id', $idUser)->update(['full_name' => $input['full_name'],'phone_numbers'=>$input['phone_numbers'],'email'=>$input['email'],'address'=>$input['address'],'age'=>$input['age'],'position_play'=>$input['position_play'],'description'=>$input['description']]);
+        $message= "Bạn đã cập nhật thông tin thành công!";
+        $error= null;
+        $response=['message'=>$message, 'error'=>$error, 'data'=>$input];
+        return response()->json($response, 200);
+    }
+   }
 }
