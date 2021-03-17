@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Fields;
+namespace App\Http\Controllers\Match;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ChildField;
-class childFieldController extends Controller
+use App\Models\DetailMatch;
+
+class detailMatchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,80 +17,76 @@ class childFieldController extends Controller
     {
         //
     }
-    public function getChildField($id)
+    public function getDetailMatch($id)
     {
-        $response =  ChildField::where('id',$id)->get();
+        $response =  DetailMatch::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getChildFieldsByField($id)
+    public function getDetailMatchByIdMatch($id)
     {
-        $response =  ChildField::where('id_field',$id)->get();
+        $response =  DetailMatch::where('id_match',$id)->get();
         return  response()->json($response);
     }
-    public function deleteChildField($id)
+    public function deleteDetailMatch($id)
     {
-        $ChildField = ChildField::findOrFail($id);
-        if($ChildField)
-         {  $ChildField->delete(); }
+        $detailMatch = DetailMatch::findOrFail($id);
+        if($detailMatch)
+         {  $detailMatch->delete(); }
         else
           {
-            $message="Xóa sân thất bại !";
+            $message="Xóa thành viên thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
             return  response()->json($response);
           }
-        $message="Xóa sân thành công !";
+        $message="Xóa thành viên thành công !";
         $response = array('message'=>$message,'error'=>null);
         return  response()->json($response);
     }
-    public function postChildField(REQUEST $request){
-        // `id_field`, `name_field`, `type`, `status`, `description`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
-        $description=$request->description;
-    
+    public function postDetailMatch(REQUEST $request){
+        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `address`
+        $id_user=$request->id_user;
+        $id_match=$request->id_match;
+        $status_team= $request->status_team;
+        $numbers_user_added=$request->numbers_user_added;
+        $address=$request->address;
         try {
-            $_new=new ChildField();
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
-            $_new->description=$description;
-       
+            $_new=new DetailMatch();
+            $_new->id_user=$id_user;
+            $_new->id_match=$id_match;
+            $_new->status_team=$status_team;
+            $_new->numbers_user_added=$numbers_user_added;
+            $_new->address=$address;
             $_new->save();
-            $message="Taọ sân thành công !"; 
+            $message="Taọ thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Taọ sân thất bại !";
+            $message="Taọ thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
-       
     }
-    public function putChildField(REQUEST $request, $id){
-        // `id_field`, `name_field`, `type`, `status`, `description`, `email_ChildField`, `phone_numbers`, `status`, `quantities_ChildField`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
-        $description=$request->description;
-     
+    public function putDetailMatch(REQUEST $request, $id){
+        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `address`
+        $id_user=$request->id_user;
+        $id_match=$request->id_match;
+        $status_team= $request->status_team;
+        $numbers_user_added=$request->numbers_user_added;
+        $address=$request->address;
         try {
-            $response =  ChildField::where('id',$id)->get();
-            $_new= $response[0];
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
-            $_new->description=$description;
+            $detailMatch =  DetailMatch::where('id',$id)->get();
+            $_new= $detailMatch[0];
+            $_new->id_user=$id_user;
+            $_new->id_match=$id_match;
+            $_new->status_team=$status_team;
+            $_new->numbers_user_added=$numbers_user_added;
+            $_new->address=$address;
             $_new->save();
-            $message="Sửa sân thành công !";
+            $message="Sửa thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Sửa sân thất bại !";
+            $message="Sửa thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }

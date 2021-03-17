@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Fields;
+namespace App\Http\Controllers\Comments;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ChildField;
-class childFieldController extends Controller
+use App\Models\CommentField;
+use Illuminate\Support\Facades\DB;
+class commentFieldController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,80 +17,78 @@ class childFieldController extends Controller
     {
         //
     }
-    public function getChildField($id)
+    public function getCommentField($id)
     {
-        $response =  ChildField::where('id',$id)->get();
+        $response =  CommentField::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getChildFieldsByField($id)
+    public function getAll()
     {
-        $response =  ChildField::where('id_field',$id)->get();
+        return CommentField::all();
+    }
+    public function getCommentFieldByIdField($id){
+
+        $response =  DB::table('comments_field')
+        ->join('users', 'comments_field.id_user', '=', 'users.id')
+        ->where('comments_field.id_field', '=', $id)
+        ->select('comments_field.id', 'users.full_name', 'comments_field.description')
+        ->get();
         return  response()->json($response);
     }
-    public function deleteChildField($id)
+    public function deleteCommentField($id)
     {
-        $ChildField = ChildField::findOrFail($id);
-        if($ChildField)
-         {  $ChildField->delete(); }
+        $CommentField = CommentField::findOrFail($id);
+        if($CommentField)
+         {  $CommentField->delete(); }
         else
           {
-            $message="Xóa sân thất bại !";
+            $message="Xóa thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
             return  response()->json($response);
           }
-        $message="Xóa sân thành công !";
+        $message="Xóa thành công !";
         $response = array('message'=>$message,'error'=>null);
         return  response()->json($response);
     }
-    public function postChildField(REQUEST $request){
-        // `id_field`, `name_field`, `type`, `status`, `description`
+    public function postCommentField(REQUEST $request){
+        // `id_user`, `id_field`, `description` 
         $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
         $description=$request->description;
-    
+        $id_user=$request->id_user;
         try {
-            $_new=new ChildField();
+            $_new=new CommentField();
             $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
             $_new->description=$description;
-       
+            $_new->id_user=$id_user;
             $_new->save();
-            $message="Taọ sân thành công !"; 
+            $message="Taọ thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Taọ sân thất bại !";
+            $message="Taọ thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
        
     }
-    public function putChildField(REQUEST $request, $id){
-        // `id_field`, `name_field`, `type`, `status`, `description`, `email_ChildField`, `phone_numbers`, `status`, `quantities_ChildField`
+    public function putCommentField(REQUEST $request, $id){
+        // `id_user`, `description`, `id_field`
+      
         $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
         $description=$request->description;
-     
+        $id_user=$request->id_user;
         try {
-            $response =  ChildField::where('id',$id)->get();
+            $response =  CommentField::where('id',$id)->get();
             $_new= $response[0];
             $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
             $_new->description=$description;
+            $_new->id_user=$id_user;
             $_new->save();
-            $message="Sửa sân thành công !";
+            $message="Sửa thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Sửa sân thất bại !";
+            $message="Sửa thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }

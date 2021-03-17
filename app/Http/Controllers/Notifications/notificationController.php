@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Fields;
+namespace App\Http\Controllers\Notifications;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ChildField;
-class childFieldController extends Controller
+use App\Models\Notification;
+use Illuminate\Support\Facades\DB;
+class notificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,80 +17,80 @@ class childFieldController extends Controller
     {
         //
     }
-    public function getChildField($id)
+    public function getNotification($id)
     {
-        $response =  ChildField::where('id',$id)->get();
+        $response =  Notification::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getChildFieldsByField($id)
+    public function getAll()
     {
-        $response =  ChildField::where('id_field',$id)->get();
+        return Notification::all();
+    }
+    public function getNotificationByIdUser($id){
+
+        $response =  DB::table('detail_notifications')
+        ->join('notifications', 'notifications.id', '=', 'detail_notifications.id_notification')
+        ->join('users', 'detail_notifications.id_user', '=', 'users.id')
+        ->where('detail_notifications.id_user', '=', $id)
+        ->select('notifications.id', 'notifications.status', 'notifications.description', 'notifications.id_match')
+        ->get();
         return  response()->json($response);
     }
-    public function deleteChildField($id)
+    public function deleteNotification($id)
     {
-        $ChildField = ChildField::findOrFail($id);
-        if($ChildField)
-         {  $ChildField->delete(); }
+        $Notification = Notification::findOrFail($id);
+        if($Notification)
+         {  $Notification->delete(); }
         else
           {
-            $message="Xóa sân thất bại !";
+            $message="Xóa thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
             return  response()->json($response);
           }
-        $message="Xóa sân thành công !";
+        $message="Xóa thành công !";
         $response = array('message'=>$message,'error'=>null);
         return  response()->json($response);
     }
-    public function postChildField(REQUEST $request){
-        // `id_field`, `name_field`, `type`, `status`, `description`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
+    public function postNotification(REQUEST $request){
+        // `status`, `description`, `id_match`
+      
+        $id_match=$request->id_match;
         $description=$request->description;
-    
+        $status=$request->status;
         try {
-            $_new=new ChildField();
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
+            $_new=new Notification();
+            $_new->id_match=$id_match;
             $_new->description=$description;
-       
+            $_new->status=$status;
             $_new->save();
-            $message="Taọ sân thành công !"; 
+            $message="Taọ thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Taọ sân thất bại !";
+            $message="Taọ thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
        
     }
-    public function putChildField(REQUEST $request, $id){
-        // `id_field`, `name_field`, `type`, `status`, `description`, `email_ChildField`, `phone_numbers`, `status`, `quantities_ChildField`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
+    public function putNotification(REQUEST $request, $id){
+        // `status`, `description`, `id_match`
+      
+        $id_match=$request->id_match;
         $description=$request->description;
-     
+        $status=$request->status;
         try {
-            $response =  ChildField::where('id',$id)->get();
+            $response =  Notification::where('id',$id)->get();
             $_new= $response[0];
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
+            $_new->id_match=$id_match;
             $_new->description=$description;
+            $_new->status=$status;
             $_new->save();
-            $message="Sửa sân thành công !";
+            $message="Sửa thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Sửa sân thất bại !";
+            $message="Sửa thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
