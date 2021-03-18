@@ -32,7 +32,7 @@ class notificationController extends Controller
         ->join('notifications', 'notifications.id', '=', 'detail_notifications.id_notification')
         ->join('users', 'detail_notifications.id_user', '=', 'users.id')
         ->where('detail_notifications.id_user', '=', $id)
-        ->select('notifications.id', 'notifications.status', 'notifications.description', 'notifications.id_match')
+        ->select('notifications.id', 'detail_notifications.status', 'notifications.description', 'notifications.id_match', 'notifications.type', 'notifications.date_created')
         ->get();
         return  response()->json($response);
     }
@@ -56,12 +56,12 @@ class notificationController extends Controller
       
         $id_match=$request->id_match;
         $description=$request->description;
-        $status=$request->status;
+        $type=$request->type;
         try {
             $_new=new Notification();
             $_new->id_match=$id_match;
             $_new->description=$description;
-            $_new->status=$status;
+            $_new->type=$type;
             $_new->save();
             $message="Taọ thành công !";
             $response = array('message'=>$message,'error'=>null);
@@ -74,17 +74,17 @@ class notificationController extends Controller
        
     }
     public function putNotification(REQUEST $request, $id){
-        // `status`, `description`, `id_match`
+        // `type`, `description`, `id_match`
       
         $id_match=$request->id_match;
         $description=$request->description;
-        $status=$request->status;
+        $type=$request->type;
         try {
             $response =  Notification::where('id',$id)->get();
             $_new= $response[0];
             $_new->id_match=$id_match;
             $_new->description=$description;
-            $_new->status=$status;
+            $_new->type=$type;
             $_new->save();
             $message="Sửa thành công !";
             $response = array('message'=>$message,'error'=>null);

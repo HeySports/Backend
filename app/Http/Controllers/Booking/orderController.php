@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Match;
+namespace App\Http\Controllers\Booking;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DetailMatch;
-
-class detailMatchController extends Controller
+use App\Models\Order;
+use Illuminate\Support\Facades\DB;
+class orderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,83 +17,84 @@ class detailMatchController extends Controller
     {
         //
     }
-    public function getDetailMatch($id)
+    public function getOrder($id)
     {
-        $response =  DetailMatch::where('id',$id)->get();
+        $response =  Order::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getDetailMatchByIdMatch($id)
+    public function getOrderByIdUser($id)
     {
-        $response =  DetailMatch::where('id_match',$id)->get();
+        $response =  Order::where('id_user',$id)->get();
         return  response()->json($response);
     }
-    public function deleteDetailMatch($id)
+    public function deleteOrder($id)
     {
-        $detailMatch = DetailMatch::findOrFail($id);
-        if($detailMatch)
-         {  $detailMatch->delete(); }
+        $Order = Order::findOrFail($id);
+        if($Order)
+         {  $Order->delete(); }
         else
           {
-            $message="Xóa thành viên thất bại !";
+            $message="Xóa sân thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
             return  response()->json($response);
           }
-        $message="Xóa thành viên thành công !";
+        $message="Xóa sân thành công !";
         $response = array('message'=>$message,'error'=>null);
         return  response()->json($response);
     }
-    public function postDetailMatch(REQUEST $request){
-        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `address`
-        $id_user=$request->id_user;
-        $id_match=$request->id_match;
-        $status_team= $request->status_team;
-        $numbers_user_added=$request->numbers_user_added;
-        $address=$request->address;
+    public function postOrder(REQUEST $request){
+        // `id_field`, `name_field`, `type`, `status`, `description`
+        $id_field=$request->id_field;
+        $name_field=$request->name_field;
+        $type= $request->type;
+        $status=$request->status;
+        $description=$request->description;
+    
         try {
-            $_new=new DetailMatch();
-            $_new->id_user=$id_user;
-            $_new->id_match=$id_match;
-            $_new->status_team=$status_team;
-            $_new->numbers_user_added=$numbers_user_added;
-            $_new->address=$address;
+            $_new=new Order();
+            $_new->id_field=$id_field;
+            $_new->name_field=$name_field;
+            $_new->type= $type;
+            $_new->status=$status;
+            $_new->description=$description;
+       
             $_new->save();
-            $message="Taọ thành công !";
+            $message="Taọ sân thành công !"; 
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Taọ thất bại !";
+            $message="Taọ sân thất bại !";
+            $response = array('message'=>$message,'error'=>$e);
+            return  response()->json($response);
+        }
+       
+    }
+    public function putOrder(REQUEST $request, $id){
+        // `id_field`, `name_field`, `type`, `status`, `description`, `email_Order`, `phone_numbers`, `status`, `quantities_Order`
+        $id_field=$request->id_field;
+        $name_field=$request->name_field;
+        $type= $request->type;
+        $status=$request->status;
+        $description=$request->description;
+     
+        try {
+            $response =  Order::where('id',$id)->get();
+            $_new= $response[0];
+            $_new->id_field=$id_field;
+            $_new->name_field=$name_field;
+            $_new->type= $type;
+            $_new->status=$status;
+            $_new->description=$description;
+            $_new->save();
+            $message="Sửa sân thành công !";
+            $response = array('message'=>$message,'error'=>null);
+            return  response()->json($response);
+        } catch (Exception $e) {
+            $message="Sửa sân thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
     }
-    public function putDetailMatch(REQUEST $request, $id){
-        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `address`
-        $id_user=$request->id_user;
-        $id_match=$request->id_match;
-        $status_team= $request->status_team;
-        $numbers_user_added=$request->numbers_user_added;
-        $address=$request->address;
-        try {
-            $detailMatch =  DetailMatch::where('id',$id)->get();
-            $_new= $detailMatch[0];
-            $_new->id_user=$id_user;
-            $_new->id_match=$id_match;
-            $_new->status_team=$status_team;
-            $_new->numbers_user_added=$numbers_user_added;
-            if($address){
-                $_new->address=$address;
-            }
-            $_new->save();
-            $message="Sửa thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Sửa thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
-        }
-    }
-   
     /**
      * Store a newly created resource in storage.
      *

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 18, 2021 lúc 02:25 AM
+-- Thời gian đã tạo: Th3 18, 2021 lúc 11:32 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 8.0.2
 
@@ -31,24 +31,24 @@ CREATE TABLE `child_fields` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_field` bigint(20) UNSIGNED NOT NULL,
   `name_field` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `type` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `child_fields`
 --
 
-INSERT INTO `child_fields` (`id`, `id_field`, `name_field`, `type`, `status`, `description`, `created_at`, `updated_at`) VALUES
-(1, 1, 'A3', 'San 7', 1, 'San moi sua thang 3', NULL, NULL),
-(2, 1, 'A1', 'San 7', 1, 'San moi sua thang 3', NULL, NULL),
-(3, 1, 'A2', 'San 5', 1, 'San moi sua thang 3', NULL, NULL),
-(4, 1, 'A5', 'San 11', 1, 'San moi sua thang 3', NULL, NULL),
-(5, 2, 'A3', 'San 5', 1, 'San moi sua thang 7', NULL, NULL),
-(6, 2, 'A6', 'San 7', 1, 'San moi sua thang 12', '2021-03-16 04:48:52', '2021-03-16 04:50:00');
+INSERT INTO `child_fields` (`id`, `id_field`, `name_field`, `status`, `description`, `created_at`, `updated_at`, `type`) VALUES
+(1, 1, 'A3', 1, 'San moi sua thang 3', NULL, NULL, 5),
+(2, 1, 'A1', 1, 'San moi sua thang 3', NULL, NULL, 5),
+(3, 1, 'A2', 1, 'San moi sua thang 3', NULL, NULL, 7),
+(4, 1, 'A5', 1, 'San moi sua thang 3', NULL, NULL, 7),
+(5, 2, 'A3', 1, 'San moi sua thang 7', NULL, NULL, 5),
+(6, 2, 'A6', 1, 'San moi sua thang 12', '2021-03-16 04:48:52', '2021-03-16 04:50:00', 5);
 
 -- --------------------------------------------------------
 
@@ -111,18 +111,19 @@ INSERT INTO `detail_matches` (`id`, `id_user`, `id_match`, `status_team`, `numbe
 CREATE TABLE `detail_notifications` (
   `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `id_notification` int(11) NOT NULL
+  `id_notification` int(11) NOT NULL,
+  `status` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Đang đổ dữ liệu cho bảng `detail_notifications`
 --
 
-INSERT INTO `detail_notifications` (`id`, `id_user`, `id_notification`) VALUES
-(1, 1, 1),
-(2, 2, 1),
-(3, 1, 2),
-(4, 2, 3);
+INSERT INTO `detail_notifications` (`id`, `id_user`, `id_notification`, `status`) VALUES
+(1, 1, 1, 1),
+(2, 2, 1, 0),
+(3, 1, 2, 0),
+(4, 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -244,20 +245,23 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL,
-  `status` int(11) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `id_match` int(11) DEFAULT NULL,
-  `date_created` varchar(255) DEFAULT NULL
+  `type` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Đang đổ dữ liệu cho bảng `notifications`
 --
 
-INSERT INTO `notifications` (`id`, `status`, `description`, `id_match`, `date_created`) VALUES
-(1, 1, 'Vua co mot tran dau duoc tao gan khu vuc ban song', NULL, NULL),
-(2, 1, 'Vua co mot tran dau duoc tao gan khu vuc ban song', NULL, NULL),
-(3, 1, 'San n1 Thu do khuyen mai', NULL, NULL);
+INSERT INTO `notifications` (`id`, `description`, `id_match`, `type`, `updated_at`, `created_at`) VALUES
+(1, 'Vua co mot tran dau duoc tao gan khu vuc ban song', NULL, 1, NULL, NULL),
+(2, 'Vua co mot tran dau duoc tao gan khu vuc ban song', NULL, 2, NULL, NULL),
+(3, 'San n1 Thu do khuyen mai', NULL, 1, NULL, NULL),
+(4, 'Vua co mot tran dau', 2, 2, '2021-03-18 09:23:05', '2021-03-18 09:23:05'),
+(5, 'Vua co mot tran dau roi roi', 2, 2, '2021-03-18 09:23:29', '2021-03-18 09:23:29');
 
 -- --------------------------------------------------------
 
@@ -273,7 +277,8 @@ CREATE TABLE `orders` (
   `time_end` time NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -292,6 +297,18 @@ CREATE TABLE `price_fields` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `price_fields`
+--
+
+INSERT INTO `price_fields` (`id`, `id_child_field`, `time_start`, `time_end`, `price`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, '05:00:00', '17:00:00', 100000.00, 'Gio gia re hon', NULL, NULL),
+(2, 1, '17:00:00', '22:00:00', 250000.00, 'Gio gia dat hon', NULL, NULL),
+(3, 2, '05:00:00', '17:00:00', 120000.00, 'Gio gia re hon', NULL, NULL),
+(4, 2, '17:00:00', '22:00:00', 270000.00, 'Gio gia re hon', NULL, NULL),
+(5, 3, '17:00:00', '22:00:00', 130000.00, 'Gio gia re hon', NULL, NULL),
+(6, 3, '17:00:00', '22:00:00', 300000.00, 'Gio gia re hon', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -508,7 +525,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
@@ -520,7 +537,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT cho bảng `price_fields`
 --
 ALTER TABLE `price_fields`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`

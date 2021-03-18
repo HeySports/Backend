@@ -39,6 +39,8 @@ Route::post ('/user/update/password',[profileController::class,'userChangePassWo
 Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']);
 //matches
 Route::get('/match/getAll',[matchController::class,'getAll']); 
+//search
+Route::post('/match/getListMatchSearch',[matchController::class,'getListMatchSearch']);
 //get list in homepage
 Route::get('/match/getListMatch',[matchController::class,'getListMatch']);
 Route::get('/match/getMatch/{id}',[matchController::class,'getMatch']);  

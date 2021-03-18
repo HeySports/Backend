@@ -35,14 +35,50 @@ class matchController extends Controller
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
             ->where('detail_matches.status_team', '=', 1)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar')
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
             ->get();
             $memberTeamB = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
             ->where('detail_matches.status_team', '=', 2)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar')
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
+            ->get();
+            array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
+        }
+        return  response()->json($response);
+    }
+    public function getListMatchSearch(REQUEST $request){
+        $response = [];
+        $matches =  Matches::where('name_room',$request->txtSearch)->get();
+        if(count($matches)<=0){
+            $matches =DB::table('matches')
+            ->join('fields', 'matches.id_field_play', '=', 'fields.id')
+            ->join('detail_matches', 'detail_matches.id_match', '=', 'matches.id')
+            ->where('matches.description', 'like', '%' . $request->txtSearch . '%')
+            ->orWhere('matches.name_room', 'like', '%' . $request->txtSearch . '%')
+            ->orWhere('fields.name', 'like', '%' . $request->txtSearch . '%')
+            ->orWhere('detail_matches.address', 'like', '%' . $request->txtSearch . '%')
+            ->select('matches.id', 'matches.id_field_play', 'matches.name_room', 'matches.lock','matches.password','matches.time_start_play'
+            , 'matches.time_end_play', 'matches.description'
+            , 'matches.created_at', 'matches.updated_at')
+            ->get();
+        }
+
+        for ($i=0; $i< count($matches); $i++){
+            $memberTeamA = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 1)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
+            ->get();
+            $memberTeamB = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 2)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
             ->get();
             array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
         }
