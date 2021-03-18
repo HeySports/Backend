@@ -39,7 +39,9 @@ Route::post ('/user/update/password',[profileController::class,'userChangePassWo
 Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']);
 //matches
 Route::get('/match/getAll',[matchController::class,'getAll']); 
-Route::get('/match/getMatch/{id}',[matchController::class,'getMatch']); 
+//get list in homepage
+Route::get('/match/getListMatch',[matchController::class,'getListMatch']);
+Route::get('/match/getMatch/{id}',[matchController::class,'getMatch']);  
 Route::post('/match/postMatch',[matchController::class,'postMatch']);    
 Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch']);   
 Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   

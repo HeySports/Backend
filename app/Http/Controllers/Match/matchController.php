@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Match;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Matches;
-
+use Illuminate\Support\Facades\DB;
 class matchController extends Controller
 {
     /**
@@ -25,6 +25,28 @@ class matchController extends Controller
     public function getAll()
     {
         return Matches::all();
+    }
+    public function getListMatch(){
+        $response = [];
+        $matches = Matches::all();
+        for ($i=0; $i< count($matches); $i++){
+            $memberTeamA = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 1)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar')
+            ->get();
+            $memberTeamB = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 2)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar')
+            ->get();
+            array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
+        }
+        return  response()->json($response);
     }
     public function deleteMatch($id)
     {
