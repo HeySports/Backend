@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use \Firebase\JWT\JWT;
 class authController extends Controller
 {
     function checkUser(REQUEST $request){
@@ -58,7 +59,7 @@ class authController extends Controller
        ]);
         if ($validator->fails()) {
            return response()->json($validator->errors(), 422);
-        }elseif (! $token = auth()->attempt($validator->validated())) {
+        }elseif (!$token = auth()->attempt($validator->validated())) {
             $message= "Số điện thoại hoặc mật khẩu của bạn không đúng !";
             $error="Your phone number or password incorrect !";
             $response=['message'=>$message, 'error'=>$error];
