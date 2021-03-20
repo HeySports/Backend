@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
-class roleSeeder extends Seeder
+use App\Models\Role;
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,9 +13,9 @@ class roleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->insert([
-            'name_role' => "user",
-            'description' => "thanhdoan",
-        ]);
+        $roles=new Role;
+        $roles->name_role='user';
+        $roles->description='null';
+        $roles->save();
     }
 }
