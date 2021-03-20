@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\authController;
 use App\Http\Controllers\User\profileController;
+use App\Http\Controllers\User\roleController;
 use App\Http\Controllers\Match\matchController;
 use App\Http\Controllers\Match\detailMatchController;
 use App\Http\Controllers\Fields\fieldController;
@@ -32,6 +33,7 @@ Route::post('/auth/login',[authController::class,'login']);
 Route::get('/auth/logout',[authController::class,'logout']);
 Route::put('/auth/forgotPassword',[authController::class,'forgotPassword']);
 Route::post('/auth/checkUser',[authController::class,'checkUser']);
+Route::post('/auth/roles/register', [roleController::class, 'roleRegister']);
 // Profile
 Route::get('/user/getProfile',[profileController::class,'getProfile']);
 Route::get('/user/getAll',[profileController::class,'getAllUser']);
