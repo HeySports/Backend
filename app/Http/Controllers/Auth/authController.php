@@ -43,6 +43,7 @@ class authController extends Controller
             $_newUser->full_name=$input['full_name'];
             $_newUser->phone_numbers=$input['phone_numbers'];
             $_newUser->password=Hash::make($input['password']);
+            $_newUser->address="Da Nang";
             $_newUser->save();
             $message="Đăng kí tài khoản thành công !";
             $response = array('message'=>$message,'data'=>$input, 'error'=>null);
