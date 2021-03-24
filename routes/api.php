@@ -69,11 +69,12 @@ Route::delete('/field/deleteChildField/{id}', [childFieldController::class,'dele
 Route::put('/field/putChildField/{id}', [childFieldController::class,'putChildField']); 
 //notification
 Route::get('/notification/getAll',[notificationController::class,'getAll']); 
+
 Route::get('/notification/getNotification/{id}',[notificationController::class,'getNotification']); 
 Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
 Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
 Route::put('/notification/putNotification/{id}', [notificationController::class,'putNotification']); 
-// detail notification
+// detail notification by id user
 Route::get('/notification/getNotificationByIdUser/{id}',[notificationController::class,'getNotificationByIdUser']); 
 //comment match
 Route::get('/commentMatch/getAll',[commentMatchController::class,'getAll']); 
