@@ -23,6 +23,10 @@ class CreateMatchesTable extends Migration
             $table->time('time_start_play')->nullable();
             $table->time('time_end_play')->nullable();
             $table->string('description')->nullable();
+            $table->string('lose_pay')->nullable();
+            $table->integer('type')->nullable();
+            $table->integer('price')->nullable();
+            $table->integer('type_field')->nullable();
             $table->timestamps();
         });
     }

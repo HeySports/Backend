@@ -15,12 +15,12 @@ class CreatePriceFieldsTable extends Migration
     {
         Schema::create('price_fields', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_child_field');
-            $table->foreign('id_child_field')->references('id')->on('child_fields')->onDelete('cascade');
+            $table->unsignedBigInteger('id_field');
+            $table->foreign('id_field')->references('id')->on('fields')->onDelete('cascade');
+            $table->integer('type_field')->require();
             $table->time('time_start')->require();
             $table->time('time_end')->require();
             $table->float('price')->require();
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
