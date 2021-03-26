@@ -24,7 +24,7 @@ class detail_matchSeeder extends Seeder
                 'id_match' => rand(1, 3),
                 'status_team' => rand(1, 2),
                 'numbers_user_added' => $faker->randomDigit,
-                'address' => $faker->address,
+                'team_name' => $faker->name,
             ]);
         }
     }

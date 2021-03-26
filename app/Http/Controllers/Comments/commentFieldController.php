@@ -31,7 +31,7 @@ class commentFieldController extends Controller
         $response =  DB::table('comments_field')
         ->join('users', 'comments_field.id_user', '=', 'users.id')
         ->where('comments_field.id_field', '=', $id)
-        ->select('comments_field.id', 'users.full_name', 'comments_field.description')
+        ->select('comments_field.id', 'users.full_name as user_name', 'comments_field.description')
         ->get();
         return  response()->json($response);
     }

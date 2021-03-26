@@ -16,12 +16,12 @@ class fieldController extends Controller
     {
         //
     }
-    public function getField($id)
+    public function getDetailField($id)
     {
         $response =  Field::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getAll()
+    public function getListField()
     {
         return Field::all();
     }

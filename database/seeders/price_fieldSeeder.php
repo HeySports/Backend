@@ -17,14 +17,16 @@ class price_fieldSeeder extends Seeder
      */
     public function run()
     {
+        $arr = ['5', '7', '11'];
         $faker = Faker::create();
         for ($i = 0; $i < 10; $i++){
+            $r = rand(0, 2);
             DB::table('price_fields')->insert([
-                'id_child_field' => rand(1, 3), 
+                'id_field' => rand(1, 3),
+                'type_field' => $arr[$r],
                 'time_start' => $faker->dateTime($max = 'now', $timezone = null),
                 'time_end' => $faker->dateTime($max = 'now', $timezone = null),
                 'price'=> $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000000),
-                'description'=> $faker->realText($maxNbChars = 100, $indexSize = 2),
             ]);
         }
     }

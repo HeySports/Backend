@@ -21,7 +21,7 @@ class orderSeeder extends Seeder
         for ($i = 0; $i < 10; $i++){
             DB::table('orders')->insert([
                 'id_match' => rand(1, 3),
-                'id_price_field' => rand(1, 3),
+                'id_child_field' => rand(1, 3),
                 'time_start' => $faker->dateTime($max = 'now', $timezone = null),
                 'time_end' => $faker->dateTime($max = 'now', $timezone = null),
                 'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),

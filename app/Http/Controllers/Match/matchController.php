@@ -17,32 +17,95 @@ class matchController extends Controller
     {
         return Matches::all();
     }
-    public function getMatch($id)
+    public function getDetailMatch($id)
     {
-        $response =  Matches::where('id',$id)->get();
+        $response = [];
+        $matches =  DB::table('matches')
+            ->join('fields', 'fields.id', '=', 'matches.id_field_play')
+            ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+            , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+            ->where('matches.id', '=', $id)
+            ->get();
+     
+        $memberTeamA = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[0]->id)
+            ->where('detail_matches.status_team', '=', 1)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
+            ->get();
+        $memberTeamB = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[0]->id)
+            ->where('detail_matches.status_team', '=', 2)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
+            ->get();
+            array_push($response,  array('match'=>$matches[0],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
+        
         return  response()->json($response[0]);
     }
     public function getAll()
     {
         return Matches::all();
     }
-    public function getListMatch(){
+    public function getListMatchFindMember(){
         $response = [];
-        $matches = Matches::all();
+        $matches =  DB::table('matches')
+        ->join('fields', 'fields.id', '=', 'matches.id_field_play')
+        ->where('type', '=', 1)
+        ->where('lock', '=', 0)
+        ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->get();
         for ($i=0; $i< count($matches); $i++){
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
             ->where('detail_matches.status_team', '=', 1)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
             ->get();
             $memberTeamB = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
             ->where('detail_matches.status_team', '=', 2)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added')
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
+            ->get();
+            array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
+        }
+        return  response()->json($response);
+    }
+    public function getListMatchFindOpponent(){
+        $response = [];
+        $matches =  DB::table('matches')
+        ->join('fields', 'fields.id', '=', 'matches.id_field_play')
+        ->where('type', '=', 0)
+        ->where('lock', '=', 0)
+        ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->get();
+        for ($i=0; $i< count($matches); $i++){
+            $memberTeamA = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 1)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
+            ->get();
+            $memberTeamB = DB::table('detail_matches')
+            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+            ->join('users', 'detail_matches.id_user', '=', 'users.id')
+            ->where('detail_matches.id_match', '=', $matches[$i]->id)
+            ->where('detail_matches.status_team', '=', 2)
+            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            , 'detail_matches.team_name')
             ->get();
             array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
         }

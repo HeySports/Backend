@@ -21,7 +21,7 @@ class CreateDetailMatchesTable extends Migration
             $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
             $table->string('status_team')->nullable();
             $table->integer('numbers_user_added')->nullable();
-            $table->string('address')->nullable();
+            $table->string('team_name')->nullable();
             $table->timestamps();
         });
     }

@@ -42,7 +42,7 @@ class commentMatchController extends Controller
         $response =  DB::table('match_comments')
         ->join('users', 'match_comments.id_user', '=', 'users.id')
         ->where('match_comments.id_match', '=', $id)
-        ->select('match_comments.id', 'users.full_name', 'match_comments.description')
+        ->select('match_comments.id', 'users.full_name as user_name', 'users.avatar', 'match_comments.description')
         ->get();
         return  response()->json($response);
     }
