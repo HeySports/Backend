@@ -25,7 +25,7 @@ class CreateMatchesTable extends Migration
             $table->string('description')->nullable();
             $table->string('lose_pay')->nullable();
             $table->integer('type')->nullable();
-            $table->integer('price')->nullable();
+            $table->float('price')->nullable();
             $table->integer('type_field')->nullable();
             $table->timestamps();
         });
