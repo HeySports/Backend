@@ -22,7 +22,7 @@ class detail_matchSeeder extends Seeder
             DB::table('detail_matches')->insert([
                 'id_user' => rand(1, 3),
                 'id_match' => rand(1, 3),
-                'status_team' => rand(1, 2),
+                'status_team' => rand(true, false),
                 'numbers_user_added' => $faker->randomDigit,
                 'team_name' => $faker->name,
             ]);
