@@ -34,7 +34,7 @@ class matchSeeder extends Seeder
                 'time_end_play' => $faker->dateTime($max = 'now', $timezone = null),
                 'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
                 'type' =>rand(0, 1),
-                'price'=> $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000000),
+                'price'=> $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 300000),
             ]);
         }
     }
