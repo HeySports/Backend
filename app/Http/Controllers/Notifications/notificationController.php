@@ -26,13 +26,13 @@ class notificationController extends Controller
     {
         return Notification::all();
     }
-    public function getNotificationByIdUser($id){
-
+    public function getListNotification(){
+        $user = auth()->user();
         $response =  DB::table('detail_notifications')
         ->join('notifications', 'notifications.id', '=', 'detail_notifications.id_notification')
         ->join('users', 'detail_notifications.id_user', '=', 'users.id')
-        ->where('detail_notifications.id_user', '=', $id)
-        ->select('notifications.id', 'detail_notifications.status', 'notifications.description', 'notifications.id_match', 'notifications.type', 'notifications.date_created')
+        ->where('detail_notifications.id_user', '=', $user->id)
+        ->select('detail_notifications.id', 'detail_notifications.status', 'notifications.description', 'notifications.id_match', 'notifications.type', 'notifications.created_at', 'notifications.updated_at')
         ->get();
         return  response()->json($response);
     }

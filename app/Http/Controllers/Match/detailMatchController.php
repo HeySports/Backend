@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Match;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Matches;
 use App\Models\DetailMatch;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 class detailMatchController extends Controller
 {
     /**
@@ -43,20 +46,28 @@ class detailMatchController extends Controller
         return  response()->json($response);
     }
     public function postDetailMatch(REQUEST $request){
-        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `address`
-        $id_user=$request->id_user;
+        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `team_name`, `created_at`, `updated_at`
+        $id_user=auth()->user()->id;
         $id_match=$request->id_match;
-        $status_team= $request->status_team;
         $numbers_user_added=$request->numbers_user_added;
-        $address=$request->address;
+        $team_name=$request->team_name;
         try {
+            $m = Matches::where('id',$id_match)->get();
             $_new=new DetailMatch();
             $_new->id_user=$id_user;
             $_new->id_match=$id_match;
-            $_new->status_team=$status_team;
+            if($m[0]->type==0){
+                $_new->status_team=1;
+            }else{
+                $_new->status_team=0;
+            }
             $_new->numbers_user_added=$numbers_user_added;
-            $_new->address=$address;
+            $_new->team_name=$team_name;
             $_new->save();
+
+            $m->lock=1;
+            $m->save();
+
             $message="Taọ thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);

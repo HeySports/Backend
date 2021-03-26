@@ -18,8 +18,8 @@ class CreatePriceFieldsTable extends Migration
             $table->unsignedBigInteger('id_field');
             $table->foreign('id_field')->references('id')->on('fields')->onDelete('cascade');
             $table->integer('type_field')->require();
-            $table->time('time_start')->require();
-            $table->time('time_end')->require();
+            $table->dateTime('time_start')->require();
+            $table->dateTime('time_end')->require();
             $table->float('price')->require();
             $table->timestamps();
         });
