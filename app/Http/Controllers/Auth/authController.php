@@ -23,7 +23,6 @@ class authController extends Controller
                 return response()->json($response, 200);
             }
     }
-
     // function register
     function register(REQUEST $request){
     $input= $request->all();
