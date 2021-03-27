@@ -196,7 +196,9 @@ class matchController extends Controller
     {
         $matches = Matches::findOrFail($id);
         if($matches)
-         {  $matches->delete(); }
+        { 
+            $matches->delete(); 
+        }
         else
           {
             $message="Xóa trận thất bại !";

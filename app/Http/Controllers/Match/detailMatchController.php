@@ -32,49 +32,66 @@ class detailMatchController extends Controller
     }
     public function deleteDetailMatch($id)
     {
-        $detailMatch = DetailMatch::findOrFail($id);
-        if($detailMatch)
-         {  $detailMatch->delete(); }
-        else
-          {
-            $message="Xóa thành viên thất bại !";
-            $response = array('message'=>$message,'error'=>'Lỗi');
+        try{
+            $detailMatches =
+            DetailMatch::where('detail_matches.id_match', $id)
+            ->where('detail_matches.id_user', auth()->user()->id)
+            ->get();
+
+            foreach ($detailMatches as $detailMatch) {
+                $detailMatch->delete();
+            }
+    
+            $message="Xóa thành viên thành công !";
+            $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
-          }
-        $message="Xóa thành viên thành công !";
-        $response = array('message'=>$message,'error'=>null);
-        return  response()->json($response);
+        }catch (Exception $e){
+            $message="Xóa thành viên thất bại !";
+            $response = array('message'=>$message,'error'=>'$e');
+            return  response()->json($response);
+        }
+       
     }
     public function postDetailMatch(REQUEST $request){
         //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `team_name`, `created_at`, `updated_at`
-        $id_user=auth()->user()->id;
-        $id_match=$request->id_match;
-        $numbers_user_added=$request->numbers_user_added;
-        $team_name=$request->team_name;
-        try {
-            $m = Matches::where('id',$id_match)->get();
-            $_new=new DetailMatch();
-            $_new->id_user=$id_user;
-            $_new->id_match=$id_match;
-            if($m[0]->type==0){
-                $_new->status_team=1;
-            }else{
-                $_new->status_team=0;
+        $validator = Validator::make($request->all(), [
+            'id_match' => 'required',
+            'numbers_user_added' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            $id_user=auth()->user()->id;
+            $id_match=$request->id_match;
+            $numbers_user_added=$request->numbers_user_added;
+            $team_name=$request->team_name;
+            try {
+                $m = Matches::where('id',$id_match)->get();
+
+                $_new=new DetailMatch();
+                $_new->id_user=$id_user;
+                $_new->id_match=$id_match;
+                if($m[0]->type==0){
+                    $_new->status_team=2;
+                }else{
+                    $_new->status_team=1;
+                }
+                $_new->numbers_user_added=$numbers_user_added;
+                $_new->team_name=$team_name;
+                $_new->save();
+    
+                $m = $m[0];
+                $m->lock=1;
+                $m->save();
+    
+                $message="Taọ thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Taọ thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
             }
-            $_new->numbers_user_added=$numbers_user_added;
-            $_new->team_name=$team_name;
-            $_new->save();
-
-            $m->lock=1;
-            $m->save();
-
-            $message="Taọ thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Taọ thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
         }
     }
     public function putDetailMatch(REQUEST $request, $id){

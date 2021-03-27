@@ -77,18 +77,22 @@ class orderController extends Controller
     }
     public function deleteOrder($id)
     {
+    
         $Order = Order::findOrFail($id);
         if($Order)
-         {  $Order->delete(); }
+        {  
+            $Order->delete(); 
+        }
         else
-          {
-            $message="Xóa sân thất bại !";
+        {
+            $message="Xóa thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
             return  response()->json($response);
-          }
-        $message="Xóa sân thành công !";
+        }
+        $message="Xóa thành công !";
         $response = array('message'=>$message,'error'=>null);
         return  response()->json($response);
+        
     }
     public function postOrder(REQUEST $request){
         // id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`
