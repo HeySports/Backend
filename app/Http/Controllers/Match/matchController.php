@@ -9,6 +9,7 @@ use App\Models\DetailMatch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Carbon\Carbon;
 class matchController extends Controller
 {
     /**
@@ -192,6 +193,56 @@ class matchController extends Controller
             return  response()->json($response);
          }
     }
+    public function postSearchByFilter(REQUEST $request){
+        $validator = Validator::make($request->all(), [
+            'time_play' => 'required',
+            'age_min' => 'required',
+            'age_max' => 'required',
+            'skill_min' => 'required',
+            'skill_max' => 'required',
+        ]);
+         if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+         }else{
+            $response = [];
+            $matches =  Matches::where('name_room','=',$request->txtSearch)->get();
+            if(count($matches)<=0){
+                $matches =DB::table('matches')
+                ->join('fields', 'matches.id_field_play', '=', 'fields.id')
+                ->join('detail_matches', 'detail_matches.id_match', '=', 'matches.id')
+                ->where('matches.description', 'like', '%' . $request->txtSearch . '%')
+                ->orWhere('matches.name_room', 'like', '%' . $request->txtSearch . '%')
+                ->orWhere('fields.name', 'like', '%' . $request->txtSearch . '%')
+                ->orWhere('fields.address', 'like', '%' . $request->txtSearch . '%')
+                ->where('lock', '=', 0)
+                ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+                , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+                ->get();
+            
+            }
+    
+            for ($i=0; $i< count($matches); $i++){
+                $memberTeamA = DB::table('detail_matches')
+                ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+                ->join('users', 'detail_matches.id_user', '=', 'users.id')
+                ->where('detail_matches.id_match', '=', $matches[$i]->id)
+                ->where('detail_matches.status_team', '=', 1)
+                ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+                , 'detail_matches.team_name')
+                ->get();
+                $memberTeamB = DB::table('detail_matches')
+                ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+                ->join('users', 'detail_matches.id_user', '=', 'users.id')
+                ->where('detail_matches.id_match', '=', $matches[$i]->id)
+                ->where('detail_matches.status_team', '=', 2)
+                ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+                , 'detail_matches.team_name')
+                ->get();
+                array_push($response,  array('match'=>$matches[$i],'team_a'=>$memberTeamA,'team_b'=>$memberTeamB));
+            }
+            return  response()->json($response);
+         }
+    }
     public function deleteMatch($id)
     {
         $matches = Matches::findOrFail($id);
@@ -240,7 +291,7 @@ class matchController extends Controller
                 $_new->lock=$lock;
                 $_new->password=$password;
                 $_new->time_start_play=$time_start_play;
-                $_new->time_end_play=$time_end_play;
+                $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
                 $_new->description=$description;
                 $_new->lose_pay=$lose_pay;
                 $_new->type=$type;
@@ -284,7 +335,7 @@ class matchController extends Controller
             $_new->lock=$lock;
             $_new->password=$password;
             $_new->time_start_play=$time_start_play;
-            $_new->time_end_play=$time_end_play;
+            $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
             $_new->description=$description;
             $_new->save();
             $message="Sửa trận thành công !";
@@ -295,6 +346,32 @@ class matchController extends Controller
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
+    }
+    public function putTimePlay(REQUEST $request, $id){
+        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
+        $validator = Validator::make($request->all(), [
+            'time_start_play' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            $time_start_play=$request->time_start_play;
+            try {
+                $matches =  Matches::where('id',$id)->get();
+                $_new= $matches[0];
+                $_new->time_start_play=$time_start_play;
+                $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
+                $_new->save();
+                $message="Sửa thời gian thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Sửa thời gian thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            }
+        }
+       
     }
     /**
      * Store a newly created resource in storage.

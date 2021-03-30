@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Notifications;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\DetailNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+use Carbon\Carbon;
 class notificationController extends Controller
 {
     /**
@@ -87,6 +91,26 @@ class notificationController extends Controller
             $_new->type=$type;
             $_new->save();
             $message="Sửa thành công !";
+            $response = array('message'=>$message,'error'=>null);
+            return  response()->json($response);
+        } catch (Exception $e) {
+            $message="Sửa thất bại !";
+            $response = array('message'=>$message,'error'=>$e);
+            return  response()->json($response);
+        }
+    }
+    public function putStatusNotification($id){
+        // `type`, `description`, `id_match`
+
+        $user = auth()->user();
+        try {
+            $response =  DetailNotification::where('id_notification',$id)
+            ->where('id_user',$user->id)
+            ->get();
+            $_new= $response[0];
+            $_new->status=1;
+            $_new->save();
+            $message="Sửa status thành công !";
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {

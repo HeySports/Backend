@@ -45,6 +45,7 @@ Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']
 // Route::get('/match/getAll',[matchController::class,'getAll']); 
 // //search
 Route::post('/match/postSearchByText',[matchController::class,'postSearchByText']);
+Route::post('/match/postSearchByFilter',[matchController::class,'postSearchByFilter']);
 // //get list in homepage
 Route::get('/match/getListMatchFindOpponent',[matchController::class,'getListMatchFindOpponent']);
 Route::get('/match/getListMatchFindMember',[matchController::class,'getListMatchFindMember']);
@@ -52,6 +53,7 @@ Route::get('/match/getDetailMatch/{id}',[matchController::class,'getDetailMatch'
 Route::get('/match/getMatchHistory',[matchController::class,'getMatchHistory']);  
 Route::post('/match/postMatch',[matchController::class,'postMatch']);    
 Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch']);   
+Route::put('/match/putTimePlay/{id}', [matchController::class,'putTimePlay']); 
 // Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   
 // //detail matches
 // Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
@@ -59,6 +61,8 @@ Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch'])
 Route::post('/match/postDetailMatch',[detailMatchController::class,'postDetailMatch']);    
 Route::delete('/match/deleteDetailMatch/{id}', [detailMatchController::class,'deleteDetailMatch']);   
 // Route::put('/match/putDetailMatch/{id}', [detailMatchController::class,'putDetailMatch']); 
+
+Route::put('/match/putNumOfMember/{id}', [detailMatchController::class,'putNumOfMember']); 
 // //fields
 Route::get('/field/getListField',[fieldController::class,'getListField']); 
 Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField']); 
@@ -78,7 +82,8 @@ Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField'])
 // Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
 // Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
 // Route::put('/notification/putNotification/{id}', [notificationController::class,'putNotification']); 
-// // detail notification by id user
+Route::put('/notification/putStatusNotification/{id}', [notificationController::class,'putStatusNotification']); 
+// detail notification by id user
 Route::get('/notification/getListNotification',[notificationController::class,'getListNotification']); 
 // //comment match
 // Route::get('/commentMatch/getAll',[commentMatchController::class,'getAll']); 
