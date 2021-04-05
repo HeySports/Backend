@@ -44,34 +44,12 @@ Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']
 // //matches
 Route::get('/match/getAll',[matchController::class,'getAll']); 
 // //search
-<<<<<<< HEAD
-Route::post('/match/getListMatchSearch',[matchController::class,'getListMatchSearch']);
-=======
 Route::post('/match/postSearchByText',[matchController::class,'postSearchByText']);
 Route::post('/match/postSearchByFilter',[matchController::class,'postSearchByFilter']);
->>>>>>> bc699cf0382d4b1a437300f93b3b897942f04759
 // //get list in homepage
 Route::get('/match/getListMatchFindOpponent',[matchController::class,'getListMatchFindOpponent']);
 Route::get('/match/getListMatchFindMember',[matchController::class,'getListMatchFindMember']);
 Route::get('/match/getDetailMatch/{id}',[matchController::class,'getDetailMatch']);  
-<<<<<<< HEAD
-Route::get('/match/getMatchHistory/{id}',[matchController::class,'getMatchHistory']);  
-Route::post('/match/postMatch',[matchController::class,'postMatch']);    
-Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch']);   
-Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   
-// //detail matches
-Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
-Route::get('/match/getDetailMatch/{id}',[detailMatchController::class,'getDetailMatch']); 
-Route::post('/match/postDetailMatch',[detailMatchController::class,'postDetailMatch']);    
-Route::delete('/match/deleteDetailMatch/{id}', [detailMatchController::class,'deleteDetailMatch']);   
-Route::put('/match/putDetailMatch/{id}', [detailMatchController::class,'putDetailMatch']); 
-// //fields
-Route::get('/field/getListField',[fieldController::class,'getListField']); 
-Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField']); 
-Route::post('/field/postField',[fieldController::class,'postField']);    
-Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField']);   
-Route::put('/field/putField/{id}', [fieldController::class,'putField']); 
-=======
 Route::get('/match/getMatchHistory',[matchController::class,'getMatchHistory']);  
 Route::post('/match/postMatch',[matchController::class,'postMatch']);    
 Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch']);   
@@ -91,7 +69,6 @@ Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField'
 // Route::post('/field/postField',[fieldController::class,'postField']);    
 Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField']);   
 // Route::put('/field/putField/{id}', [fieldController::class,'putField']); 
->>>>>>> bc699cf0382d4b1a437300f93b3b897942f04759
 // //child fields
 Route::get('/field/getChildFieldsByField/{id}',[childFieldController::class,'getChildFieldsByField']); 
 Route::get('/field/getChildField/{id}',[childFieldController::class,'getChildField']); 
@@ -101,14 +78,6 @@ Route::put('/field/putChildField/{id}', [childFieldController::class,'putChildFi
 // //notification
 Route::get('/notification/getAll',[notificationController::class,'getAll']); 
 
-<<<<<<< HEAD
-Route::get('/notification/getNotification/{id}',[notificationController::class,'getNotification']); 
-Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
-Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
-Route::put('/notification/putNotification/{id}', [notificationController::class,'putNotification']); 
-// // detail notification by id user
-Route::get('/notification/getNotificationByIdUser/{id}',[notificationController::class,'getNotificationByIdUser']); 
-=======
 // Route::get('/notification/getNotification/{id}',[notificationController::class,'getNotification']); 
 // Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
 // Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
@@ -116,31 +85,19 @@ Route::get('/notification/getNotificationByIdUser/{id}',[notificationController:
 Route::put('/notification/putStatusNotification/{id}', [notificationController::class,'putStatusNotification']); 
 // detail notification by id user
 Route::get('/notification/getListNotification',[notificationController::class,'getListNotification']); 
->>>>>>> bc699cf0382d4b1a437300f93b3b897942f04759
 // //comment match
 Route::get('/commentMatch/getAll',[commentMatchController::class,'getAll']); 
 Route::get('/commentMatch/getCommentMatchByIdMatch/{id}',[commentMatchController::class,'getCommentMatchByIdMatch']); 
 Route::post('/commentMatch/postCommentMatch',[commentMatchController::class,'postCommentMatch']);    
 Route::delete('/commentMatch/deleteCommentMatch/{id}', [commentMatchController::class,'deleteCommentMatch']);   
-<<<<<<< HEAD
-Route::delete('/commentMatch/deleteCommentMatchByIdMatch/{id}', [commentMatchController::class,'deleteCommentMatchByIdMatch']);  
-Route::put('/commentMatch/putCommentMatch/{id}', [commentMatchController::class,'putCommentMatch']); 
-//
-=======
 // Route::delete('/commentMatch/deleteCommentMatchByIdMatch/{id}', [commentMatchController::class,'deleteCommentMatchByIdMatch']);  
 // Route::put('/commentMatch/putCommentMatch/{id}', [commentMatchController::class,'putCommentMatch']); 
 // //
->>>>>>> bc699cf0382d4b1a437300f93b3b897942f04759
 // //comment field
 Route::get('/commentField/getAll',[commentFieldController::class,'getAll']); 
 Route::get('/commentField/getCommentFieldByIdField/{id}',[commentFieldController::class,'getCommentFieldByIdField']); 
 Route::post('/commentField/postCommentField',[commentFieldController::class,'postCommentField']);    
 Route::delete('/commentField/deleteCommentField/{id}', [commentFieldController::class,'deleteCommentField']);   
-<<<<<<< HEAD
-Route::delete('/commentField/deleteCommentFieldByIdField/{id}', [commentFieldController::class,'deleteCommentFieldByIdField']);  
-Route::put('/commentField/putCommentField/{id}', [commentFieldController::class,'putCommentField']); 
-
-=======
 // Route::delete('/commentField/deleteCommentFieldByIdField/{id}', [commentFieldController::class,'deleteCommentFieldByIdField']);  
 // Route::put('/commentField/putCommentField/{id}', [commentFieldController::class,'putCommentField']); 
 //
@@ -148,4 +105,3 @@ Route::get('/order/getListOrder',[orderController::class,'getListOrder']);
 Route::get('/order/getAll',[orderController::class,'getAll']); 
 Route::post('/order/postOrder',[orderController::class,'postOrder']); 
 Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']); 
->>>>>>> bc699cf0382d4b1a437300f93b3b897942f04759
