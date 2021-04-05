@@ -25,7 +25,7 @@ class child_fieldSeeder extends Seeder
                 'id_field' => rand(1, 3),
                 'name_field' => $faker->name,
                 'type' => $arr[$r],
-                'status' => rand(0, 1),
+                'status' => rand(true, false),
                 'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
             ]);
         }
