@@ -22,7 +22,7 @@ class userSeeder extends Seeder
                 'id_roles' => rand(1, 3),
                 'full_name' =>  $faker->name,
                 'email' => $faker->email,
-                'password' => '123456',
+                'password' => Hash::make('123456'),
                 'phone_numbers' => $faker->e164PhoneNumber,
                 'address' => $faker->address,
                 'avatar' => '[]',

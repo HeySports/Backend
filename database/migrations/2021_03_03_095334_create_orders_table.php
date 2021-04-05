@@ -17,11 +17,14 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_match');
             $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
-            $table->unsignedBigInteger('id_price_field');
-            $table->foreign('id_price_field')->references('id')->on('price_fields')->onDelete('cascade');
-            $table->time('time_start')->require();
-            $table->time('time_end')->require();
+            $table->unsignedBigInteger('id_child_field');
+            $table->foreign('id_child_field')->references('id')->on('child_fields')->onDelete('cascade');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->dateTime('time_start')->require();
+            $table->dateTime('time_end')->require();
             $table->string('description')->nullable();
+            $table->integer('status')->nullable();
             $table->timestamps();
         });
     }
