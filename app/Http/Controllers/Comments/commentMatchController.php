@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CommentMatch;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Validator;
 class commentMatchController extends Controller
 {
     /**
@@ -42,7 +44,7 @@ class commentMatchController extends Controller
         $response =  DB::table('match_comments')
         ->join('users', 'match_comments.id_user', '=', 'users.id')
         ->where('match_comments.id_match', '=', $id)
-        ->select('match_comments.id', 'users.full_name as user_name', 'users.avatar', 'match_comments.description')
+        ->select('match_comments.id','users.id', 'users.full_name', 'match_comments.description','match_comments.created_at','match_comments.updated_at')
         ->get();
         return  response()->json($response);
     }
@@ -75,10 +77,16 @@ class commentMatchController extends Controller
     }
     public function postCommentMatch(REQUEST $request){
         // `id_user`, `id_match`, `description`
-      
+        $validator = Validator::make($request->all(), [
+            'id_match' => 'required',
+            'description' => 'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
         $id_match=$request->id_match;
         $description=$request->description;
-        $id_user=$request->id_user;
+        $id_user=auth()->user()->id;
         try {
             $_new=new CommentMatch();
             $_new->id_match=$id_match;
@@ -93,7 +101,7 @@ class commentMatchController extends Controller
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
-       
+    } 
     }
     public function putCommentMatch(REQUEST $request, $id){
         // `id_user`, `description`, `id_match`

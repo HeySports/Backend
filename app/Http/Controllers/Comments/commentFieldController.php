@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CommentField;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+
 class commentFieldController extends Controller
 {
     /**
@@ -31,7 +34,7 @@ class commentFieldController extends Controller
         $response =  DB::table('comments_field')
         ->join('users', 'comments_field.id_user', '=', 'users.id')
         ->where('comments_field.id_field', '=', $id)
-        ->select('comments_field.id', 'users.full_name as user_name', 'comments_field.description')
+        ->select('comments_field.id','users.id', 'users.full_name', 'comments_field.description','comments_field.created_at','comments_field.updated_at')
         ->get();
         return  response()->json($response);
     }
@@ -52,9 +55,16 @@ class commentFieldController extends Controller
     }
     public function postCommentField(REQUEST $request){
         // `id_user`, `id_field`, `description` 
+        $validator = Validator::make($request->all(), [
+            'id_field' => 'required',
+            'description' => 'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
         $id_field=$request->id_field;
         $description=$request->description;
-        $id_user=$request->id_user;
+        $id_user=auth()->user()->id;
         try {
             $_new=new CommentField();
             $_new->id_field=$id_field;
@@ -69,7 +79,7 @@ class commentFieldController extends Controller
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
-       
+    }
     }
     public function putCommentField(REQUEST $request, $id){
         // `id_user`, `description`, `id_field`
