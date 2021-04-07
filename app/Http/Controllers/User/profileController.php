@@ -75,4 +75,15 @@ class profileController extends Controller
         return response()->json($response, 200);
     }
    }
+   // function  Get detail user
+   function userGetDetail($_id){
+       try {
+           $_users=User::where('id',$_id)->get();
+           $message= "Thành công!";
+           $response=['message'=>$message,'data'=>$_users];
+           return response()->json($response, 200);
+       } catch (Exception $error) {
+        return response()->json($response, 400);
+       }
+   }
 }
