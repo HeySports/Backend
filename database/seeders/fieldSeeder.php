@@ -27,7 +27,7 @@ class fieldSeeder extends Seeder
                 'address' => $faker->address,
                 'email_field' => $faker->email,
                 'phone_numbers' => $faker->e164PhoneNumber,
-                'status' => rand(0, 2),
+                'status' => rand(0, 1),
                 'quantities_field' => rand(10, 20),
             ]);
         }
