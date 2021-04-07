@@ -24,7 +24,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('time_start')->require();
             $table->dateTime('time_end')->require();
             $table->string('description')->nullable();
-            $table->integer('status')->nullable();
+            $table->double('status')->nullable();
             $table->timestamps();
         });
     }

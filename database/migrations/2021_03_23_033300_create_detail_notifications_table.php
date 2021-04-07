@@ -19,7 +19,7 @@ class CreateDetailNotificationsTable extends Migration
             $table->unsignedBigInteger('id_notification');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_notification')->references('id')->on('notifications')->onDelete('cascade');
-            $table->integer('status')->nullable();
+            $table->double('status')->nullable();
             $table->timestamps();
         });
     }
