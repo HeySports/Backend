@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\authController;
 use App\Http\Controllers\User\profileController;
-
 use App\Http\Controllers\User\roleController;
 use App\Http\Controllers\Match\matchController;
 use App\Http\Controllers\Match\detailMatchController;

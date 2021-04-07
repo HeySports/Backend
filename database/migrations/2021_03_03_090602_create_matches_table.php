@@ -18,7 +18,7 @@ class CreateMatchesTable extends Migration
             $table->unsignedBigInteger('id_field_play');
             $table->foreign('id_field_play')->references('id')->on('fields')->onDelete('cascade');
             $table->string('name_room')->unique()->require();
-            $table->double('lock')->nullable();
+            $table->boolean('lock')->nullable();
             $table->string('password')->nullable();
             $table->dateTime('time_start_play')->nullable();
             $table->dateTime('time_end_play')->nullable();

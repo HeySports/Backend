@@ -22,7 +22,7 @@ class detail_notificationSeeder extends Seeder
             DB::table('detail_notifications')->insert([
                 'id_user' => rand(1, 3),
                 'id_notification' => rand(1, 3),
-                'status' => rand(0, 1),
+                'status' => rand(true, false),
             ]);
         }
     }
