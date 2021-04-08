@@ -378,19 +378,20 @@ class matchController extends Controller
 
     function userGetHistoriesSearch(){
             $user=auth()->user()->id;
-            $list_histories= HistoriesSearch::where('id',$user)->get();
+            $list_histories= HistoriesSearch::where('id_user',$user)->get();
             return response()->json($list_histories);
     }
     function userPostHistoriesSearch(REQUEST $request){
             $status=$request->description;
-            $checkHistories=HistoriesSearch::where('description',$status)->get();
-            if(count($checkHistories)>0){
+            $checkHistories = HistoriesSearch::where('description',$status)->get();
+            $id = auth()->user()->id;
+            if(count($checkHistories) > 0){
                 $message= "Thêm thất bại !";
                 $response = array('message'=>$message,'error'=>'Đã Tồn Tại');
                 return  response()->json($response);
             }else{
                 $_newHistories= new HistoriesSearch();
-                $_newHistories->id_user=auth()->user()->id;;
+                $_newHistories->id_user= $id;
                 $_newHistories->description=$status;     
                 try {
                 $_newHistories->save();
