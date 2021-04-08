@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Matches;
 use App\Models\DetailMatch;
-use App\models\HistoriesSearch;
+use App\Models\HistoriesSearch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Validator;
