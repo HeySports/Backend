@@ -46,6 +46,9 @@ Route::get('/user/getUser/{id}',[profileController::class,'userGetDetail']);
 // //search
 Route::post('/match/postSearchByText',[matchController::class,'postSearchByText']);
 Route::post('/match/postSearchByFilter',[matchController::class,'postSearchByFilter']);
+Route::get('/match/histories/get',[matchController::class,'userGetHistoriesSearch']);
+Route::post('/match/histories/post',[matchController::class,'userPostHistoriesSearch']);
+Route::delete('/match/histories/{id}/delete',[matchController::class,'userDeleteHistoriesSearch']);
 // //get list in homepage
 Route::get('/match/getListMatchFindOpponent',[matchController::class,'getListMatchFindOpponent']);
 Route::get('/match/getListMatchFindMember',[matchController::class,'getListMatchFindMember']);

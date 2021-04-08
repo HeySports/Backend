@@ -21,7 +21,6 @@ class CreateHistoriesSearchTable extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

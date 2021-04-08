@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Matches;
 use App\Models\DetailMatch;
+use App\models\HistoriesSearch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Carbon\Carbon;
+use App\Models\User;
 class matchController extends Controller
 {
     /**
@@ -373,6 +375,47 @@ class matchController extends Controller
         }
        
     }
+
+    function userGetHistoriesSearch(){
+            $user=auth()->user()->id;
+            $list_histories= HistoriesSearch::where('id',$user)->get();
+            return response()->json($list_histories);
+    }
+    function userPostHistoriesSearch(REQUEST $request){
+            $status=$request->description;
+            $checkHistories=HistoriesSearch::where('description',$status)->get();
+            if(count($checkHistories)>0){
+                $message= "Thêm thất bại !";
+                $response = array('message'=>$message,'error'=>'Đã Tồn Tại');
+                return  response()->json($response);
+            }else{
+                $_newHistories= new HistoriesSearch();
+                $_newHistories->id_user=auth()->user()->id;;
+                $_newHistories->description=$status;     
+                try {
+                $_newHistories->save();
+                $message="Thanh Cong !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $error) {
+                $message="Thêm thất bại !";
+                $response = array('message'=>$message,'error'=>$error);
+                return  response()->json($response);
+            }
+            }
+        }
+    function userDeleteHistoriesSearch($id){
+        $histories = HistoriesSearch::findOrFail($id);
+        if($histories){
+            $histories->delete();
+            $response=array('massage'=>'Thành Công !', 'error'=> null);
+            return  response()->json($response);
+        }else{
+            $response=array('massage'=>'Thất bại !', 'error'=> 'Không tồn tại');
+            return  response()->json($response);
+        }
+        return $histories;
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -417,4 +460,5 @@ class matchController extends Controller
     {
         //
     }
+
 }
