@@ -23,6 +23,7 @@ class fieldSeeder extends Seeder
                 'id_owner' => rand(1, 3),
                 'name' => $faker->name,
                 'rating' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 10),
+                'rating_number'=>rand(1, 5),
                 'list_image' => '[]',
                 'address' => $faker->address,
                 'email_field' => $faker->email,

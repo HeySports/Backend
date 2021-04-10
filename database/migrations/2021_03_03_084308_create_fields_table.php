@@ -19,6 +19,7 @@ class CreateFieldsTable extends Migration
             $table->foreign('id_owner')->references('id')->on('users')->onDelete('cascade');
             $table->string('name')->unique()->require();
             $table->float('rating')->nullable();
+            $table->integer('rating_number')->nullable();
             $table->string('list_image')->nullable();
             $table->string('address')->unique()->require();
             $table->string('email_field')->require()->unique();

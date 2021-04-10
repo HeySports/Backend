@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fields;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Field;
+use Validator;
 class fieldController extends Controller
 {
     /**
@@ -16,6 +17,32 @@ class fieldController extends Controller
     {
         //
     }
+    public function putFieldRating(REQUEST $request, $id){
+        $validator = Validator::make($request->all(), [
+            'rating' => 'required',
+        ]);
+         if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+         }else{
+             try{
+                $response =  Field::where('id',$id)->get();
+                $_new= $response[0];
+                $_new->rating = ($request->rating + $_new->rating*$_new->rating_number)/($_new->rating_number+1);
+                $_new->rating_number = $_new->rating_number+1;
+                $_new->save();
+                $message="Rating thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+             }catch(Exception $e){
+                $message="Rating thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+             }
+            
+         }
+
+    }
+
     public function getDetailField($id)
     {
         $response =  Field::where('id',$id)->get();

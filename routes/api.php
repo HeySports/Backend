@@ -71,7 +71,7 @@ Route::get('/field/getListField',[fieldController::class,'getListField']);
 Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField']); 
 // Route::post('/field/postField',[fieldController::class,'postField']);    
 Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField']);   
-// Route::put('/field/putField/{id}', [fieldController::class,'putField']); 
+Route::put('/field/putFieldRating/{id}', [fieldController::class,'putFieldRating']); 
 // //child fields
 // Route::get('/field/getChildFieldsByField/{id}',[childFieldController::class,'getChildFieldsByField']); 
 // Route::get('/field/getChildField/{id}',[childFieldController::class,'getChildField']); 
@@ -99,7 +99,8 @@ Route::delete('/commentMatch/deleteCommentMatch/{id}', [commentMatchController::
 // //comment field
 // Route::get('/commentField/getAll',[commentFieldController::class,'getAll']); 
 Route::get('/commentField/getCommentFieldByIdField/{id}',[commentFieldController::class,'getCommentFieldByIdField']); 
-Route::post('/commentField/postCommentField',[commentFieldController::class,'postCommentField']);    
+Route::post('/commentField/postCommentField',[commentFieldController::class,'postCommentField']);
+    
 Route::delete('/commentField/deleteCommentField/{id}', [commentFieldController::class,'deleteCommentField']);   
 // Route::delete('/commentField/deleteCommentFieldByIdField/{id}', [commentFieldController::class,'deleteCommentFieldByIdField']);  
 // Route::put('/commentField/putCommentField/{id}', [commentFieldController::class,'putCommentField']); 
