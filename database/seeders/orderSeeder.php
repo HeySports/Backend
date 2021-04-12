@@ -17,16 +17,15 @@ class orderSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
         for ($i = 0; $i < 10; $i++){
             DB::table('orders')->insert([
                 'id_match' => rand(1, 5),
-                'id_child_field' => rand(1, 8),
+                'id_child_field' => rand(1, 6),
                 'id_user' => rand(1, 6),
                 'status' => rand(0,1),
-                'time_start' => $faker->dateTime($max = 'now', $timezone = null),
-                'time_end' => $faker->dateTime($max = 'now', $timezone = null),
-                'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
+                'time_start' =>  date('Y-m-d H:i:s'),
+                'time_end' => date('Y-m-d H:i:s'),
+                'description' => 'Description',
             ]);
         }
     }
