@@ -73,7 +73,7 @@ Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField'
 Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField']);   
 Route::put('/field/putFieldRating/{id}', [fieldController::class,'putFieldRating']); 
 // //child fields
-// Route::get('/field/getChildFieldsByField/{id}',[childFieldController::class,'getChildFieldsByField']); 
+Route::get('/field/getChildFieldsByField',[childFieldController::class,'getChildFieldsByField']); 
 // Route::get('/field/getChildField/{id}',[childFieldController::class,'getChildField']); 
 // Route::post('/field/postChildField',[childFieldController::class,'postChildField']);    
 // Route::delete('/field/deleteChildField/{id}', [childFieldController::class,'deleteChildField']);   
