@@ -83,8 +83,8 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
             ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-            ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-            , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+            ->select('matches.id','matches.id_user', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+            , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
             ->where('matches.id', '=', $id)
             ->get();
      
@@ -426,9 +426,18 @@ class matchController extends Controller
             'id_field_play' => 'required',
             'description'=> 'string',
         ]);
+        $_checkName= Matches::where('name_room',$request->name_room)->get();
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        }else{
+        }
+        elseif( count($_checkName) > 0){
+            $message="Taọ trận thất bại !";
+            $e="Tên Phòng đã tồn Tại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            
+        }
+        else{
             $id_user=auth()->user()->id;
             $id_field_play=$request->id_field_play;
             $name_room=$request->name_room;
