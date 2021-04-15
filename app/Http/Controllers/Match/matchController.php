@@ -147,7 +147,7 @@ class matchController extends Controller
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('type', '=', 1)
         ->where('lock', '=', 0)
-        ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -204,7 +204,7 @@ class matchController extends Controller
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $memberTeamA = DB::table('detail_matches')

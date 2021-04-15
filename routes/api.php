@@ -42,7 +42,7 @@ Route::post ('/user/update/password',[profileController::class,'userChangePassWo
 Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']);
 Route::get('/user/getUser/{id}',[profileController::class,'userGetDetail']);
 // //matches
-// Route::get('/match/getAll',[matchController::class,'getAll']); 
+Route::get('/match/getAll',[matchController::class,'getAll']); 
 // //search
 Route::post('/match/postSearchByText',[matchController::class,'postSearchByText']);
 Route::post('/match/postSearchByFilter',[matchController::class,'postSearchByFilter']);
