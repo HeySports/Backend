@@ -203,8 +203,6 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-        ->where('type', '=', 0)
-        ->where('lock', '=', 0)
         ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
@@ -426,7 +424,6 @@ class matchController extends Controller
             'time_start_play' => 'required',
             'time_end_play' => 'required',
             'id_field_play' => 'required',
-            'price' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
