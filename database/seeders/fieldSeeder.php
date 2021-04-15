@@ -31,9 +31,21 @@ class fieldSeeder extends Seeder
                 'address' => $_address[$i],
                 'email_field' => $_email[$i],
                 'phone_numbers' => $_phone[$i],
-                'status' => rand(0, 1),
+                'status' => 1,
                 'quantities_field' => rand(10, 20),
             ]);
         }
+        DB::table('fields')->insert([
+            'id_owner' => 1,
+            'name' => 'Đã Có Sân',
+            'rating' => 0,
+            'rating_number'=>0,
+            'list_image' => '[]',
+            'address' => 'Do Người Chơi Tự Chọn',
+            'email_field' => 'Mặc định',
+            'phone_numbers' => 'Mặc định',
+            'status' => 0,
+            'quantities_field' => 0,
+        ]);
     }
 }

@@ -25,6 +25,7 @@ class matchSeeder extends Seeder
             $r_lose = rand(0, 3);
             DB::table('matches')->insert([
                 'id_field_play' => rand(1, 3),
+                'id_user'=>rand(1,10),
                 'name_room' => $_name[$i],
                 'lock' => rand(0, 1),
                 'type_field' => $arr[$r],
@@ -34,7 +35,6 @@ class matchSeeder extends Seeder
                 'time_end_play' =>  date('Y-m-d H:i:s'),
                 'description' => 'San bon tôt có thể chơi lâu dài, chủ thì tích cực',
                 'type' =>rand(0, 1),
-                'price'=> rand(200000,500000),
             ]);
         }
     }

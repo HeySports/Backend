@@ -424,10 +424,12 @@ class matchController extends Controller
             'time_start_play' => 'required',
             'time_end_play' => 'required',
             'id_field_play' => 'required',
+            'description'=> 'string',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }else{
+            $id_user=auth()->user()->id;
             $id_field_play=$request->id_field_play;
             $name_room=$request->name_room;
             $lock= $request->lock;
@@ -437,12 +439,12 @@ class matchController extends Controller
             $description=$request->description;
             $lose_pay=$request->lose_pay;
             $type=$request->type;
-            $price=$request->price;
             $type_field=$request->type_field;
             //
             try {
                 $_new=new Matches();
                 $_new->id_field_play=$id_field_play;
+                $_new->id_user=auth()->user()->id;
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
                 $_new->password=$password;
@@ -451,7 +453,6 @@ class matchController extends Controller
                 $_new->description=$description;
                 $_new->lose_pay=$lose_pay;
                 $_new->type=$type;
-                $_new->price=$price;
                 $_new->type_field=$type_field;
                 $_new->save();
 
@@ -462,9 +463,8 @@ class matchController extends Controller
                 $_new_detail->numbers_user_added=$request->numbers_user_added;
                 $_new_detail->team_name=$request->team_name;
                 $_new_detail->save();
-
                 $message="Taọ trận thành công !";
-                $response = array('message'=>$message,'error'=>null);
+                $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Taọ trận thất bại !";
