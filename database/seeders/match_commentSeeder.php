@@ -17,12 +17,11 @@ class match_commentSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
         for ($i = 0; $i < 10; $i++){
             DB::table('match_comments')->insert([
                 'id_user' => rand(1, 3),
                 'id_match' => rand(1, 3),
-                'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
+                'description' =>('Trận đấu rất hay có nhiều cầu thủ giỏi thái độ tích cực'),
             ]);
         }
     }

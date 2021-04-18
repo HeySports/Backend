@@ -19,22 +19,22 @@ class matchSeeder extends Seeder
     {
         $arr = ['5', '7', '11'];
         $arr_lose = ['5/5', '7/3', '6/4','0'];
-        $faker = Faker::create();
+        $_name=['Phong 1','Phong 2','Phong 3','Phong 4','Phong 5','Phong 6','Phong 7','Phong 8','Phong 9','Phong 10'];
         for ($i = 0; $i < 10; $i++){
             $r = rand(0, 2);
             $r_lose = rand(0, 3);
             DB::table('matches')->insert([
                 'id_field_play' => rand(1, 3),
-                'name_room' => Str::random(10),
+                'id_user'=>rand(1,10),
+                'name_room' => $_name[$i],
                 'lock' => rand(0, 1),
                 'type_field' => $arr[$r],
                 'lose_pay' => $arr_lose[$r_lose],
-                'password' => $faker->password,
-                'time_start_play' => $faker->dateTime($max = 'now', $timezone = null),
-                'time_end_play' => $faker->dateTime($max = 'now', $timezone = null),
-                'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
+                'password' => hash::make('123456'),
+                'time_start_play' => date('Y-m-d H:i:s'),
+                'time_end_play' =>  date('Y-m-d H:i:s'),
+                'description' => 'San bon tôt có thể chơi lâu dài, chủ thì tích cực',
                 'type' =>rand(0, 1),
-                'price'=> $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000000),
             ]);
         }
     }

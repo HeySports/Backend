@@ -42,7 +42,7 @@ Route::post ('/user/update/password',[profileController::class,'userChangePassWo
 Route::put('/user/update/profile',[profileController::class,'userUpdateProfile']);
 Route::get('/user/getUser/{id}',[profileController::class,'userGetDetail']);
 // //matches
-// Route::get('/match/getAll',[matchController::class,'getAll']); 
+Route::get('/match/getAll',[matchController::class,'getAll']); 
 // //search
 Route::post('/match/postSearchByText',[matchController::class,'postSearchByText']);
 Route::post('/match/postSearchByFilter',[matchController::class,'postSearchByFilter']);
@@ -73,7 +73,7 @@ Route::get('/field/getDetailField/{id}',[fieldController::class,'getDetailField'
 Route::delete('/field/deleteField/{id}', [fieldController::class,'deleteField']);   
 Route::put('/field/putFieldRating/{id}', [fieldController::class,'putFieldRating']); 
 // //child fields
-// Route::get('/field/getChildFieldsByField/{id}',[childFieldController::class,'getChildFieldsByField']); 
+Route::get('/field/getChildFieldsByField',[childFieldController::class,'getChildFieldsByField']); 
 // Route::get('/field/getChildField/{id}',[childFieldController::class,'getChildField']); 
 // Route::post('/field/postChildField',[childFieldController::class,'postChildField']);    
 // Route::delete('/field/deleteChildField/{id}', [childFieldController::class,'deleteChildField']);   

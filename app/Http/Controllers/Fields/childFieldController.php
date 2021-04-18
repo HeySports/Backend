@@ -21,9 +21,9 @@ class childFieldController extends Controller
         $response =  ChildField::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getChildFieldsByField($id)
+    public function getChildFieldsByField()
     {
-        $response =  ChildField::where('id_field',$id)->get();
+        $response = ChildField::all();
         return  response()->json($response);
     }
     public function deleteChildField($id)
