@@ -35,6 +35,7 @@ class matchSeeder extends Seeder
                 'time_start_play' => date('Y-m-d H:i:s'),
                 'time_end_play' =>  date('Y-m-d H:i:s'),
                 'description' => 'San bon tôt có thể chơi lâu dài, chủ thì tích cực',
+                'price'=> rand(200000,500000),
                 'type' =>rand(0, 1),
             ]);
         }

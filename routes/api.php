@@ -109,3 +109,7 @@ Route::get('/order/getListOrder',[orderController::class,'getListOrder']);
 Route::get('/order/getAll',[orderController::class,'getAll']); 
 Route::post('/order/postOrder',[orderController::class,'postOrder']); 
 Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']); 
+
+
+// get Price
+Route::get('/match/price/{id}/field/by/{type_field}',[childFieldController::class,'getPriceByField']);

@@ -84,7 +84,7 @@ class matchController extends Controller
         $matches =  DB::table('matches')
             ->join('fields', 'fields.id', '=', 'matches.id_field_play')
             ->join('child_fields','child_fields.id','=','matches.id_child_field')
-            ->select('matches.id','matches.id_user','child_fields.name_field', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+            ->select('matches.id','matches.price','matches.id_user','child_fields.name_field', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
             , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
             ->where('matches.id', '=', $id)
             ->get();

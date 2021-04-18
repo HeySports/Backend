@@ -30,6 +30,7 @@ class CreateMatchesTable extends Migration
             $table->string('lose_pay')->nullable();
             $table->integer('type')->nullable();
             $table->integer('type_field')->nullable();
+            $table->float('price')->require();
             $table->timestamps();
         });
     }
