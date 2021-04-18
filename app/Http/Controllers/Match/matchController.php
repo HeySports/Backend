@@ -83,7 +83,8 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
             ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-            ->select('matches.id','matches.id_user', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+            ->join('child_fields','child_fields.id','=','matches.id_child_field')
+            ->select('matches.id','matches.id_user','child_fields.name_field', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
             , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
             ->where('matches.id', '=', $id)
             ->get();
@@ -424,6 +425,7 @@ class matchController extends Controller
             'time_start_play' => 'required',
             'time_end_play' => 'required',
             'id_field_play' => 'required',
+            'id_child_field'=>'required',
             'description'=> 'string',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
@@ -449,6 +451,7 @@ class matchController extends Controller
             $lose_pay=$request->lose_pay;
             $type=$request->type;
             $type_field=$request->type_field;
+            $id_child_field= $request->id_child_field;
             //
             try {
                 $_new=new Matches();
@@ -463,6 +466,7 @@ class matchController extends Controller
                 $_new->lose_pay=$lose_pay;
                 $_new->type=$type;
                 $_new->type_field=$type_field;
+                $_new->id_child_field=$id_child_field;
                 $_new->save();
 
                 $_new_detail=new DetailMatch();
