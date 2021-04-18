@@ -24,7 +24,8 @@ class matchSeeder extends Seeder
             $r = rand(0, 2);
             $r_lose = rand(0, 3);
             DB::table('matches')->insert([
-                'id_field_play' => rand(1, 3),
+                'id_field_play' => rand(1, 6),
+                'id_child_field'=>rand(1,6),
                 'id_user'=>rand(1,10),
                 'name_room' => $_name[$i],
                 'lock' => rand(0, 1),
