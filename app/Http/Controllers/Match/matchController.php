@@ -86,8 +86,7 @@ class matchController extends Controller
             ->select('matches.id','matches.id_user', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
             , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
             ->where('matches.id', '=', $id)
-            ->get();
-     
+            ->get(); 
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -119,7 +118,6 @@ class matchController extends Controller
             , 'detail_matches.team_name')
             ->get();
             $sumB = 0;
-            
             foreach($memberTeamB as $key=>$value){
             if(isset($value->matches_number))
                 $sumB += $value->matches_number;
