@@ -22,12 +22,10 @@ class matchController extends Controller
     public function getMatchHistory()
     {
         $user = auth()->user();
-
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('detail_matches.id_user', '=', $user->id)
-        ->where('lock', '=', 1)
         ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
@@ -485,7 +483,6 @@ class matchController extends Controller
                 return  response()->json($response);
             }
         }
-       
     }
     public function putMatch(REQUEST $request, $id){
         //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
