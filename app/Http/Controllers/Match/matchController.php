@@ -448,6 +448,7 @@ class matchController extends Controller
             $description=$request->description;
             $lose_pay=$request->lose_pay;
             $type=$request->type;
+            $price=$request->price;
             $type_field=$request->type_field;
             $id_child_field= $request->id_child_field;
             //
@@ -463,6 +464,7 @@ class matchController extends Controller
                 $_new->description=$description;
                 $_new->lose_pay=$lose_pay;
                 $_new->type=$type;
+                $_new->price=$price;
                 $_new->type_field=$type_field;
                 $_new->id_child_field=$id_child_field;
                 $_new->save();
