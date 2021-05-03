@@ -17,7 +17,6 @@ class detail_notificationSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
         for ($i = 0; $i < 10; $i++){
             DB::table('detail_notifications')->insert([
                 'id_user' => rand(1, 3),

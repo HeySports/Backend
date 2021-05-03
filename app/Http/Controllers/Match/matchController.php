@@ -23,12 +23,10 @@ class matchController extends Controller
     public function getMatchHistory()
     {
         $user = auth()->user();
-
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('detail_matches.id_user', '=', $user->id)
-        ->where('lock', '=', 1)
         ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
@@ -84,11 +82,11 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
             ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-            ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-            , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+            ->join('child_fields','child_fields.id','=','matches.id_child_field')
+            ->select('matches.id','matches.price','matches.id_user','child_fields.name_field', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+            , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
             ->where('matches.id', '=', $id)
-            ->get();
-     
+            ->get(); 
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -120,7 +118,6 @@ class matchController extends Controller
             , 'detail_matches.team_name')
             ->get();
             $sumB = 0;
-            
             foreach($memberTeamB as $key=>$value){
             if(isset($value->matches_number))
                 $sumB += $value->matches_number;
@@ -148,7 +145,7 @@ class matchController extends Controller
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('type', '=', 1)
         ->where('lock', '=', 0)
-        ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -204,10 +201,8 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-        ->where('type', '=', 0)
-        ->where('lock', '=', 0)
         ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $memberTeamA = DB::table('detail_matches')
@@ -430,10 +425,22 @@ class matchController extends Controller
             'lose_pay' => 'required',
             'method_pay' => 'required',
             'type_field' => 'required',
+            'id_field_play' => 'required',
+            'id_child_field'=>'required',
         ]);
+        $_checkName= Matches::where('name_room',$request->name_room)->get();
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
-        }else{
+        }
+        elseif( count($_checkName) > 0){
+            $message="Taọ trận thất bại !";
+            $e="Tên Phòng đã tồn Tại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            
+        }
+        else{
+            $id_user=auth()->user()->id;
             $id_field_play=$request->id_field_play;
             $name_room=$request->name_room;
             $lock= $request->lock;
@@ -445,10 +452,13 @@ class matchController extends Controller
             $type=$request->type;
             $price=$request->price;
             $type_field=$request->type_field;
+            $id_child_field= $request->id_child_field;
             //
             try {
                 $_new=new Matches();
-                $_new->id_field_play = $id_field_play;
+                $_new->id_field_play=$id_field_play;
+                $_new->id_user=auth()->user()->id;
+
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
                 $_new->password=$password;
@@ -459,6 +469,7 @@ class matchController extends Controller
                 $_new->type=$type;
                 $_new->price=$price;
                 $_new->type_field=$type_field;
+                $_new->id_child_field=$id_child_field;
                 $_new->save();
 
                 $_new_detail=new DetailMatch();
@@ -470,9 +481,8 @@ class matchController extends Controller
                 }
                 $_new_detail->team_name=$request->team_name;
                 $_new_detail->save();
-
                 $message="Taọ trận thành công !";
-                $response = array('message'=>$message,'error'=>null);
+                $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Taọ trận thất bại !";
@@ -480,7 +490,6 @@ class matchController extends Controller
                 return  response()->json($response);
             }
         }
-       
     }
     public function putMatch(REQUEST $request, $id){
         //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,

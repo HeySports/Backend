@@ -18,15 +18,15 @@ class child_fieldSeeder extends Seeder
     public function run()
     {
         $arr = ['5','7','11'];
-        $faker = Faker::create();
-        for($i = 0; $i < 10; $i++){
+        $_name=['N1','N2','N3','N4','N5', 'N6'];
+        for($i = 0; $i < 6; $i++){
             $r = rand(0,2);
             DB::table('child_fields')->insert([
                 'id_field' => rand(1, 3),
-                'name_field' => $faker->name,
+                'name_field' =>$_name[$i],
                 'type' => $arr[$r],
                 'status' => rand(0, 1),
-                'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
+                'description' =>  Str::random(50),
             ]);
         }
     }

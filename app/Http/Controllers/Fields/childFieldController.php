@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Fields;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ChildField;
+use App\Models\Price_Field;
 class childFieldController extends Controller
 {
     /**
@@ -16,14 +17,18 @@ class childFieldController extends Controller
     {
         //
     }
+    public function getPriceByField($id_field,$type_field){
+       $price=Price_Field::where([['id_field','=',1],['type_field','=',5]])->get();
+       return  response()->json($price);
+    }
     public function getChildField($id)
     {
         $response =  ChildField::where('id',$id)->get();
         return  response()->json($response[0]);
     }
-    public function getChildFieldsByField($id)
+    public function getChildFieldsByField()
     {
-        $response =  ChildField::where('id_field',$id)->get();
+        $response = ChildField::all();
         return  response()->json($response);
     }
     public function deleteChildField($id)

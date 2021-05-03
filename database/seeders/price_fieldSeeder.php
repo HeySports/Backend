@@ -18,15 +18,27 @@ class price_fieldSeeder extends Seeder
     public function run()
     {
         $arr = ['5', '7', '11'];
-        $faker = Faker::create();
-        for ($i = 0; $i < 10; $i++){
-            $r = rand(0, 2);
+        for ($i = 1; $i < 7; $i++){
             DB::table('price_fields')->insert([
-                'id_field' => rand(1, 3),
-                'type_field' => $arr[$r],
-                'time_start' => $faker->dateTime($max = 'now', $timezone = null),
-                'time_end' => $faker->dateTime($max = 'now', $timezone = null),
-                'price'=> $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 1000000),
+                'id_field' => $i,
+                'type_field' => 5,
+                'time_start' =>  date('Y-m-d H:i:s'),
+                'time_end' =>  date('Y-m-d H:i:s'),
+                'price'=> rand(200000,500000),
+            ]);
+            DB::table('price_fields')->insert([
+                'id_field' => $i,
+                'type_field' => 11,
+                'time_start' =>  date('Y-m-d H:i:s'),
+                'time_end' =>  date('Y-m-d H:i:s'),
+                'price'=> rand(200000,500000),
+            ]);
+            DB::table('price_fields')->insert([
+                'id_field' => $i,
+                'type_field' => 7,
+                'time_start' =>  date('Y-m-d H:i:s'),
+                'time_end' =>  date('Y-m-d H:i:s'),
+                'price'=> rand(200000,500000),
             ]);
         }
     }
