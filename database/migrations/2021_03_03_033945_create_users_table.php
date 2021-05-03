@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->float('skill_rating')->nullable();
             $table->float('attitude_rating')->nullable();
             $table->string('position_play')->nullable();
+            $table->string('list_team')->default('[]');
             $table->string('description')->nullable();
             $table->timestamps();
         });

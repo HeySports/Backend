@@ -105,7 +105,12 @@ Route::delete('/commentField/deleteCommentField/{id}', [commentFieldController::
 // Route::delete('/commentField/deleteCommentFieldByIdField/{id}', [commentFieldController::class,'deleteCommentFieldByIdField']);  
 // Route::put('/commentField/putCommentField/{id}', [commentFieldController::class,'putCommentField']); 
 //
+Route::post('/order/checkTimePlayAvailable',[orderController::class,'checkTimePlayAvailable']); 
+Route::put('/order/putOrderStatus/{id}',[orderController::class,'putOrderStatus']); 
+Route::put('/order/putOrderMatch/{id}',[orderController::class,'putOrderMatch']);
+Route::put('/order/putOrder/{id}',[orderController::class,'putOrder']); 
 Route::get('/order/getListOrder',[orderController::class,'getListOrder']); 
 Route::get('/order/getAll',[orderController::class,'getAll']); 
+Route::get('/order/getOrder/{id}',[orderController::class,'getOrder']);
 Route::post('/order/postOrder',[orderController::class,'postOrder']); 
 Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']); 

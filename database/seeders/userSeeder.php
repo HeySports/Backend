@@ -26,6 +26,7 @@ class userSeeder extends Seeder
                 'phone_numbers' => $faker->e164PhoneNumber,
                 'address' => $faker->address,
                 'avatar' => '[]',
+                'list_team' => '[1,2]',
                 'age' => $faker->numberBetween($min = 10, $max = 70),
                 'matches_number' => $faker->randomDigit,
                 'skill_rating' => $faker->randomFloat($nbMaxDecimals = NULL, $min = 0, $max = 10),

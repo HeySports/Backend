@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Booking;
-
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+use Validator;
 class orderController extends Controller
 {
     /**
@@ -16,6 +17,25 @@ class orderController extends Controller
     public function index()
     {
         //
+    }
+    public function checkTimePlayAvailable(REQUEST $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'dateTime'=> 'required',
+            'id_child_field' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+        $date = Carbon::parse($request->dateTime);
+        $response =  Order::whereDate('time_start','=', $date->format('Y-m-d'))
+        ->whereTime('time_start','<=', $date->format('H:i:s'))
+        ->whereTime('time_end','>', $date->format('H:i:s'))
+        ->whereTime('id_child_field', $request->id_child_field)
+        ->get();
+        //['date'=>$date->format('Y-m-d'),'time'=>$date->format('H:i:s') ]
+        return  response()->json($response);
+        }
     }
     public function getOrder($id)
     {
@@ -43,58 +63,118 @@ class orderController extends Controller
         return  response()->json($response);
     }
     public function postOrder(REQUEST $request){
-        // `id_field`, `name_field`, `type`, `status`, `description`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
-        $description=$request->description;
-    
-        try {
-            $_new=new Order();
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
-            $_new->description=$description;
-       
-            $_new->save();
-            $message="Taọ sân thành công !"; 
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Taọ sân thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
-        }
-       
+        //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
+      
+        $validator = Validator::make($request->all(), [
+            'id_child_field' => 'required',
+            'time_start' => 'required',
+            'time_end' => 'required',
+            'method_pay' => 'required',
+        ]);
+         if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+         }else{
+
+            try {
+                $_new=new Order();
+                $_new->id_match=$request->id_match;
+                $_new->id_child_field=$request->id_child_field;
+                $_new->id_user=auth()->user()->id;
+                $_new->time_start=$request->time_start;
+                $_new->time_end=$request->time_end;
+                $_new->description=$request->description;
+                $_new->method_pay=$request->method_pay;
+                $_new->status = 0;
+                $_new->save();
+                $message="Taọ sân thành công !"; 
+                $response = array('message'=>$message,'error'=>null , 'orderInfo' => Order::latest()->first());
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Taọ sân thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            }
+         }
     }
     public function putOrder(REQUEST $request, $id){
-        // `id_field`, `name_field`, `type`, `status`, `description`, `email_Order`, `phone_numbers`, `status`, `quantities_Order`
-        $id_field=$request->id_field;
-        $name_field=$request->name_field;
-        $type= $request->type;
-        $status=$request->status;
-        $description=$request->description;
-     
+       //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
+      
+       $validator = Validator::make($request->all(), [
+        'id_child_field' => 'required',
+        'time_start' => 'required',
+        'time_end' => 'required',
+        'method_pay' => 'required',
+    ]);
+     if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+     }else{
+
         try {
-            $response =  Order::where('id',$id)->get();
-            $_new= $response[0];
-            $_new->id_field=$id_field;
-            $_new->name_field=$name_field;
-            $_new->type= $type;
-            $_new->status=$status;
-            $_new->description=$description;
+            $_new=Order::where('id', $id)->get();
+            $_new= $_new[0];
+            $_new->id_match=$request->id_match;
+            $_new->id_child_field=$request->id_child_field;
+            $_new->id_user=auth()->user()->id;
+            $_new->time_start=$request->time_start;
+            $_new->time_end=$request->time_end;
+            $_new->description=$request->description;
+            $_new->method_pay=$request->method_pay;
+            $_new->status = $request->status;
             $_new->save();
-            $message="Sửa sân thành công !";
+            $message="Sua sân thành công !"; 
             $response = array('message'=>$message,'error'=>null);
             return  response()->json($response);
         } catch (Exception $e) {
-            $message="Sửa sân thất bại !";
+            $message="Sua sân thất bại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
+     }
     }
+    public function putOrderMatch(REQUEST $request,$id){
+        $validator = Validator::make($request->all(), [
+            'id_match' => 'required',
+        ]);
+      if ($validator->fails()) {
+         return response()->json($validator->errors(), 422);
+      }else{
+         try {
+             $_new=Order::where('id', $id)->get();
+             $_new= $_new[0];
+             $_new->id_match = $request->id_match;
+             $_new->save();
+             $message="Sua sân thành công !"; 
+             $response = array('message'=>$message,'error'=>null);
+             return  response()->json($response);
+         } catch (Exception $e) {
+             $message="Sua sân thất bại !";
+             $response = array('message'=>$message,'error'=>$e);
+             return  response()->json($response);
+         }
+      }
+     }
+    public function putOrderStatus(REQUEST $request,$id){
+        $validator = Validator::make($request->all(), [
+            'status' => 'required',
+        ]);
+      if ($validator->fails()) {
+         return response()->json($validator->errors(), 422);
+      }else{
+         try {
+             $_new=Order::where('id', $id)->get();
+             $_new= $_new[0];
+             $_new->status = $request->status;
+             $_new->save();
+             $message="Sua sân thành công !"; 
+             $response = array('message'=>$message,'error'=>null);
+             return  response()->json($response);
+         } catch (Exception $e) {
+             $message="Sua sân thất bại !";
+             $response = array('message'=>$message,'error'=>$e);
+             return  response()->json($response);
+         }
+      }
+     }
     /**
      * Store a newly created resource in storage.
      *

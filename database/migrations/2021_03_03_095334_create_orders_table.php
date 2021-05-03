@@ -15,8 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_match');
-            $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
+            $table->integer('id_match')->nullable();
             $table->unsignedBigInteger('id_child_field');
             $table->foreign('id_child_field')->references('id')->on('child_fields')->onDelete('cascade');
             $table->unsignedBigInteger('id_user');
@@ -25,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('time_end')->require();
             $table->string('description')->nullable();
             $table->boolean('status')->nullable();
+            $table->integer('method_pay')->nullable();
             $table->timestamps();
         });
     }

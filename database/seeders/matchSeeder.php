@@ -30,6 +30,7 @@ class matchSeeder extends Seeder
                 'type_field' => $arr[$r],
                 'lose_pay' => $arr_lose[$r_lose],
                 'password' => $faker->password,
+                'address' => $faker->address,
                 'time_start_play' => $faker->dateTime($max = 'now', $timezone = null),
                 'time_end_play' => $faker->dateTime($max = 'now', $timezone = null),
                 'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
