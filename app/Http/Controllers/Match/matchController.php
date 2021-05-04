@@ -35,7 +35,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 1)
+            ->where('detail_matches.status_team', '=', 0)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -55,7 +55,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 2)
+            ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -91,7 +91,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[0]->id)
-            ->where('detail_matches.status_team', '=', 1)
+            ->where('detail_matches.status_team', '=', 0)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -113,7 +113,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[0]->id)
-            ->where('detail_matches.status_team', '=', 2)
+            ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -143,7 +143,7 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-        ->where('type', '=', 1)
+        ->where('type', '=', 0)
         ->where('lock', '=', 0)
         ->select('matches.id', 'matches.id_user','fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
@@ -153,7 +153,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 1)
+            ->where('detail_matches.status_team', '=', 0)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -175,7 +175,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 2)
+            ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -201,6 +201,8 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->join('fields', 'fields.id', '=', 'matches.id_field_play')
+        ->where('type', '=', 1)
+        ->where('lock', '=', 0)
         ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
@@ -209,7 +211,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 1)
+            ->where('detail_matches.status_team', '=', 0)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -229,7 +231,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 2)
+            ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -278,7 +280,7 @@ class matchController extends Controller
                 ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
                 ->join('users', 'detail_matches.id_user', '=', 'users.id')
                 ->where('detail_matches.id_match', '=', $matches[$i]->id)
-                ->where('detail_matches.status_team', '=', 1)
+                ->where('detail_matches.status_team', '=', 0)
                 ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
                 , 'detail_matches.team_name')
                 ->get();
@@ -300,7 +302,7 @@ class matchController extends Controller
                 ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
                 ->join('users', 'detail_matches.id_user', '=', 'users.id')
                 ->where('detail_matches.id_match', '=', $matches[$i]->id)
-                ->where('detail_matches.status_team', '=', 2)
+                ->where('detail_matches.status_team', '=', 1)
                 ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
                 , 'detail_matches.team_name')
                 ->get();
@@ -353,7 +355,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 1)
+            ->where('detail_matches.status_team', '=', 0)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -375,7 +377,7 @@ class matchController extends Controller
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 2)
+            ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
@@ -546,7 +548,40 @@ class matchController extends Controller
         }
        
     }
+    public function putJoiningMatchOpponent(REQUEST $request, $id){
+        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
+        $validator = Validator::make($request->all(), [
+            'status'=> 'required',
+            'team_name' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            
+            try {
+                $matches =  Matches::where('id',$id)->get();
+                $_new= $matches[0];
+                $_new->status = $status;
+                $_new->save();
 
+
+                $_new_detail=new DetailMatch();
+                $_new_detail->id_user = auth()->user()->id;
+                $_new_detail->id_match=$_new->id;
+                $_new_detail->status_team = 1;
+                $_new_detail->team_name=$request->team_name;
+                $_new_detail->save();
+                $message="Sửa thời gian thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Sửa thời gian thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            }
+        }
+       
+    }
     function userGetHistoriesSearch(){
             $user=auth()->user()->id;
             $list_histories= HistoriesSearch::where('id_user',$user)->get();

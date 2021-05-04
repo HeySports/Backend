@@ -57,6 +57,7 @@ Route::get('/match/getMatchHistory',[matchController::class,'getMatchHistory']);
 Route::post('/match/postMatch',[matchController::class,'postMatch']);    
 Route::delete('/match/deleteMatch/{id}', [matchController::class,'deleteMatch']);   
 Route::put('/match/putTimePlay/{id}', [matchController::class,'putTimePlay']); 
+Route::put('/match/joinTeamOpponent/{id}', [matchController::class,'putJoiningMatchOpponent']); 
 // Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   
 // //detail matches
 // Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
