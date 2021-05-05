@@ -18,7 +18,7 @@ class CreateTeamsTable extends Migration
             $table->string('name')->require();
             $table->string('description')->nullable();
             $table->string('address')->nullable();
-            $table->float('rating')->default(0);
+            $table->float('rating')->nullable();
             $table->timestamps();
         });
     }

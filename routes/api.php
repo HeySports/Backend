@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\authController;
 use App\Http\Controllers\User\profileController;
 use App\Http\Controllers\User\roleController;
+use App\Http\Controllers\User\teamController;
 use App\Http\Controllers\Match\matchController;
 use App\Http\Controllers\Match\detailMatchController;
 use App\Http\Controllers\Fields\fieldController;
@@ -88,6 +89,17 @@ Route::get('/field/getChildFieldsByField',[childFieldController::class,'getChild
 // Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
 // Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
 // Route::put('/notification/putNotification/{id}', [notificationController::class,'putNotification']); 
+
+//team
+
+Route::get('/team/getTeam/{id}',[teamController::class,'getTeam']); 
+Route::get('/team/getListTeam',[teamController::class,'getListTeam']); 
+Route::get('/team/getListTeamByUser/{idUser}',[teamController::class,'getListTeamByUser']); 
+Route::get('/team/getListUserByTeam/{idTeam}',[teamController::class,'getListUserByTeam']); 
+Route::post('/team/postTeam',[teamController::class,'postTeam']);    
+Route::delete('/team/deleteTeam/{id}', [teamController::class,'deleteTeam']);   
+Route::put('/team/putTeam/{id}', [teamController::class,'putTeam']); 
+
 Route::put('/notification/putStatusNotification/{id}', [notificationController::class,'putStatusNotification']); 
 // detail notification by id user
 Route::get('/notification/getListNotification',[notificationController::class,'getListNotification']); 

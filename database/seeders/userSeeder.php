@@ -28,7 +28,6 @@ class userSeeder extends Seeder
                 'phone_numbers' => $_phone[$i],
                 'address' => 'Son Tra, Da Nang',
                 'avatar' => '[]',
-                'list_team' => '[1,2]',
                 'age' => rand(10,60),
                 'matches_number' => rand(0,20),
                 'skill_rating' => rand(0,5),

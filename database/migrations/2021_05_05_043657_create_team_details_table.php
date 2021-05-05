@@ -19,6 +19,7 @@ class CreateTeamDetailsTable extends Migration
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_team');
             $table->foreign('id_team')->references('id')->on('teams')->onDelete('cascade');
+            $table->integer('isCaptain');
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class notificationSeeder extends Seeder
     {
         for ($i = 0; $i < 10; $i++){
             DB::table('notifications')->insert([
-                'type' => rand(1,2),
+                'type' => rand(0,1),
                 'id_match' => rand(1, 3),
                 'description' => 'Sản phẩm rất tốt có thể sử dụng !',
             ]);

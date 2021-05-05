@@ -19,7 +19,7 @@ class matchSeeder extends Seeder
     {
         $arr = ['5', '7', '11'];
         $arr_lose = ['5/5', '7/3', '6/4','0'];
-        $_name=['Phong 1','Phong 2','Phong 3','Phong 4','Phong 5','Phong 6','Phong 7','Phong 8','Phong 9','Phong 10'];
+        $_name=['210b21','210b2f','20sb21','210b32','320b21','110b21','1s0d21','10ds21','10ds01','10ds71'];
         for ($i = 0; $i < 10; $i++){
             $r = rand(0, 2);
             $r_lose = rand(0, 3);
