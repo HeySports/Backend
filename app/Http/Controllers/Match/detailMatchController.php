@@ -94,7 +94,6 @@ class detailMatchController extends Controller
        
     }
     public function postDetailMatch(REQUEST $request){
-        //`id_user`, `id_match`, `status_team`, `numbers_user_added`, `team_name`, `created_at`, `updated_at`
         $validator = Validator::make($request->all(), [
             'id_match' => 'required',
             'numbers_user_added' => 'required'

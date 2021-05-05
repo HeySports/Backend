@@ -62,8 +62,10 @@ Route::put('/match/joinTeamOpponent/{id}', [matchController::class,'putJoiningMa
 // //detail matches
 // Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
 // Route::get('/match/getDetailMatch/{id}',[detailMatchController::class,'getDetailMatch']); 
+
 Route::post('/match/postDetailMatch',[detailMatchController::class,'postDetailMatch']);    
-Route::delete('/match/deleteDetailMatch/{id}', [detailMatchController::class,'deleteDetailMatch']);   
+Route::delete('/match/deleteDetailMatch/{id}', [detailMatchController::class,'deleteDetailMatch']); 
+  
 // Route::put('/match/putDetailMatch/{id}', [detailMatchController::class,'putDetailMatch']); 
 
 Route::put('/match/putNumOfMember/{id}', [detailMatchController::class,'putNumOfMember']); 
