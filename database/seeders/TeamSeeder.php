@@ -16,12 +16,14 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        for ($i = 0; $i < 10; $i++){
+        $_arr =['Team A', 'Team B', 'Team C', 'Team D', 'Team E'];
+        $_address=['101B Lê Hữu Trác, Sơn Trà', 'Ông ích Kiêm, Hải Châu', 'Mỹ Khê 3, Sơn Trà', 'Tô Hiến Thành,Sơn Trà', 'Hải Châu','Sơn Trà'];
+
+        for ($i = 0; $i < 5; $i++){
             DB::table('teams')->insert([
-                'name' => $faker->company,
-                'address' => $faker->address,
-                'description' => $faker->realText($maxNbChars = 100, $indexSize = 2),
+                'name' => $_arr[$i],
+                'address' =>$_address[$i],
+                'description' => Str::random(50),
             ]);
         }
     }
