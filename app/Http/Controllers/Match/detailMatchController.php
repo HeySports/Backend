@@ -108,23 +108,18 @@ class detailMatchController extends Controller
             $team_name=$request->team_name;
             try {
                 $m = Matches::where('id',$id_match)->get();
-
+                $m = $m[0];
                 $_new=new DetailMatch();
                 $_new->id_user=$id_user;
                 $_new->id_match=$id_match;
-                if($m[0]->type==0){
-                    $_new->status_team=2;
+                if($m->type==0){
+                    $_new->status_team= 2;
                 }else{
-                    $_new->status_team=1;
+                    $_new->status_team= 1;
                 }
                 $_new->numbers_user_added=$numbers_user_added;
                 $_new->team_name=$team_name;
                 $_new->save();
-                if($m[0]->type == 0){
-                    $m = $m[0];
-                    $m->lock=1;
-                    $m->save();
-                }
                 $message="Taọ thành công !";
                 $response = array('message'=>$message,'error'=>null);
                 return  response()->json($response);

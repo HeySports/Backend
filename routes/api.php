@@ -60,7 +60,7 @@ Route::put('/match/putTimePlay/{id}', [matchController::class,'putTimePlay']);
 Route::put('/match/joinTeamOpponent/{id}', [matchController::class,'putJoiningMatchOpponent']); 
 // Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   
 // //detail matches
-// Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
+Route::get('/match/getDetailMatchByIdMatch/{id}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
 // Route::get('/match/getDetailMatch/{id}',[detailMatchController::class,'getDetailMatch']); 
 Route::post('/match/postDetailMatch',[detailMatchController::class,'postDetailMatch']);    
 Route::delete('/match/deleteDetailMatch/{id}', [detailMatchController::class,'deleteDetailMatch']);   
