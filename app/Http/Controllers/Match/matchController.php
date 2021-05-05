@@ -92,7 +92,7 @@ class matchController extends Controller
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[0]->id)
             ->where('detail_matches.status_team', '=', 0)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+            ->select('users.id','users.phone_numbers', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
             $sumA = 0;
