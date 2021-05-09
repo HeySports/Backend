@@ -460,7 +460,6 @@ class matchController extends Controller
                 $_new=new Matches();
                 $_new->id_field_play=$id_field_play;
                 $_new->id_user=auth()->user()->id;
-
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
                 $_new->password=$password;
@@ -473,7 +472,6 @@ class matchController extends Controller
                 $_new->type_field=$type_field;
                 $_new->id_child_field=$id_child_field;
                 $_new->save();
-
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
                 $_new_detail->id_match=$_new->id;

@@ -18,7 +18,7 @@ class childFieldController extends Controller
         //
     }
     public function getPriceByField($id_field,$type_field){
-       $price=Price_Field::where([['id_field','=',1],['type_field','=',5]])->get();
+       $price=Price_Field::where([['id_field','=',$id_field],['type_field','=',$type_field]])->get();
        return  response()->json($price);
     }
     public function getChildField($id)
