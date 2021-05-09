@@ -23,7 +23,7 @@ class childFieldController extends Controller
     }
     public function getChildField($id)
     {
-        $response =  ChildField::where('id',$id)->get();
+        $response =  ChildField::where('id_field',$id)->get();
         return  response()->json($response);
     }
     public function getChildFieldsByField()
