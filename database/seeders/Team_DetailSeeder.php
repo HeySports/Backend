@@ -13,17 +13,17 @@ class Team_DetailSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 5; $i++){
+        for ($i = 0; $i < 15; $i++){
             DB::table('team_details')->insert([
                 'id_user' => $i+1,
                 'id_team' =>$i+1,
                 'isCaptain' => 1,
             ]);
         }
-        for ($i = 5; $i < 10; $i++){
+        for ($i = 15; $i < 50; $i++){
             DB::table('team_details')->insert([
                 'id_user' => $i+1,
-                'id_team' =>$i-4,
+                'id_team' =>$i-10,
                 'isCaptain' => 0,
             ]);
         }

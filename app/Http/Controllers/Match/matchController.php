@@ -13,6 +13,7 @@ use Validator;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
+use App\Models\Field;
 class matchController extends Controller
 {
     /**
@@ -25,12 +26,19 @@ class matchController extends Controller
         $user = auth()->user();
         $response = [];
         $matches =  DB::table('matches')
-        ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-        ->where('detail_matches.id_user', '=', $user->id)
-        ->select('matches.id', 'fields.name as field', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->where('matches.time_start_play', '<', \DB::raw('NOW()'))
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
+            $childFieldPlay = DB::table('child_fields')
+            ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+            ->where('orders.id_match', '=', $matches[$i]->id)
+            ->get();
+            $fieldPlay= null;
+            if(count($childFieldPlay)>0){
+                $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+            }
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -39,13 +47,15 @@ class matchController extends Controller
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
+            $sumA = 0;
             $sum = 0;
             foreach($memberTeamA as $key=>$value){
             if(isset($value->matches_number))
-                $sum += $value->matches_number;
+                $sumA += $value->matches_number;
+                $sum += $value->numbers_user_added;
             }
             if(count($memberTeamA)>0){
-                $matches_number_teamA = $sum/count($memberTeamA);
+                $matches_number_teamA = $sumA/count($memberTeamA);
             }else{
                 $matches_number_teamA = 0;
             }
@@ -59,20 +69,21 @@ class matchController extends Controller
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
             ->get();
-            $sum = 0;
+            $sumB = 0;
+            
             foreach($memberTeamB as $key=>$value){
             if(isset($value->matches_number))
-                $sum += $value->matches_number;
+                $sumB += $value->matches_number;
+                $sum += $value->numbers_user_added;
             }
             if(count($memberTeamB)>0){
-                $matches_number_teamB = $sum/count($memberTeamB);
+                $matches_number_teamB = $sumB/count($memberTeamB);
             }else{
                 $matches_number_teamB = 0;
             }
             
-            $matches_number_teamB = $sum/count($memberTeamB);
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'team_a'=>$teamA,'team_b'=>$teamB));
+            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
         }
         return  response()->json($response);
     }
@@ -81,12 +92,18 @@ class matchController extends Controller
     {
         $response = [];
         $matches =  DB::table('matches')
-            ->join('fields', 'fields.id', '=', 'matches.id_field_play')
-            ->join('child_fields','child_fields.id','=','matches.id_child_field')
-            ->select('matches.id','matches.price','matches.id_user','child_fields.name_field', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-            , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-            ->where('matches.id', '=', $id)
-            ->get(); 
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->where('matches.id', '=', $id)
+        ->get();
+        $childFieldPlay = DB::table('child_fields')
+        ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+        ->where('orders.id_match', '=', $matches[0]->id)
+        ->get();
+        $fieldPlay= null;
+        if(count($childFieldPlay)>0){
+            $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+        }
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -130,25 +147,26 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[0],'missing_members'=>$matches[0]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
-        
-        
+            array_push($response,  array('match'=>$matches[0],'field_play'=> $fieldPlay,'missing_members'=>$matches[0]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
         return  response()->json($response[0]);
-    }
-    public function getAll()
-    {
-        return Matches::all();
     }
     public function getListMatchFindMember(){
         $response = [];
         $matches =  DB::table('matches')
-        ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('type', '=', 0)
         ->where('lock', '=', 0)
-        ->select('matches.id', 'matches.id_user','fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
+            $childFieldPlay = DB::table('child_fields')
+            ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+            ->where('orders.id_match', '=', $matches[$i]->id)
+            ->get();
+            $fieldPlay= null;
+            if(count($childFieldPlay)>0){
+                $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+            }
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -193,20 +211,27 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
         }
         return  response()->json($response);
     }
     public function getListMatchFindOpponent(){
         $response = [];
         $matches =  DB::table('matches')
-        ->join('fields', 'fields.id', '=', 'matches.id_field_play')
         ->where('type', '=', 1)
         ->where('lock', '=', 0)
-        ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-        , 'matches.lose_pay', 'matches.type', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
+            $childFieldPlay = DB::table('child_fields')
+            ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+            ->where('orders.id_match', '=', $matches[$i]->id)
+            ->get();
+            $fieldPlay= null;
+            if(count($childFieldPlay)>0){
+                $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+            }
             $memberTeamA = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -247,7 +272,7 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'team_a'=>$teamA,'team_b'=>$teamB));
+            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
         }
         return  response()->json($response);
     }
@@ -263,19 +288,25 @@ class matchController extends Controller
             $matches =  Matches::where('name_room','=',$request->txtSearch)->get();
             if(count($matches)<=0){
                 $matches =DB::table('matches')
-                ->join('fields', 'matches.id_field_play', '=', 'fields.id')
                 ->where('matches.description', 'like', '%' . $request->txtSearch . '%')
                 ->orWhere('matches.name_room', 'like', '%' . $request->txtSearch . '%')
-                ->orWhere('fields.name', 'like', '%' . $request->txtSearch . '%')
-                ->orWhere('fields.address', 'like', '%' . $request->txtSearch . '%')
-                ->where('lock', '=', 0)
-                ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+                ->orWhere('matches.type_field', 'like', '%' . $request->txtSearch . '%')
+                ->orWhere('matches.address', 'like', '%' . $request->txtSearch . '%')
+                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
                 ->get();
             
             }
     
             for ($i=0; $i< count($matches); $i++){
+                $childFieldPlay = DB::table('child_fields')
+                ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+                ->where('orders.id_match', '=', $matches[$i]->id)
+                ->get();
+                $fieldPlay= null;
+                if(count($childFieldPlay)>0){
+                    $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+                }
                 $memberTeamA = DB::table('detail_matches')
                 ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
                 ->join('users', 'detail_matches.id_user', '=', 'users.id')
@@ -320,7 +351,7 @@ class matchController extends Controller
                 }
                 
                 $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-                array_push($response,  array('match'=>$matches[$i],'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
             }
             return  response()->json($response);
          }
@@ -340,25 +371,29 @@ class matchController extends Controller
             $matches =  [];
             
                 $matches =DB::table('matches')
-                ->join('fields', 'matches.id_field_play', '=', 'fields.id')
-
-              
                 ->whereDate('matches.time_start_play', $request->time_play)
-                ->where('lock', '=', 0)
-                ->select('matches.id', 'fields.name as field', 'fields.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
                 ->get();
            
     
             for ($i=0; $i< count($matches); $i++){
+                $childFieldPlay = DB::table('child_fields')
+                ->join('orders', 'child_fields.id', '=', 'orders.id_child_field')
+                ->where('orders.id_match', '=', $matches[$i]->id)
+                ->get();
+                $fieldPlay= null;
+                if(count($childFieldPlay)>0){
+                    $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
+                }
                 $memberTeamA = DB::table('detail_matches')
-            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
-            ->join('users', 'detail_matches.id_user', '=', 'users.id')
-            ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 0)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
-            , 'detail_matches.team_name')
-            ->get();
+                ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
+                ->join('users', 'detail_matches.id_user', '=', 'users.id')
+                ->where('detail_matches.id_match', '=', $matches[$i]->id)
+                ->where('detail_matches.status_team', '=', 0)
+                ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+                , 'detail_matches.team_name')
+                ->get();
             $sumA = 0;
             $sum = 0;
             foreach($memberTeamA as $key=>$value){
@@ -395,7 +430,7 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
             }
             return  response()->json($response);
          }
@@ -427,8 +462,6 @@ class matchController extends Controller
             'lose_pay' => 'required',
             'method_pay' => 'required',
             'type_field' => 'required',
-            'id_field_play' => 'required',
-            'id_child_field'=>'required',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
         if ($validator->fails()) {
@@ -437,9 +470,8 @@ class matchController extends Controller
         elseif( count($_checkName) > 0){
             $message="Taọ trận thất bại !";
             $e="Tên Phòng đã tồn Tại !";
-                $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
-            
+            $response = array('message'=>$message,'error'=>$e);
+            return  response()->json($response);   
         }
         else{
             $id_user=auth()->user()->id;
@@ -458,9 +490,7 @@ class matchController extends Controller
             //
             try {
                 $_new=new Matches();
-                $_new->id_field_play=$id_field_play;
                 $_new->id_user=auth()->user()->id;
-
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
                 $_new->password=$password;
@@ -471,7 +501,6 @@ class matchController extends Controller
                 $_new->type=$type;
                 $_new->price=$price;
                 $_new->type_field=$type_field;
-                $_new->id_child_field=$id_child_field;
                 $_new->save();
 
                 $_new_detail=new DetailMatch();
@@ -495,7 +524,6 @@ class matchController extends Controller
     }
     public function putMatch(REQUEST $request, $id){
         //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
-        $id_field_play=$request->id_field_play;
         $name_room=$request->name_room;
         $lock= $request->lock;
         $password=$request->password;
@@ -505,7 +533,6 @@ class matchController extends Controller
         try {
             $matches =  Matches::where('id',$id)->get();
             $_new= $matches[0];
-            $_new->id_field_play=$id_field_play;
             $_new->name_room=$name_room;
             $_new->lock=$lock;
             $_new->password=$password;
