@@ -41,19 +41,26 @@ class authController extends Controller
             $arr = array("message" => $validator->errors()->first(), "data" =>$input);
             return response()->json($arr,400);
         }else{
-            $_newUser=new User();
-            $_newUser->id_roles=$input['id_roles'];
-            $_newUser->full_name=$input['full_name'];
-            $_newUser->phone_numbers=$input['phone_numbers'];
-            $_newUser->email=$input['email'];
-            $_newUser->age=$input['age'];
-            $_newUser->description=$request->description;
-            $_newUser->password=Hash::make($input['password']);
-            $_newUser->address=$request->address;
-            $_newUser->save();
-            $message="Đăng kí tài khoản thành công !";
-            $response = array('message'=>$message,'data'=>$input, 'error'=>null);
-            return  response()->json($response, 200);
+            try{
+                $_newUser=new User();
+                $_newUser->id_roles=$input['id_roles'];
+                $_newUser->full_name=$input['full_name'];
+                $_newUser->phone_numbers=$input['phone_numbers'];
+                $_newUser->email=$input['email'];
+                $_newUser->age=$input['age'];
+                $_newUser->description=$request->description;
+                $_newUser->password=Hash::make($input['password']);
+                $_newUser->address=$request->address;
+                $_newUser->save();
+                $message="Đăng kí tài khoản thành công !";
+                $response = array('message'=>$message,'data'=>$input, 'error'=>null);
+                return  response()->json($response, 200);
+            }catch(Exception $e){
+                $message="Đăng kí tài khoản thất bại !";
+                $response = array('message'=>$message,'data'=>null, 'error'=>$e);
+                return  response()->json($response);
+            }
+            
         }
      }
      // function login
