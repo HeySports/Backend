@@ -30,7 +30,10 @@ class authController extends Controller
             'full_name'=> "required|min:8|string",
             'phone_numbers'=>"required|min:10|max:11",
             'password'=>"required|string|min:6",
-            'confirm_password'=>"required|same:password"
+            'confirm_password'=>"required|same:password",
+            'address'=>"required|string",
+            'email'=>"required",
+            'age'=>"required"
         );
         $checkPhone=User::where('phone_numbers',$input['phone_numbers'])->get();
         $validator = Validator::make($input, $rules);
@@ -42,8 +45,11 @@ class authController extends Controller
             $_newUser->id_roles=$input['id_roles'];
             $_newUser->full_name=$input['full_name'];
             $_newUser->phone_numbers=$input['phone_numbers'];
+            $_newUser->email=$input['email'];
+            $_newUser->age=$input['age'];
+            $_newUser->description=$request->description;
             $_newUser->password=Hash::make($input['password']);
-            $_newUser->address="Da Nang";
+            $_newUser->address=$request->address;
             $_newUser->save();
             $message="Đăng kí tài khoản thành công !";
             $response = array('message'=>$message,'data'=>$input, 'error'=>null);

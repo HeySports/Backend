@@ -17,11 +17,11 @@ class detail_notificationSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++){
+        for ($i = 0; $i < 200; $i++){
             DB::table('detail_notifications')->insert([
-                'id_user' => rand(1, 3),
-                'id_notification' => rand(1, 3),
-                'status' => rand(true, false),
+                'id_user' => rand(1, 30),
+                'id_notification' => rand(1, 20),
+                'status' => rand(0,2),
             ]);
         }
     }

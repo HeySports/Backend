@@ -17,10 +17,10 @@ class match_commentSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++){
+        for ($i = 0; $i < 200; $i++){
             DB::table('match_comments')->insert([
-                'id_user' => rand(1, 3),
-                'id_match' => rand(1, 3),
+                'id_user' => rand(1,99),
+                'id_match' => rand(1, 50),
                 'description' =>('Trận đấu rất hay có nhiều cầu thủ giỏi thái độ tích cực'),
             ]);
         }

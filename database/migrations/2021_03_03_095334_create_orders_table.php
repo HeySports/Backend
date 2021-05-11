@@ -15,7 +15,8 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_match')->nullable();
+            $table->unsignedBigInteger('id_match')->nullable();
+            $table->foreign('id_match')->references('id')->on('matches')->onDelete('cascade');
             $table->unsignedBigInteger('id_child_field');
             $table->foreign('id_child_field')->references('id')->on('child_fields')->onDelete('cascade');
             $table->unsignedBigInteger('id_user');

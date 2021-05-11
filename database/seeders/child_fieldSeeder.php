@@ -21,13 +21,16 @@ class child_fieldSeeder extends Seeder
         $_name=['N1','N2','N3','N4','N5', 'N6'];
         for($i = 0; $i < 6; $i++){
             $r = rand(0,2);
-            DB::table('child_fields')->insert([
-                'id_field' => rand(1, 3),
-                'name_field' =>$_name[$i],
-                'type' => $arr[$r],
-                'status' => rand(0, 1),
-                'description' =>  Str::random(50),
-            ]);
+            for($j = 0; $j < count($_name); $j++){
+                DB::table('child_fields')->insert([
+                    'id_field' => $i+1,
+                    'name_field' =>$_name[$j],
+                    'type' => $arr[$r],
+                    'status' => rand(0, 1),
+                    'description' =>  Str::random(50),
+                ]);
+            }
+            
         }
     }
 }

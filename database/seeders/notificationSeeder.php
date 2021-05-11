@@ -16,10 +16,10 @@ class notificationSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++){
+        for ($i = 0; $i < 50; $i++){
             DB::table('notifications')->insert([
                 'type' => rand(0,1),
-                'id_match' => rand(1, 3),
+                'id_match' => rand(1, 50),
                 'description' => 'Sản phẩm rất tốt có thể sử dụng !',
             ]);
         }

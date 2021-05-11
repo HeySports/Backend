@@ -24,6 +24,7 @@ class CreateFieldsTable extends Migration
             $table->string('address')->unique()->require();
             $table->string('email_field')->require()->unique();
             $table->string('phone_numbers')->require()->unique();
+            $table->string('credit')->nullable();
             $table->boolean('status')->nullable();
             $table->integer('quantities_field')->nullable();
             $table->timestamps();
