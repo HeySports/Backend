@@ -44,7 +44,7 @@ class orderSeeder extends Seeder
                 'id_match' => rand(25, 50),
                 'id_child_field' => rand(10,30),
                 'id_user' => rand(20, 90),
-                'status' => rand(1,2),
+                'status' => rand(0,1),
                 'method_pay' => rand(0,2),
                 'time_start' => $time_start,
                 'time_end' => Carbon::parse($time_start)->addHour(),
