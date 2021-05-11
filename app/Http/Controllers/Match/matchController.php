@@ -439,7 +439,6 @@ class matchController extends Controller
             $e="Tên Phòng đã tồn Tại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response);
-            
         }
         else{
             $id_user=auth()->user()->id;
@@ -481,11 +480,11 @@ class matchController extends Controller
                 }
                 $_new_detail->team_name=$request->team_name;
                 $_new_detail->save();
-                $message="Taọ trận thành công !";
+                $message="Tạo trận thành công !";
                 $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
                 return  response()->json($response);
             } catch (Exception $e) {
-                $message="Taọ trận thất bại !";
+                $message="Tạo trận thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response);
             }
