@@ -455,7 +455,7 @@ class matchController extends Controller
           {
             $message="Xóa trận thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
-            return  response()->json($response);
+            return  response()->json($response, 400);
           }
         $message="Xóa trận thành công !";
         $response = array('message'=>$message,'error'=>null);
@@ -479,7 +479,7 @@ class matchController extends Controller
             $message="Taọ trận thất bại !";
             $e="Tên Phòng đã tồn Tại !";
             $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);   
+            return  response()->json($response, 400);   
         }
         else{
             $id_user=auth()->user()->id;
@@ -525,7 +525,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Tạo trận thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
     }
@@ -553,7 +553,7 @@ class matchController extends Controller
         } catch (Exception $e) {
             $message="Sửa trận thất bại !";
             $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
+            return  response()->json($response, 400);
         }
     }
     public function putTimePlay(REQUEST $request, $id){
@@ -577,7 +577,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Sửa thời gian thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
        
@@ -611,7 +611,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Sửa thời gian thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
        
