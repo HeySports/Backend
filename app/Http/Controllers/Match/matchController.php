@@ -211,7 +211,10 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            if(count($memberTeamA)>0){
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            }
+            
         }
         return  response()->json($response);
     }
@@ -222,6 +225,7 @@ class matchController extends Controller
         ->where('lock', '=', 0)
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->orderBy('created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -272,7 +276,9 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
+            if(count($memberTeamA)>0){
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
+            }
         }
         return  response()->json($response);
     }
@@ -294,6 +300,7 @@ class matchController extends Controller
                 ->orWhere('matches.address', 'like', '%' . $request->txtSearch . '%')
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+                ->orderBy('created_at', 'desc')
                 ->get();
             
             }
@@ -374,6 +381,7 @@ class matchController extends Controller
                 ->whereDate('matches.time_start_play', $request->time_play)
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+                ->orderBy('created_at', 'desc')
                 ->get();
            
     
@@ -415,6 +423,7 @@ class matchController extends Controller
             ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
+   
             ->get();
             $sumB = 0;
             
