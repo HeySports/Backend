@@ -460,7 +460,6 @@ class matchController extends Controller
             'time_start_play' => 'required',
             'price' => 'required',
             'lose_pay' => 'required',
-            'method_pay' => 'required',
             'type_field' => 'required',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
@@ -505,8 +504,8 @@ class matchController extends Controller
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
                 $_new_detail->id_match=$_new->id;
-                $_new_detail->status_team = 1;
-                if($type === 1){
+                $_new_detail->status_team = 0;
+                if($type === 0){
                     $_new_detail->numbers_user_added=$request->numbers_user_added;
                 }
                 $_new_detail->team_name=$request->team_name;
