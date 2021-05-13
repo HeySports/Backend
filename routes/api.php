@@ -87,7 +87,7 @@ Route::post('/field/postChildField',[childFieldController::class,'postChildField
 Route::delete('/field/deleteChildField/{id}', [childFieldController::class,'deleteChildField']);   
 Route::put('/field/putChildField/{id}', [childFieldController::class,'putChildField']); 
 // //notification
-
+Route::get('/notification/getListNotification',[notificationController::class,'getListNotification']); 
 Route::get('/notification/getNotification/{id_user}',[notificationController::class,'getNotification']); 
 Route::post('/notification/postNotification',[notificationController::class,'postNotification']);    
 Route::delete('/notification/deleteNotification/{id}', [notificationController::class,'deleteNotification']);   
