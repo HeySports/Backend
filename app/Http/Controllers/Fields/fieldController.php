@@ -88,6 +88,7 @@ class fieldController extends Controller
             $_new->email_field=$email_field;
             $_new->phone_numbers=$phone_numbers;
             $_new->status=$status;
+            $_new->credit=$credit;
             $_new->quantities_field=$quantities_field;
             $_new->save();
             $message="Taọ sân thành công !";
@@ -122,6 +123,7 @@ class fieldController extends Controller
             $_new->email_field=$email_field;
             $_new->phone_numbers=$phone_numbers;
             $_new->status=$status;
+            $_new->credit=$credit;
             $_new->quantities_field=$quantities_field;
             $_new->save();
             $message="Sửa sân thành công !";

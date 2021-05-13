@@ -211,7 +211,10 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            if(count($memberTeamA)>0){
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+            }
+            
         }
         return  response()->json($response);
     }
@@ -222,6 +225,7 @@ class matchController extends Controller
         ->where('lock', '=', 0)
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->orderBy('created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -272,7 +276,9 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
+            if(count($memberTeamA)>0){
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
+            }
         }
         return  response()->json($response);
     }
@@ -294,6 +300,7 @@ class matchController extends Controller
                 ->orWhere('matches.address', 'like', '%' . $request->txtSearch . '%')
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+                ->orderBy('created_at', 'desc')
                 ->get();
             
             }
@@ -374,6 +381,7 @@ class matchController extends Controller
                 ->whereDate('matches.time_start_play', $request->time_play)
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+                ->orderBy('created_at', 'desc')
                 ->get();
            
     
@@ -415,6 +423,7 @@ class matchController extends Controller
             ->where('detail_matches.status_team', '=', 1)
             ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
             , 'detail_matches.team_name')
+   
             ->get();
             $sumB = 0;
             
@@ -446,7 +455,7 @@ class matchController extends Controller
           {
             $message="Xóa trận thất bại !";
             $response = array('message'=>$message,'error'=>'Lỗi');
-            return  response()->json($response);
+            return  response()->json($response, 400);
           }
         $message="Xóa trận thành công !";
         $response = array('message'=>$message,'error'=>null);
@@ -460,7 +469,6 @@ class matchController extends Controller
             'time_start_play' => 'required',
             'price' => 'required',
             'lose_pay' => 'required',
-            'method_pay' => 'required',
             'type_field' => 'required',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
@@ -471,7 +479,7 @@ class matchController extends Controller
             $message="Taọ trận thất bại !";
             $e="Tên Phòng đã tồn Tại !";
             $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);   
+            return  response()->json($response, 400);   
         }
         else{
             $id_user=auth()->user()->id;
@@ -505,8 +513,8 @@ class matchController extends Controller
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
                 $_new_detail->id_match=$_new->id;
-                $_new_detail->status_team = 1;
-                if($type === 1){
+                $_new_detail->status_team = 0;
+                if($type === 0){
                     $_new_detail->numbers_user_added=$request->numbers_user_added;
                 }
                 $_new_detail->team_name=$request->team_name;
@@ -517,7 +525,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Tạo trận thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
     }
@@ -545,7 +553,7 @@ class matchController extends Controller
         } catch (Exception $e) {
             $message="Sửa trận thất bại !";
             $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
+            return  response()->json($response, 400);
         }
     }
     public function putTimePlay(REQUEST $request, $id){
@@ -569,7 +577,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Sửa thời gian thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
        
@@ -603,7 +611,7 @@ class matchController extends Controller
             } catch (Exception $e) {
                 $message="Sửa thời gian thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
         }
        

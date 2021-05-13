@@ -12,8 +12,36 @@ class profileController extends Controller
     function getProfile(){
         return response()->json(auth()->user());
      }
+     function checkPhoneNumber($phone){
+        return response()->json(User::where('phone_numbers', $phone)->get());
+     }
+     function resetPassword(REQUEST $request){
+        $input =$request->all();
+        $rules = array(
+            'phone_numbers' => 'required|min:10',
+            'password'=>"required|string|min:6",
+            'confirm_password'=>"required|same:password",
+        );
+        $validator = Validator::make($input, $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(),400);
+        }else{
+            $user = User::where('phone_numbers', $request->phone_numbers)->get();
+            if(count($user)> 0){
+                $user = $user[0];
+                $user->password = Hash::make($request->password);
+                $user->save();
+                $message= "Thay đổi mật khẩu thành công";
+                $response=['message'=>$message, 'error'=>null, 'data'=>$user];
+                return response()->json($response, 200);
+            }
+            $message= "Thay đổi mật khẩu thất bại";
+            $response=['message'=>$message, 'error'=>'Not found', 'data'=>null];
+            return response()->json($response, 404);
+        }
+     }
      // get all user
-     function getAllUser(){
+    function getAllUser(){
         return response()->json(User::all(), 200);
     }
     // user change password

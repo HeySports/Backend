@@ -42,6 +42,7 @@ class matchSeeder extends Seeder
                 'description' => 'San bon tôt có thể chơi lâu dài, chủ thì tích cực',
                 'price'=> rand(200000,500000),
                 'type' =>rand(0, 1),
+                'created_at' => $time_start
             ]);
         }
         for ($i = 50; $i < 100; $i++){
@@ -65,6 +66,7 @@ class matchSeeder extends Seeder
                 'description' => 'San bon tôt có thể chơi lâu dài, chủ thì tích cực',
                 'price'=> rand(200000,500000),
                 'type' =>rand(0, 1),
+                'created_at' => $time_start
             ]);
         }
     }
