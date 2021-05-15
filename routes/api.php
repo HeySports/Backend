@@ -133,4 +133,4 @@ Route::get('/order/getOrder/{id}',[orderController::class,'getOrder']);
 Route::post('/order/postOrder',[orderController::class,'postOrder']); 
 Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']); 
 // get Price
-Route::get('/match/price/{id}/field/by/{type_field}',[childFieldController::class,'getPriceByField']);
+Route::get('/match/price/{id}/field/byType/{type_field}/and/byTime/{time}',[childFieldController::class,'getPriceByField']);

@@ -19,7 +19,6 @@ class price_fieldSeeder extends Seeder
     {
        
         $arr = [5, 7, 11];
-       
         for($j=0; $j< count($arr); $j++){
             for ($i = 0; $i < 6; $i++){
                 $fixed_price = 200000;
@@ -45,42 +44,41 @@ class price_fieldSeeder extends Seeder
                     DB::table('price_fields')->insert([
                         'id_field' => $i+1,
                         'type_field' => $arr[$j],
-                        'time_start' =>  '2015-12-31 05:00:00',
-                        'time_end' =>  '2015-12-31 07:00:00',
+                        'time_start' =>  '05:00:00',
+                        'time_end' =>  '07:00:00',
                         'price'=> $fixed_price,
                     ]);
                     DB::table('price_fields')->insert([
                         'id_field' => $i+1,
                         'type_field' => $arr[$j],
-                        'time_start' =>  '2015-12-31 07:00:00',
-                        'time_end' =>  '2015-12-31 09:00:00',
+                        'time_start' =>  '07:00:00',
+                        'time_end' =>  '09:00:00',
                         'price'=>  $fixed_price,
                     ]);
                     DB::table('price_fields')->insert([
                         'id_field' => $i+1,
                         'type_field' => $arr[$j],
-                        'time_start' =>  '2015-12-31 09:00:00',
-                        'time_end' =>  '2015-12-31 15:00:00',
+                        'time_start' =>  '09:00:00',
+                        'time_end' =>  '15:00:00',
                         'price'=>  $fixed_price,
                     ]);
                     DB::table('price_fields')->insert([
                         'id_field' => $i+1,
                         'type_field' => $arr[$j],
-                        'time_start' =>  '2015-12-31 15:00:00',
-                        'time_end' =>  '2015-12-31 18:00:00',
+                        'time_start' =>  '15:00:00',
+                        'time_end' =>  '18:00:00',
                         'price'=>  $fixed_price,
                     ]);
                     DB::table('price_fields')->insert([
                         'id_field' => $i+1,
                         'type_field' => $arr[$j],
-                        'time_start' =>  '2015-12-31 18:00:00',
-                        'time_end' =>  '2015-12-31 21:00:00',
+                        'time_start' =>  '18:00:00',
+                        'time_end' =>  '21:00:00',
                         'price'=>  $fixed_price,
                     ]);
                 
             }
         }
-        
     }
     
 }
