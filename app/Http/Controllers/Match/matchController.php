@@ -155,7 +155,7 @@ class matchController extends Controller
         $matches =  DB::table('matches')
         ->where('type', '=', 0)
         ->where('lock', '=', 0)
-        ->select('matches.id','matches.name_field' 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id','matches.name_field' ,'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
