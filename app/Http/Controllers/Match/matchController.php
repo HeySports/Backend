@@ -155,7 +155,7 @@ class matchController extends Controller
         $matches =  DB::table('matches')
         ->where('type', '=', 0)
         ->where('lock', '=', 0)
-        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id','matches.name_field' 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -224,7 +224,7 @@ class matchController extends Controller
         ->where('type', '=', 1)
         ->where('lock', '=', 0)
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        , 'matches.lose_pay','matches.name_field', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->orderBy('created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -470,6 +470,7 @@ class matchController extends Controller
             'price' => 'required',
             'lose_pay' => 'required',
             'type_field' => 'required',
+            "name_field"=>'required',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
         if ($validator->fails()) {
@@ -485,6 +486,7 @@ class matchController extends Controller
             $id_user=auth()->user()->id;
             $id_field_play=$request->id_field_play;
             $name_room=$request->name_room;
+            $name_field=$request->name_field;
             $lock= $request->lock;
             $password=$request->password;
             $time_start_play=$request->time_start_play;
@@ -495,7 +497,7 @@ class matchController extends Controller
             $price=$request->price;
             $type_field=$request->type_field;
             $id_child_field= $request->id_child_field;
-            //
+ 
             try {
                 $_new=new Matches();
                 $_new->id_user=auth()->user()->id;

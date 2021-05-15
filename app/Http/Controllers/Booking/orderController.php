@@ -98,7 +98,6 @@ class orderController extends Controller
     }
     public function putOrder(REQUEST $request, $id){
        //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
-      
        $validator = Validator::make($request->all(), [
         'id_child_field' => 'required',
         'time_start' => 'required',
