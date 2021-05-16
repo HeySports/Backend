@@ -24,7 +24,8 @@ class matchController extends Controller
     function getLastMatch(){
           $_match = Matches::orderBy ('id','DESC')->limit(1)->get();
           $_idMatch = $_match[0]->id +1;
-          return response()->json($_idMatch);
+          $_response =array('id_match'=>$_idMatch);
+          return response()->json($_response);
     }
     public function getMatchHistory()
     {
