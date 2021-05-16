@@ -134,3 +134,4 @@ Route::post('/order/postOrder',[orderController::class,'postOrder']);
 Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']); 
 // get Price
 Route::get('/match/price/{id}/field/byType/{type_field}/and/byTime/{time}',[childFieldController::class,'getPriceByField']);
+Route::get('/match/lastMatch', [matchController::class,'getLastMatch']);

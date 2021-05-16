@@ -64,7 +64,6 @@ class orderController extends Controller
     }
     public function postOrder(REQUEST $request){
         //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
-      
         $validator = Validator::make($request->all(), [
             'id_child_field' => 'required',
             'time_start' => 'required',
@@ -74,7 +73,6 @@ class orderController extends Controller
          if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
          }else{
-
             try {
                 $_new=new Order();
                 $_new->id_match=$request->id_match;
@@ -107,7 +105,6 @@ class orderController extends Controller
      if ($validator->fails()) {
         return response()->json($validator->errors(), 422);
      }else{
-
         try {
             $_new=Order::where('id', $id)->get();
             $_new= $_new[0];

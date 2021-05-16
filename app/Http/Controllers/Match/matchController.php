@@ -18,9 +18,14 @@ class matchController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     *SELECT * FROM Table ORDER BY ID DESC LIMIT 1
      * @return \Illuminate\Http\Response
      */
+    function getLastMatch(){
+          $_match = Matches::orderBy ('id','DESC')->limit(1)->get();
+          $_idMatch = $_match[0]->id +1;
+          return response()->json($_idMatch);
+    }
     public function getMatchHistory()
     {
         $user = auth()->user();
