@@ -84,7 +84,7 @@ class orderController extends Controller
                 $_new->status = 0;
                 $_new->save();
                 $message="Taọ sân thành công !"; 
-                $response = array('message'=>$message,'error'=>null , 'orderInfo' => Order::latest()->first());
+                $response = array('message'=>$message,'error'=>null , 'orderInfo' => $request->all());
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Taọ sân thất bại !";
