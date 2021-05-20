@@ -475,7 +475,7 @@ class matchController extends Controller
             'price' => 'required',
             'lose_pay' => 'required',
             'type_field' => 'required',
-            "name_field"=>'required',
+            "field_name"=>'required',
         ]);
         $_checkName= Matches::where('name_room',$request->name_room)->get();
         if ($validator->fails()) {
@@ -491,7 +491,7 @@ class matchController extends Controller
             $id_user=auth()->user()->id;
             $id_field_play=$request->id_field_play;
             $name_room=$request->name_room;
-            $name_field=$request->name_field;
+            $field_name=$request->field_name;
             $lock= $request->lock;
             $password=$request->password;
             $time_start_play=$request->time_start_play;
