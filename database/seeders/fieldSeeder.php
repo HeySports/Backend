@@ -30,6 +30,8 @@ class fieldSeeder extends Seeder
                 'rating_number'=>rand(1, 5),
                 'list_image' => '[]',
                 'address' => $_address[$i],
+                'longitude'=>10.8311221,
+                'latitude'=> 106.6185755,
                 'email_field' => $_email[$i],
                 'phone_numbers' => $_phone[$i],
                 'credit' => $credit[$i],

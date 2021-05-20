@@ -33,7 +33,7 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->where('matches.time_start_play', '<', \DB::raw('NOW()'))
-        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -98,7 +98,7 @@ class matchController extends Controller
     {
         $response = [];
         $matches =  DB::table('matches')
-        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->where('matches.id', '=', $id)
         ->get();
@@ -161,7 +161,7 @@ class matchController extends Controller
         $matches =  DB::table('matches')
         ->where('type', '=', 0)
         ->where('lock', '=', 0)
-        ->select('matches.id','matches.name_field' ,'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -228,9 +228,8 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->where('type', '=', 1)
-        ->where('lock', '=', 0)
-        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
-        , 'matches.lose_pay','matches.name_field', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+        , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
         ->orderBy('created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
@@ -282,7 +281,7 @@ class matchController extends Controller
             }
             
             $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            if(count($memberTeamA)>0){
+            if(count($memberTeamA)>0 && count($memberTeamB)===0){
                 array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay,'team_a'=>$teamA,'team_b'=>$teamB));
             }
         }
@@ -304,7 +303,7 @@ class matchController extends Controller
                 ->orWhere('matches.name_room', 'like', '%' . $request->txtSearch . '%')
                 ->orWhere('matches.type_field', 'like', '%' . $request->txtSearch . '%')
                 ->orWhere('matches.address', 'like', '%' . $request->txtSearch . '%')
-                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -385,7 +384,7 @@ class matchController extends Controller
             
                 $matches =DB::table('matches')
                 ->whereDate('matches.time_start_play', $request->time_play)
-                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
+                ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -483,7 +482,7 @@ class matchController extends Controller
             return response()->json($validator->errors(), 422);
         }
         elseif( count($_checkName) > 0){
-            $message="Taọ trận thất bại !";
+            $message="Tạo trận thất bại !";
             $e="Tên Phòng đã tồn Tại !";
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response, 400);   
@@ -510,6 +509,7 @@ class matchController extends Controller
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
                 $_new->password=$password;
+                $_new->field_name=$request->field_name;
                 $_new->time_start_play=$time_start_play;
                 $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
                 $_new->description=$description;
@@ -549,6 +549,7 @@ class matchController extends Controller
             $matches =  Matches::where('id',$id)->get();
             $_new= $matches[0];
             $_new->name_room=$name_room;
+            $_new->field_name=$field_name;
             $_new->lock=$lock;
             $_new->password=$password;
             $_new->time_start_play=$time_start_play;
