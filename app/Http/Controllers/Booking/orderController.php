@@ -83,11 +83,11 @@ class orderController extends Controller
                 $_new->method_pay=$request->method_pay;
                 $_new->status = 0;
                 $_new->save();
-                $message="Taọ sân thành công !"; 
+                $message="Đặt sân thành công !"; 
                 $response = array('message'=>$message,'error'=>null , 'orderInfo' => $request->all());
                 return  response()->json($response);
             } catch (Exception $e) {
-                $message="Taọ sân thất bại !";
+                $message="Đặt sân thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response);
             }
