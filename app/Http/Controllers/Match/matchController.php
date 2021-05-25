@@ -501,6 +501,7 @@ class matchController extends Controller
             $type=$request->type;
             $price=$request->price;
             $type_field=$request->type_field;
+            $address=$request->address;
             $id_child_field= $request->id_child_field;
  
             try {
@@ -517,6 +518,8 @@ class matchController extends Controller
                 $_new->type=$type;
                 $_new->price=$price;
                 $_new->type_field=$type_field;
+                $address=$request->address;
+
                 $_new->save();
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
