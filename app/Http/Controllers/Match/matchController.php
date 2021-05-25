@@ -193,7 +193,6 @@ class matchController extends Controller
             }else{
                 $matches_number_teamA = 0;
             }
-            
             $teamA = array('matches_number'=>$matches_number_teamA, 'members'=>$memberTeamA);
             $memberTeamB = DB::table('detail_matches')
             ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
@@ -519,7 +518,6 @@ class matchController extends Controller
                 $_new->price=$price;
                 $_new->type_field=$type_field;
                 $address=$request->address;
-
                 $_new->save();
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
@@ -609,19 +607,17 @@ class matchController extends Controller
                 $_new= $matches[0];
                 $_new->status = $status;
                 $_new->save();
-
-
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
                 $_new_detail->id_match=$_new->id;
                 $_new_detail->status_team = 1;
                 $_new_detail->team_name=$request->team_name;
                 $_new_detail->save();
-                $message="Sửa thời gian thành công !";
+                $message="Bạn đã nhận kèo thành công!";
                 $response = array('message'=>$message,'error'=>null);
                 return  response()->json($response);
             } catch (Exception $e) {
-                $message="Sửa thời gian thất bại !";
+                $message="Bạn đã nhận kèo thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response, 400);
             }
