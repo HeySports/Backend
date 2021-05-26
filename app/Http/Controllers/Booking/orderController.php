@@ -144,7 +144,7 @@ class orderController extends Controller
          } catch (Exception $e) {
              $message="Sua sân thất bại !";
              $response = array('message'=>$message,'error'=>$e);
-             return  response()->json($response);
+             return  response()->json($response, 400);
          }
       }
      }
@@ -166,7 +166,7 @@ class orderController extends Controller
          } catch (Exception $e) {
              $message="Sua sân thất bại !";
              $response = array('message'=>$message,'error'=>$e);
-             return  response()->json($response);
+             return  response()->json($response, 400);
          }
       }
      }

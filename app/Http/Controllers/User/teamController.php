@@ -47,7 +47,7 @@ class teamController extends Controller
            {
              $message="Xóa Team thất bại !";
              $response = array('message'=>$message,'error'=>'Lỗi');
-             return  response()->json($response);
+             return  response()->json($response,400);
            }
          $message="Xóa Team thành công !";
          $response = array('message'=>$message,'error'=>null);
@@ -82,7 +82,7 @@ class teamController extends Controller
             } catch (Exception $e) {
                 $message="Taọ Team thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
            
          }

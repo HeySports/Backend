@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    echo  strtotime('today UTC');
+           
     return view('welcome');
 });

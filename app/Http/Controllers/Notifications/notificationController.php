@@ -57,24 +57,32 @@ class notificationController extends Controller
     }
     public function postNotification(REQUEST $request){
         // `status`, `description`, `id_match`
-      
-        $id_match=$request->id_match;
-        $description=$request->description;
-        $type=$request->type;
-        try {
-            $_new=new Notification();
-            $_new->id_match=$id_match;
-            $_new->description=$description;
-            $_new->type=$type;
-            $_new->save();
-            $message="Taọ thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Taọ thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
-        }
+        $validator = Validator::make($request->all(), [
+            'description' => 'required',
+            'type' => 'required',
+        ]);
+         if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+         }else{
+            $id_match=$request->id_match;
+            $description=$request->description;
+            $type=$request->type;
+            try {
+                $_new=new Notification();
+                $_new->id_match=$id_match;
+                $_new->description=$description;
+                $_new->type=$type;
+                $_new->save();
+                $message="Taọ thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Taọ thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response, 400);
+            }
+         }
+        
        
     }
     public function putNotification(REQUEST $request, $id){
