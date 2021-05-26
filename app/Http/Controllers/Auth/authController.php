@@ -77,6 +77,9 @@ class authController extends Controller
             $response=['message'=>$message, 'error'=>$error];
             return response()->json($response, 400);
         }else{
+            $_newUser= User::where('phone_numbers','=', $request->phone_numbers)->get();
+            $_newUser[0]->device_token=$request->device_token;
+            $_newUser[0]->save();
             return $this->createNewToken($token);
         }  
    }

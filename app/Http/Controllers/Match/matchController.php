@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Field;
+use App\Models\Notification;
+use App\Models\DetailNotification;
 class matchController extends Controller
 {
     /**
@@ -519,6 +521,29 @@ class matchController extends Controller
                 }
                 $_new_detail->team_name=$request->team_name;
                 $_new_detail->save();
+
+                $_new_notification = new Notification();
+                $_new_notification->description = 
+                auth()->user()->full_name . ' đã tạo 1 trận '.$type_field.'vs'.$type_field.' đấu vào lúc '. $time_start_play;
+                $_new_notification->type = 1;
+                $_new_notification->id_match = $_new->id;
+                $_new_notification->created_at = Carbon::now();
+                $_new_notification->save();
+                $data_notification = ['id_match'=> $_new->id];
+                $tokens =[];
+                $users = User::all();
+                
+                foreach ($users as &$value) {
+                    $_detail_notification = new DetailNotification();
+                    $_detail_notification->id_user = $value->id;
+                    $_detail_notification->id_notification = $_new_notification->id;
+                    $_detail_notification->status = 0;
+                    $_new_notification->save();
+                    if($value->device_token != ''){
+                        array_push($tokens, $value->device_token);
+                    } 
+                }
+                $this->pushNotification ($tokens, 'Trận đấu mới', $_new_notification->description, $data_notification);
                 $message="Tạo trận thành công !";
                 $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
                 return  response()->json($response);
@@ -528,6 +553,27 @@ class matchController extends Controller
                 return  response()->json($response, 400);
             }
         }
+    }
+    public function pushNotification ($tokens, $title, $body, $data){
+        $fcm_server_key= "AAAAbU1mo1Y:APA91bGGlYQvtRpaNz81-GXpZCzEgn6yZiVOGMyOxO9BtHw9B0v-NpTMP_3fkOoD35ZvgrUrT3yT8RLYRx60emU-NAXIca-_WnsXgDNAjByTvWlL3BUfmrGpgyOOtK4_un-SySdPzkr1";
+        $notificationData = [
+            'registration_ids' => $tokens,
+            'notification' => [
+                'title' => $title,
+                'body' => $body,
+                // 'image' => 'https://cdn.shopify.com/s/files/1/1492/1076/products/Traditional_Black_and_White_Football_Ball_32_Panel_Classic_800x.jpg?v=1563121775',
+            ],
+            'data' => $data
+        ];
+        
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($notificationData));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization:key=' . $fcm_server_key));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+        curl_exec($ch);
+        curl_close($ch);
     }
     public function putMatch(REQUEST $request, $id){
         //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
@@ -586,7 +632,6 @@ class matchController extends Controller
     public function putJoiningMatchOpponent(REQUEST $request, $id){
         //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
         $validator = Validator::make($request->all(), [
-            'status'=> 'required',
             'team_name' => 'required'
         ]);
         if ($validator->fails()) {
@@ -594,23 +639,57 @@ class matchController extends Controller
         }else{
             
             try {
-                $matches =  Matches::where('id',$id)->get();
-                $_new= $matches[0];
-                $_new->status = $status;
-                $_new->save();
+                $id_user= auth()->user()->id;
+                $checkValid = DetailMatch::where('id_user','=', $id_user)->where('id_match','=',$id)->get();
+                if(count($checkValid)>0){
+                    $message="Taọ thất bại !";
+                    $response = array('message'=>$message,'error'=>'Người dùng đã tham gia trận đấu này');
+                    return  response()->json($response, 400);
+                }else{
 
+                    $matches =  Matches::where('id',$id)->get();
+                    $_new= $matches[0];
+                    $_new->save();
+                    $users = DB::table('users')
+                    ->join('detail_matches', 'detail_matches.id_user', '=', 'users.id')
+                    ->where('detail_matches.id_match', '=', $_new->id)
+                    ->select('users.id as id', 'users.full_name', 'users.device_token as device_token')
+                    ->get();
+                    $_new_detail=new DetailMatch();
+                    $_new_detail->id_user = auth()->user()->id;
+                    $_new_detail->id_match=$_new->id;
+                    $_new_detail->status_team = 1;
+                    $_new_detail->team_name=$request->team_name;
+                    $_new_detail->save();
 
-                $_new_detail=new DetailMatch();
-                $_new_detail->id_user = auth()->user()->id;
-                $_new_detail->id_match=$_new->id;
-                $_new_detail->status_team = 1;
-                $_new_detail->team_name=$request->team_name;
-                $_new_detail->save();
-                $message="Sửa thời gian thành công !";
-                $response = array('message'=>$message,'error'=>null);
-                return  response()->json($response);
+                    $_new_notification = new Notification();
+                    $_new_notification->description = 
+                    'Đội '. $request->team_name . ' đã tham trận '.$_new->type_field.'vs'.$_new->type_field.' '.$_new->name_room;
+                    $_new_notification->type = 1;
+                    $_new_notification->id_match = $_new->id;
+                    $_new_notification->created_at = Carbon::now();
+                    $_new_notification->save();
+                    $data_notification = ['id_match'=> $_new->id];
+                    $tokens =[];
+                    foreach ($users as &$value) {
+                        $_detail_notification = new DetailNotification();
+                        $_detail_notification->id_user = $value->id;
+                        $_detail_notification->id_notification = $_new_notification->id;
+                        $_detail_notification->status = 0;
+                        $_new_notification->save();
+                        if($value->device_token != ''){
+                            array_push($tokens, $value->device_token);
+                        } 
+                    }
+                    $this->pushNotification ($tokens,  auth()->user()->full_name.' tham gia trận', $_new_notification->description, $data_notification);
+
+                    $message="Sửa thành công !";
+                    $response = array('message'=>$message,'error'=>null);
+                    return  response()->json($response);
+
+                }
             } catch (Exception $e) {
-                $message="Sửa thời gian thất bại !";
+                $message="Sửa thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response, 400);
             }

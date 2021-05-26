@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->float('attitude_rating')->nullable();
             $table->string('position_play')->nullable();
             $table->string('description')->nullable();
+            $table->string('device_token')->nullable();
             $table->timestamps();
         });
     }
