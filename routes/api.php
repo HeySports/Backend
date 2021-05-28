@@ -63,6 +63,7 @@ Route::put('/match/putTimePlay/{id}', [matchController::class,'putTimePlay']);
 Route::put('/match/joinTeamOpponent/{id}', [matchController::class,'putJoiningMatchOpponent']); 
 Route::put('/match/putMatch/{id}', [matchController::class,'putMatch']);   
 // //detail matches
+Route::get('/match/getListMatchOfUser',[matchController::class,'getListMatchOfUser']);
 Route::get('/match/getDetailMatchByIdMatch/{id_match}',[detailMatchController::class,'getDetailMatchByIdMatch']); 
 
 Route::post('/match/postDetailMatch',[detailMatchController::class,'postDetailMatch']);    
