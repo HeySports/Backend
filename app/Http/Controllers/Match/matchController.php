@@ -623,7 +623,7 @@ class matchController extends Controller
             $id_child_field= $request->id_child_field;
  
             try {
-                $_new=new Matches();
+                $_new = new Matches();
                 $_new->id_user=auth()->user()->id;
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
@@ -636,7 +636,7 @@ class matchController extends Controller
                 $_new->type=$type;
                 $_new->price=$price;
                 $_new->type_field=$type_field;
-                $address=$request->address;
+                $_new->address=$request->address;
                 $_new->save();
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;

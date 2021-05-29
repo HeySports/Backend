@@ -114,7 +114,7 @@ class detailMatchController extends Controller
 
                 $checkValid = DetailMatch::where('id_user','=', $id_user)->where('id_match','=',$id_match)->get();
                 if(count($checkValid)>0){
-                    $message="Taọ thất bại !";
+                    $message="Bạn nhận kèo";
                     $response = array('message'=>$message,'error'=>'Người dùng đã tham gia trận đấu này');
                     return  response()->json($response, 400);
                 }else{
