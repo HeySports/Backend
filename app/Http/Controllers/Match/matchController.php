@@ -694,8 +694,7 @@ class matchController extends Controller
 
                     $message="Nhận kèo thành công!";
                     $response = array('message'=>$message,'error'=>null);
-                    return  response()->json($response);
-
+                    return  response()->json($response, 200);
                 }
             } catch (Exception $e) {
                 $message="Nhận kèo thất bại";
