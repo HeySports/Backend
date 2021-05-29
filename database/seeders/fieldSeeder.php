@@ -16,10 +16,10 @@ class fieldSeeder extends Seeder
      */
     public function run()
     {
-        $_name=['Sân bóng đá mini Trung Nghĩa','Sân bóng đá mini Trường CĐ Thương Mai', 'Sân bóng đá Chuyên Việt','Sân bóng đá làng thể thao Tuyên Sơn',
-         'Trung Vuong football field',' Sân bóng Trang Hoàng', 'Sân bóng đá Mỹ Nhật Quang', 'Trung tâm bóng đá Duy Tân','Sân bóng đá An Phúc 2',
-         'Sân bóng Đức Nam','Sân bóng Hồng Phúc','Sân bóng mini Tuấn Nhàn','Sân bóng đá cỏ nhân tạo','Football pitch Van Dan', 'Sân bóng đá mini Đa Phước',
-        'Sân bóng mini Hoà Xuân','Sân bóng mini Bin Bon','Sân bóng An Trung','Sân bóng đá mini trường ĐH Thể Dục Thể Thao Đà Nẵng'];
+        $_name=['Trung Nghĩa','Thương Mai', 'Chuyên Việt','Tuyên Sơn',
+         'Trung Vuong football','Trang Hoàng', 'Mỹ Nhật Quang', 'Duy Tân','An Phúc 2',
+         'Đức Nam','Hồng Phúc','Tuấn Nhàn','Sân T20','Football pitch Van Dan', 'Đa Phước',
+        'Hoà Xuân','Bin Bon','An Trung','Đại Học Thể Thao'];
 
         $_address=['Hoà Minh, Liên Chiểu, Đà Nẵng','45 Dũng Sĩ Thanh Khê, Thanh Khê, ĐN', '98 Tiểu La, Hoà Thuận Đông, Hải Châu, ĐN','22 Đ 2/9, Bình Hiên, Hải Châu, ĐN',
          '403 Trưng Nữ Vương, Hoà Thuận Nam, Hải Châu, ĐN',' 86 Duy Tân, Hoà Thuận Nam, Hải Châu, ĐN', '498 Nguyễn Hữu Thọ, Khuê Trung, Cẩm Lệ, ĐN', '07 Duy Tân, Hoà Cường Bắc, Hải Châu, ĐN','409 Trưng Nữ Vương, Hoà Thuận Nam, Hải Châu, ĐN',
