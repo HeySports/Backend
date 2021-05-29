@@ -671,7 +671,7 @@ class matchController extends Controller
                 }
                 $this->pushNotification ($tokens, 'Trận đấu mới', $_new_notification->description, $data_notification);
                 $message="Tạo trận thành công !";
-                $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
+                $response = array('message'=>$message,'error'=>null, 'data'=> json_encode($_new));
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Tạo trận thất bại !";
