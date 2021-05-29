@@ -14,6 +14,8 @@ use App\Http\Controllers\Notifications\notificationController;
 use App\Http\Controllers\Comments\commentMatchController;
 use App\Http\Controllers\Comments\commentFieldController;
 use App\Http\Controllers\Booking\orderController;
+use App\Http\Controllers\Offers\offerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -136,3 +138,9 @@ Route::delete('/order/deleteOrder/{id}',[orderController::class,'deleteOrder']);
 // get Price
 Route::get('/match/price/{id}/field/byType/{type_field}/and/byTime/{time}',[childFieldController::class,'getPriceByField']);
 Route::get('/match/lastMatch', [matchController::class,'getLastMatch']);
+
+// Offer Team 
+Route::post('/offers/offerTeam', [offerController::class,'postOfferTeam']);
+Route::put('/offers/accept/{id}/offerTeam', [offerController::class,'acceptOfferTeam']);
+Route::put('/offers/remove/{id}/offerTeam', [offerController::class,'removeOfferTeam']);
+Route::get('/offers/get/{id}/offerTeam', [offerController::class,'getOfferTeam']);
