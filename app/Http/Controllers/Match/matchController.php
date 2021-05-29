@@ -623,7 +623,7 @@ class matchController extends Controller
             $id_child_field= $request->id_child_field;
  
             try {
-                $_new = new Matches();
+                $_new=new Matches();
                 $_new->id_user=auth()->user()->id;
                 $_new->name_room=$name_room;
                 $_new->lock=$lock;
@@ -671,7 +671,7 @@ class matchController extends Controller
                 }
                 $this->pushNotification ($tokens, 'Trận đấu mới', $_new_notification->description, $data_notification);
                 $message="Tạo trận thành công !";
-                $response = array('message'=>$message,'error'=>null, 'data'=> {'id' => $_new->id});
+                $response = array('message'=>$message,'error'=>null, 'data'=> $_new);
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Tạo trận thất bại !";
