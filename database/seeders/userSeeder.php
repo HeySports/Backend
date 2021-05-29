@@ -18,10 +18,10 @@ class userSeeder extends Seeder
         $address = ['101b Lê Hữu Trác - Sơn Trà - Đà Nẵng', '99 Tô Hiến Thành - Sơn Trà - Đà Nẵng'];
         $_listName=['Thanh Doan','Nguyen Hung','Yen Nhi', 'Ngoc Tram','Nguyen Van A', 'Nguyen Van B','Nguyen Van C', 'Nguyen Van D','Nguyen Van E', 'Nguyen Van F'];
         $_email=['thanhdoanDev@gmail.com','hung@gmail.com','Nhi@gmail.com','tram@gmail.com','a@gmail.com','b@gmail.com','c@gmail.com','d@gmail.com','e@gmail.com','f@gmail.com'];
-        $_phone=['0946613644','0946613610','0946613600','0946613607','0946613606','0946613605','0946613604','0946613603','0946613602','0946613601'];
+        $_phone=['0946613655','0946613610','0946613600','0946613607','0946613606','0946613605','0946613604','0946613603','0946613602','0946613601'];
         $_position=['Tiền Đạo','Tiền Vệ Tâm','Trung Vệ','Hậu vệ cánh trái','Hậu vệ cánh phải','Tiền Vệ Công','Thủ Môn','Tiền Đạo Cắm', 'Tiền Đạo Biên','Tiền Vệ Trụ'];
         for ($i=0; $i<10; $i++){
-            DB::table('users')->insert(
+            DB::table('users')->insert([
                 'id_roles' => rand(1, 3),
                 'full_name' =>  $_listName[$i],
                 'email' => $_email[$i],
