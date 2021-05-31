@@ -49,6 +49,7 @@ class orderSeeder extends Seeder
                 'time_start' => $time_start,
                 'time_end' => Carbon::parse($time_start)->addHour(),
                 'description' => 'Description',
+                'created_at' => $time_start
             ]);
         }
     }

@@ -20,7 +20,7 @@ class price_fieldSeeder extends Seeder
        
         $arr = [5, 7, 11];
         for($j=0; $j< count($arr); $j++){
-            for ($i = 0; $i < 6; $i++){
+            for ($i = 0; $i < 19; $i++){
                 $fixed_price = 200000;
                 if($arr[$j]==7){
                     $fixed_price = $fixed_price*1.5;

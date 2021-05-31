@@ -18,11 +18,6 @@ use App\Models\Notification;
 use App\Models\DetailNotification;
 class matchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *SELECT * FROM Table ORDER BY ID DESC LIMIT 1
-     * @return \Illuminate\Http\Response
-     */
     function getLastMatch(){
           $_match = Matches::orderBy ('id','DESC')->limit(1)->get();
           $_idMatch = $_match[0]->id +1;
@@ -37,6 +32,7 @@ class matchController extends Controller
         ->where('matches.time_start_play', '<', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->orderBy('matches.time_start_play', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -162,9 +158,10 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->where('type', '=', 0)
-        ->where('lock', '=', 0)
+        ->where('matches.time_start_play', '>', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
+        ->orderBy('matches.time_start_play', 'asc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -229,9 +226,10 @@ class matchController extends Controller
         $response = [];
         $matches =  DB::table('matches')
         ->where('type', '=', 1)
+        ->where('matches.time_start_play', '>', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-        ->orderBy('created_at', 'desc')
+        ->orderBy('matches.time_start_play', 'asc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -297,7 +295,7 @@ class matchController extends Controller
         ->where('matches.time_start_play', '>', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-        ->orderBy('created_at', 'desc')
+        ->orderBy('matches.time_start_play', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -423,7 +421,7 @@ class matchController extends Controller
                 ->orWhere('matches.address', 'like', '%' . $request->txtSearch . '%')
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-                ->orderBy('created_at', 'desc')
+                ->orderBy('matches.time_start_play', 'asc')
                 ->get();
             
             }
@@ -504,7 +502,7 @@ class matchController extends Controller
                 ->whereDate('matches.time_start_play', $request->time_play)
                 ->select('matches.id', 'matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
                 , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-                ->orderBy('created_at', 'desc')
+                ->orderBy('matches.time_start_play', 'asc')
                 ->get();
            
     
@@ -585,7 +583,6 @@ class matchController extends Controller
         return  response()->json($response);
     }
     public function postMatch(REQUEST $request){
-        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
         $validator = Validator::make($request->all(), [
             'type'=> 'required',
             'name_room' => 'required|max:255',
@@ -702,35 +699,41 @@ class matchController extends Controller
         curl_close($ch);
     }
     public function putMatch(REQUEST $request, $id){
-        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
-        $name_room=$request->name_room;
-        $lock= $request->lock;
-        $password=$request->password;
-        $time_start_play=$request->time_start_play;
-        $time_end_play=$request->time_end_play;
-        $description=$request->description;
-        try {
-            $matches =  Matches::where('id',$id)->get();
-            $_new= $matches[0];
-            $_new->name_room=$name_room;
-            $_new->field_name=$field_name;
-            $_new->lock=$lock;
-            $_new->password=$password;
-            $_new->time_start_play=$time_start_play;
-            $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
-            $_new->description=$description;
-            $_new->save();
-            $message="Sửa trận thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Sửa trận thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response, 400);
+        $validator = Validator::make($request->all(), [
+            'time_start_play' => 'required',
+        ]);
+       
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            $lock= $request->lock;
+            $password=$request->password;
+            $time_start_play=$request->time_start_play;
+            $time_end_play=$request->time_end_play;
+            $description=$request->description;
+            try {
+                $matches =  Matches::where('id',$id)->get();
+                $_new= $matches[0];
+                $_new->name_room=$name_room;
+                $_new->field_name=$field_name;
+                $_new->lock=$lock;
+                $_new->password=$password;
+                $_new->time_start_play=$time_start_play;
+                $_new->time_end_play=Carbon::parse($time_start_play)->addHour();
+                $_new->description=$description;
+                $_new->save();
+                $message="Sửa trận thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Sửa trận thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response, 400);
+            }
         }
+        
     }
     public function putTimePlay(REQUEST $request, $id){
-        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
         $validator = Validator::make($request->all(), [
             'time_start_play' => 'required'
         ]);
@@ -756,7 +759,6 @@ class matchController extends Controller
        
     }
     public function putJoiningMatchOpponent(REQUEST $request, $id){
-        //`id_field_play`, `name_room`, `lock`, `password`, `time_start_play`, `time_end_play`, `description`,
         $validator = Validator::make($request->all(), [
             'team_name' => 'required'
         ]);
@@ -862,49 +864,4 @@ class matchController extends Controller
         }
         return $histories;
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }

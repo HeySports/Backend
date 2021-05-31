@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('phone_numbers')->require()->unique();
             $table->string('address');
             $table->string('avatar')->nullable();
+            $table->double('longitude')->nullable();
+            $table->double('latitude')->nullable();
             $table->integer('age')->nullable();
             $table->integer('matches_number')->nullable();
             $table->float('skill_rating')->nullable();

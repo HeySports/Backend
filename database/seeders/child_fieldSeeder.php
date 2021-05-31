@@ -18,13 +18,13 @@ class child_fieldSeeder extends Seeder
     public function run()
     {
         $arr = ['5','7','11'];
-        $_name=['N1','N2','N3','N4','N5', 'N6'];
         for($i = 0; $i < 19; $i++){
             $r = rand(0,2);
-            for($j = 0; $j < count($_name); $j++){
+            $n = rand(5,10)*2;
+            for($j = 0; $j < $n; $j++){
                 DB::table('child_fields')->insert([
                     'id_field' => $i+1,
-                    'name_field' =>$_name[$j],
+                    'name_field' =>Str::random(1).rand(1,9),
                     'type' => $arr[$r],
                     'status' => rand(0, 1),
                     'description' =>  Str::random(50),

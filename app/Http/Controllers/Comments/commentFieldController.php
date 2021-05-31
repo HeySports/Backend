@@ -11,15 +11,6 @@ use Validator;
 
 class commentFieldController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
     public function getCommentField($id)
     {
         $response =  CommentField::where('id',$id)->get();
@@ -54,7 +45,6 @@ class commentFieldController extends Controller
         return  response()->json($response);
     }
     public function postCommentField(REQUEST $request){
-        // `id_user`, `id_field`, `description` 
         $validator = Validator::make($request->all(), [
             'id_field' => 'required',
             'description' => 'required|max:255',
@@ -82,69 +72,31 @@ class commentFieldController extends Controller
     }
     }
     public function putCommentField(REQUEST $request, $id){
-        // `id_user`, `description`, `id_field`
-      
-        $id_field=$request->id_field;
-        $description=$request->description;
-        $id_user=$request->id_user;
-        try {
-            $response =  CommentField::where('id',$id)->get();
-            $_new= $response[0];
-            $_new->id_field=$id_field;
-            $_new->description=$description;
-            $_new->id_user=$id_user;
-            $_new->save();
-            $message="Sửa thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response);
-        } catch (Exception $e) {
-            $message="Sửa thất bại !";
-            $response = array('message'=>$message,'error'=>$e);
-            return  response()->json($response);
+        $validator = Validator::make($request->all(), [
+            'id_field' => 'required',
+            'description' => 'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            $id_field=$request->id_field;
+            $description=$request->description;
+            $id_user=auth()->user()->id;
+            try {
+                $response =  CommentField::where('id',$id)->get();
+                $_new= $response[0];
+                $_new->id_field=$id_field;
+                $_new->description=$description;
+                $_new->id_user=$id_user;
+                $_new->save();
+                $message="Sửa thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response);
+            } catch (Exception $e) {
+                $message="Sửa thất bại !";
+                $response = array('message'=>$message,'error'=>$e);
+                return  response()->json($response);
+            }
         }
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

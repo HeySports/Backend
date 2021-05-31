@@ -10,26 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 class commentMatchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
     public function getCommentMatch($id)
     {
         $response =  CommentMatch::where('id',$id)->get();
@@ -76,7 +56,6 @@ class commentMatchController extends Controller
         }  
     }
     public function postCommentMatch(REQUEST $request){
-        // `id_user`, `id_match`, `description`
         $validator = Validator::make($request->all(), [
             'id_match' => 'required',
             'description' => 'required|max:255',
@@ -104,11 +83,16 @@ class commentMatchController extends Controller
     } 
     }
     public function putCommentMatch(REQUEST $request, $id){
-        // `id_user`, `description`, `id_match`
-      
-        $id_match=$request->id_match;
-        $description=$request->description;
-        $id_user=$request->id_user;
+        $validator = Validator::make($request->all(), [
+            'id_match' => 'required',
+            'description' => 'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }else{
+            $id_match=$request->id_match;
+            $description=$request->description;
+            $id_user=auth()->user()->id;
         try {
             $response =  CommentMatch::where('id',$id)->get();
             $_new= $response[0];
@@ -124,38 +108,7 @@ class commentMatchController extends Controller
             $response = array('message'=>$message,'error'=>$e);
             return  response()->json($response);
         }
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        }
+        
     }
 }

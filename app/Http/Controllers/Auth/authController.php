@@ -58,7 +58,7 @@ class authController extends Controller
             }catch(Exception $e){
                 $message="Đăng kí tài khoản thất bại !";
                 $response = array('message'=>$message,'data'=>null, 'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
             
         }
@@ -79,6 +79,8 @@ class authController extends Controller
         }else{
             $_newUser= User::where('phone_numbers','=', $request->phone_numbers)->get();
             $_newUser[0]->device_token=$request->device_token;
+            $_newUser[0]->longitude=$request->longitude;
+            $_newUser[0]->latitude=$request->latitude;
             $_newUser[0]->save();
             return $this->createNewToken($token);
         }  

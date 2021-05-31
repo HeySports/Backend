@@ -54,8 +54,6 @@ class teamController extends Controller
          return  response()->json($response);
      }
      public function postTeam(REQUEST $request){
-         //  `name`, `rating`, `add`, `description`
-
          $validator = Validator::make($request->all(), [
             'name' => 'required',
             'address' => 'required',
@@ -89,8 +87,6 @@ class teamController extends Controller
         
      }
      public function putTeam(REQUEST $request, $id){
-          //  `name`, `rating`, `add`, `description`
-
           $validator = Validator::make($request->all(), [
             'name' => 'required',
             'address' => 'required',

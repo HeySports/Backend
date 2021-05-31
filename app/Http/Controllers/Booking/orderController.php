@@ -8,15 +8,6 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 class orderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
     public function checkTimePlayAvailable(REQUEST $request)
     {
         $validator = Validator::make($request->all(), [
@@ -30,9 +21,8 @@ class orderController extends Controller
         $response =  Order::whereDate('time_start','=', $date->format('Y-m-d'))
         ->whereTime('time_start','<=', $date->format('H:i:s'))
         ->whereTime('time_end','>', $date->format('H:i:s'))
-        ->whereTime('id_child_field', $request->id_child_field)
+        ->where('id_child_field', $request->id_child_field)
         ->get();
-        //['date'=>$date->format('Y-m-d'),'time'=>$date->format('H:i:s') ]
         return  response()->json($response);
         }
     }
@@ -41,9 +31,19 @@ class orderController extends Controller
         $response =  Order::where('id',$id)->get();
         return  response()->json($response[0]);
     }
+    public function getAll()
+    {
+        $response =  Order::all();
+        return  response()->json($response);
+    }
     public function getOrderByIdUser($id)
     {
         $response =  Order::where('id_user',$id)->get();
+        return  response()->json($response);
+    }
+    public function getOrderByIdUser($id)
+    {
+        $response =  Order::where('id_child_field',$id)->get();
         return  response()->json($response);
     }
     public function deleteOrder($id)
@@ -62,7 +62,6 @@ class orderController extends Controller
         return  response()->json($response);
     }
     public function postOrder(REQUEST $request){
-        //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
         $validator = Validator::make($request->all(), [
             'id_child_field' => 'required',
             'time_start' => 'required',
@@ -94,7 +93,6 @@ class orderController extends Controller
          }
     }
     public function putOrder(REQUEST $request, $id){
-       //(`id_match`, `id_child_field`, `id_user`, `time_start`, `time_end`, `description`, `status`, `method_pay`)
        $validator = Validator::make($request->all(), [
         'id_child_field' => 'required',
         'time_start' => 'required',
@@ -170,48 +168,4 @@ class orderController extends Controller
          }
       }
      }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

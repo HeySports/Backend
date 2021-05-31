@@ -48,7 +48,6 @@ class matchSeeder extends Seeder
         for ($i = 50; $i < 100; $i++){
             $r = rand(0, 2);
             $r_lose = rand(0, 3);
-            
             $min_epoch = strtotime('2021-05-29 14:08:29');
             $max_epoch = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
             $rand_epoch = rand($min_epoch, $max_epoch);
