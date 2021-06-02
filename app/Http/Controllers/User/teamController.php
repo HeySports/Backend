@@ -14,8 +14,19 @@ class teamController extends Controller
   
      public function getTeam($id)
      {
-         $response =  Team::where('id',$id)->get();
-         return  response()->json($response[0]);
+         $team =  Team::where('id',$id)->get();
+         $team=$team[0];
+         $userOfTeam = DB::table('users')
+         ->join('team_details', 'users.id', '=', 'team_details.id_user')
+         ->where('team_details.id_team', '=', $team->id)
+         ->get();
+         $commentOfTeam = DB::table('team_comments')
+         ->join('users', 'users.id', '=', 'team_comments.id_user')
+         ->where('team_comments.id_team', '=', $team->id)
+         ->select('users.id', 'users.full_name', 'team_comments.description')
+         ->orderBy('team_comments.created_at', 'desc')
+         ->get();
+         return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
      }
      public function getListTeam()
      {
@@ -69,7 +80,12 @@ class teamController extends Controller
             try {
                 $_new=new Team();
                 $_new->name=$name;
-                $_new->rating=$rating;
+                if($rating){
+                    $_new->rating=$rating;
+                }else{
+                    $_new->rating=3;
+                }
+                $_new->rating_number=1;
                 $_new->address= $address;
                 $_new->description=$description;
            
@@ -103,7 +119,9 @@ class teamController extends Controller
                 $_new=Team::where('id', $id)->get();
                 $_new= $_new[0];
                 $_new->name=$name;
-                $_new->rating=$rating;
+                if($rating){
+                    $_new->rating=($request->rating + $_new->rating*$_new->rating_number)/($_new->rating_number);
+                }
                 $_new->address= $address;
                 $_new->description=$description;
            

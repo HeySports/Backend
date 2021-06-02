@@ -16,6 +16,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([roleSeeder::class,userSeeder::class,fieldSeeder::class,child_fieldSeeder::class,matchSeeder::class,price_fieldSeeder::class,
                     match_commentSeeder::class,comments_fieldSeeder::class,detail_matchSeeder::class,notificationSeeder::class, 
-                    detail_notificationSeeder::class,orderSeeder::class,TeamSeeder::class,Team_DetailSeeder::class, StatusOfferSeeder::class]);
+                    detail_notificationSeeder::class,orderSeeder::class,TeamSeeder::class,Team_DetailSeeder::class, StatusOfferSeeder::class, TeamCommentSeeder::class]);
     }
 }

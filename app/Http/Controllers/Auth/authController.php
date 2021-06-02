@@ -27,8 +27,8 @@ class authController extends Controller
     function register(REQUEST $request){
         $input= $request->all();
         $rules=array(
-            'full_name'=> "required|min:8|string",
-            'phone_numbers'=>"required|min:10|max:11",
+            'full_name'=> "required|string",
+            'phone_numbers'=>"required|min:10",
             'password'=>"required|string|min:6",
             'confirm_password'=>"required|same:password",
             'address'=>"required|string",

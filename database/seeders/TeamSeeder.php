@@ -25,6 +25,7 @@ class TeamSeeder extends Seeder
                 'address' =>$_address[rand(0,4)],
                 'description' => Str::random(50),
                 'rating' => rand(1,5),
+                'rating_number' => rand(1,10),
             ]);
         }
     }

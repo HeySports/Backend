@@ -82,6 +82,7 @@ class fieldController extends Controller
                 $_new->id_owner=$id_owner;
                 $_new->name=$name;
                 $_new->rating= $rating;
+                $_new->rating_number = 1;
                 $_new->list_image=$list_image;
                 $_new->address=$address;
                 $_new->email_field=$email_field;
@@ -127,7 +128,7 @@ class fieldController extends Controller
                 $_new= $response[0];
                 $_new->id_owner=$id_owner;
                 $_new->name=$name;
-                $_new->rating= $rating;
+                $_new->rating = ($request->rating + $_new->rating*$_new->rating_number)/($_new->rating_number);
                 $_new->list_image=$list_image;
                 $_new->address=$address;
                 $_new->email_field=$email_field;

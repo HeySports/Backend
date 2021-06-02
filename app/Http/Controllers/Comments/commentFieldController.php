@@ -13,7 +13,9 @@ class commentFieldController extends Controller
 {
     public function getCommentField($id)
     {
-        $response =  CommentField::where('id',$id)->get();
+        $response =  CommentField::where('id',$id)
+        
+        ->get();
         return  response()->json($response[0]);
     }
     public function getAll()
@@ -26,6 +28,7 @@ class commentFieldController extends Controller
         ->join('users', 'comments_field.id_user', '=', 'users.id')
         ->where('comments_field.id_field', '=', $id)
         ->select('comments_field.id','comments_field.id_user', 'users.full_name', 'comments_field.description','comments_field.created_at','comments_field.updated_at')
+        ->orderBy('created_at', 'desc')
         ->get();
         return  response()->json($response);
     }

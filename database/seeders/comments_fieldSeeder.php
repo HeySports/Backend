@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use Carbon\Carbon;
 class comments_fieldSeeder extends Seeder
 {
     /**
@@ -21,6 +21,7 @@ class comments_fieldSeeder extends Seeder
                 'id_user' => rand(1, 70),
                 'id_field' => rand(1, 6),
                 'description' =>  Str::random(50),
+                'created_at' => Carbon::now()->addHours($i+2)
             ]);
         }
     }

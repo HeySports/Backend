@@ -41,7 +41,7 @@ class fieldSeeder extends Seeder
                 'id_owner' => rand(1, 3),
                 'name' => $_name[$i],
                 'rating' => rand(1,5),
-                'rating_number'=>rand(1, 5),
+                'rating_number'=>rand(1, 10),
                 'list_image' => '[]',
                 'address' => $_address[$i],
                 'longitude'=>$long[$i],
