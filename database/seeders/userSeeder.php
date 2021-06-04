@@ -64,6 +64,22 @@ class userSeeder extends Seeder
                 'description' =>  Str::random(50),
             ]);
         }
-       
+          DB::table('users')->insert([
+                'id_roles' => rand(1, 3),
+                'full_name' =>  'Thanh Doan',
+                'email' =>   Str::random(10) . '@gmail.com',
+                'password' => Hash::make('123456'),
+                'phone_numbers' => '0946613666',
+                'address' => $address[rand(0,1)],
+                'avatar' => '[]',
+                'age' => rand(10,60),
+                'longitude'=>$long[rand(0,18)],
+                'latitude'=> $lat[rand(0,18)],
+                'matches_number' => rand(0,20),
+                'skill_rating' => rand(0,10),
+                'attitude_rating' => rand(0,5),
+                'position_play' => $_position[rand(0,9)],
+                'description' =>  Str::random(50),
+            ]);
     }
 }
