@@ -116,11 +116,8 @@ class detailMatchController extends Controller
                     $_new=new DetailMatch();
                     $_new->id_user=$id_user;
                     $_new->id_match=$id_match;
-                    if($m->type==0){
-                        $_new->status_team= 2;
-                    }else{
-                        $_new->status_team= 1;
-                    }
+                    $_new->status_team= 0;
+                    
                     $_new->numbers_user_added=$numbers_user_added;
                     $_new->team_name=$team_name;
                     $_new->save();

@@ -109,7 +109,6 @@ class matchController extends Controller
             $fieldPlay = Field::where('id', $childFieldPlay[0]->id_field)->get();
         }
             $memberTeamA = DB::table('detail_matches')
-            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
             ->join('users', 'detail_matches.id_user', '=', 'users.id')
             ->where('detail_matches.id_match', '=', $matches[0]->id)
             ->where('detail_matches.status_team', '=', 0)
@@ -130,27 +129,28 @@ class matchController extends Controller
             }
             
             $teamA = array('matches_number'=>$matches_number_teamA, 'members'=>$memberTeamA);
-            $memberTeamB = DB::table('detail_matches')
-            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
-            ->join('users', 'detail_matches.id_user', '=', 'users.id')
-            ->where('detail_matches.id_match', '=', $matches[0]->id)
-            ->where('detail_matches.status_team', '=', 1)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
-            , 'detail_matches.team_name')
-            ->get();
-            $sumB = 0;
-            foreach($memberTeamB as $key=>$value){
-            if(isset($value->matches_number))
-                $sumB += $value->matches_number;
-                $sum += $value->numbers_user_added;
+            $teamB =null;
+            if($matches[0]->type==1){
+                $memberTeamB = DB::table('detail_matches')
+                ->join('users', 'detail_matches.id_user', '=', 'users.id')
+                ->where('detail_matches.id_match', '=', $matches[0]->id)
+                ->where('detail_matches.status_team', '=', 1)
+                ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
+                , 'detail_matches.team_name')
+                ->get();
+                $sumB = 0;
+                foreach($memberTeamB as $key=>$value){
+                if(isset($value->matches_number))
+                    $sumB += $value->matches_number;
+                }
+                if(count($memberTeamB)>0){
+                    $matches_number_teamB = $sumB/count($memberTeamB);
+                }else{
+                    $matches_number_teamB = 0;
+                }
+                
+                $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
             }
-            if(count($memberTeamB)>0){
-                $matches_number_teamB = $sumB/count($memberTeamB);
-            }else{
-                $matches_number_teamB = 0;
-            }
-            
-            $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
             array_push($response,  array('match'=>$matches[0],'field_play'=> $fieldPlay,'missing_members'=>$matches[0]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
         return  response()->json($response[0]);
     }
@@ -193,30 +193,9 @@ class matchController extends Controller
                 $matches_number_teamA = 0;
             }
             $teamA = array('matches_number'=>$matches_number_teamA, 'members'=>$memberTeamA);
-            $memberTeamB = DB::table('detail_matches')
-            ->join('matches', 'matches.id', '=', 'detail_matches.id_match')
-            ->join('users', 'detail_matches.id_user', '=', 'users.id')
-            ->where('detail_matches.id_match', '=', $matches[$i]->id)
-            ->where('detail_matches.status_team', '=', 1)
-            ->select('users.id', 'users.full_name', 'users.address', 'users.matches_number', 'users.skill_rating','users.age', 'users.avatar', 'detail_matches.numbers_user_added'
-            , 'detail_matches.team_name')
-            ->get();
-            $sumB = 0;
-            
-            foreach($memberTeamB as $key=>$value){
-            if(isset($value->matches_number))
-                $sumB += $value->matches_number;
-                $sum += $value->numbers_user_added;
-            }
-            if(count($memberTeamB)>0){
-                $matches_number_teamB = $sumB/count($memberTeamB);
-            }else{
-                $matches_number_teamB = 0;
-            }
-            
-            $teamB = array('matches_number'=>$matches_number_teamB, 'members'=>$memberTeamB);
-            if(count($memberTeamA)>0){
-                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA,'team_b'=>$teamB));
+           
+            if(count($memberTeamA)>0 && $matches[$i]->type_field*2 > $sum){
+                array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA));
             }
             
         }

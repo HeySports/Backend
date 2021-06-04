@@ -41,7 +41,7 @@ class orderController extends Controller
         $response =  Order::where('id_user',$id)->get();
         return  response()->json($response);
     }
-    public function getOrderByIdUser($id)
+    public function getOrderByChildField($id)
     {
         $response =  Order::where('id_child_field',$id)->get();
         return  response()->json($response);
@@ -75,7 +75,7 @@ class orderController extends Controller
                 $_new=new Order();
                 $_new->id_match=$request->id_match;
                 $_new->id_child_field=$request->id_child_field;
-                $_new->id_user=auth()->user()->id;
+                $_new->id_user = auth()->user()->id;
                 $_new->time_start=$request->time_start;
                 $_new->time_end=$request->time_end;
                 $_new->description=$request->description;
@@ -83,7 +83,7 @@ class orderController extends Controller
                 $_new->status = 0;
                 $_new->save();
                 $message="Đặt sân thành công !"; 
-                $response = array('message'=>$message,'error'=>null , 'orderInfo' => $request->all());
+                $response = array('message'=>$message,'error'=>null , 'orderInfo' => $_new);
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Đặt sân thất bại !";
