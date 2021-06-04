@@ -126,11 +126,11 @@ class teamController extends Controller
                 $_new->description=$description;
            
                 $_new->save();
-                $message="Taọ Team thành công !"; 
+                $message="Tạo Team thành công !"; 
                 $response = array('message'=>$message,'error'=>null);
                 return  response()->json($response);
             } catch (Exception $e) {
-                $message="Taọ Team thất bại !";
+                $message="Tạo Team thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response);
             }
