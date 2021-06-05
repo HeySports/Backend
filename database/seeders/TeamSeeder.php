@@ -26,7 +26,7 @@ class TeamSeeder extends Seeder
         'https://file.hstatic.net/1000261193/file/bulbal_prime_mufc_cup_lan_v_2_b811a785e80641b6a6430ceba03efc5f_grande.jpg'];
         for ($i = 0; $i < 10; $i++){
             DB::table('teams')->insert([
-                'name' => $_arr[rand(0,4)],
+                'name' => $_arr[$i],
                 'address' =>$_address[$i],
                 'image'=>$_team[rand(0,4)],
                 'create_by'=>rand(1, 20),
