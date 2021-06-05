@@ -88,10 +88,10 @@ class teamController extends Controller
                 $_new->rating_number=1;
                 $_new->address= $address;
                 $_new->description=$description;
-           
+                $_new->create_by=auth()->user()->id;
                 $_new->save();
-                $message="Taọ Team thành công !"; 
-                $response = array('message'=>$message,'error'=>null);
+                $message="Tạo Đội thành công !"; 
+                $response = array('message'=>$message,'error'=>null, 'data'=>$_new);
                 return  response()->json($response);
             } catch (Exception $e) {
                 $message="Taọ Team thất bại !";
