@@ -27,7 +27,8 @@ class TeamCommentSeeder extends Seeder
                 'id_user' => rand(1,99),
                 'id_team' => rand(1, 10),
                 'description' =>'Các bạn trong đội rất hòa đồng',
-                'created_at' => Carbon::now()->addHours($i+2)
+                'created_at' => Carbon::now()->addHours($i+2),
+                'rating'=>rand(1,5)
             ]);
         }
     }
