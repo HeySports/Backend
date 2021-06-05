@@ -20,6 +20,7 @@ class CreateCommentsFieldTable extends Migration
             $table->unsignedBigInteger('id_field');
             $table->foreign('id_field')->references('id')->on('fields')->onDelete('cascade');
             $table->string('description')->nullable();
+            $table->float('rating')->nullable();
             $table->timestamps();
         });
     }

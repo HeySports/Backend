@@ -20,6 +20,7 @@ class comments_fieldSeeder extends Seeder
             DB::table('comments_field')->insert([
                 'id_user' => rand(1, 70),
                 'id_field' => rand(1, 6),
+                'rating' => rand(2, 5),
                 'description' =>  Str::random(50),
                 'created_at' => Carbon::now()->addHours($i+2)
             ]);

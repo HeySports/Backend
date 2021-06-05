@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->double('longitude')->nullable();
             $table->double('latitude')->nullable();
             $table->integer('age')->nullable();
+            $table->integer('rating_number')->nullable();
             $table->integer('matches_number')->nullable();
             $table->float('skill_rating')->nullable();
             $table->float('attitude_rating')->nullable();

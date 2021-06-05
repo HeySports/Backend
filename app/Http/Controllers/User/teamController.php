@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Team;
+use App\Models\TeamComment;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 class teamController extends Controller
@@ -23,7 +25,7 @@ class teamController extends Controller
          $commentOfTeam = DB::table('team_comments')
          ->join('users', 'users.id', '=', 'team_comments.id_user')
          ->where('team_comments.id_team', '=', $team->id)
-         ->select('users.id', 'users.full_name', 'team_comments.description')
+         ->select('users.id', 'users.full_name', 'team_comments.description','team_comments.rating')
          ->orderBy('team_comments.created_at', 'desc')
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
@@ -102,6 +104,42 @@ class teamController extends Controller
          }
         
      }
+     public function ratingTeam(REQUEST $request){
+        $validator = Validator::make($request->all(), [
+          'description' => 'required',
+          'rating' => 'required',
+          'id_team' => 'required'
+      ]);
+       if ($validator->fails()) {
+          return response()->json($validator->errors(), 422);
+       }else{
+           $rating =$request->rating;
+          try {
+              $_new=Team::where('id', $request->id_team)->get();
+              $_new= $_new[0];
+              if($rating){
+                  $_new->rating=($request->rating + $_new->rating*$_new->rating_number)/($_new->rating_number+1);
+              }
+              $_new->rating_number=$_new->rating_number+1;
+              $_new->save();
+              $_new_comment=new TeamComment();
+              $_new_comment->description=$request->description;
+              $_new_comment->id_team=$request->id_team;
+              $_new_comment->rating=$request->rating;
+              $_new_comment->created_at=Carbon::now();
+              $_new_comment->id_user=auth()->user()->id;
+              $_new_comment->save();
+              $message="Taọ nhận xét thành công !"; 
+              $response = array('message'=>$message,'error'=>null, 'comment' => $_new_comment);
+              return  response()->json($response);
+          } catch (Exception $e) {
+              $message="Taọ nhận xét  thất bại !";
+              $response = array('message'=>$message,'error'=>$e);
+              return  response()->json($response,401);
+          }
+         
+       }
+   }
      public function putTeam(REQUEST $request, $id){
           $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -132,7 +170,7 @@ class teamController extends Controller
             } catch (Exception $e) {
                 $message="Taọ Team thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
+                return  response()->json($response, 400);
             }
            
          }
