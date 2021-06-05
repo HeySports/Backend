@@ -4,6 +4,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
+use App\Models\UserComment;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 class profileController extends Controller
@@ -107,11 +110,55 @@ class profileController extends Controller
    function userGetDetail($_id){
        try {
            $_users=User::where('id',$_id)->get();
+           $_comments = DB::table('user_comments')
+           ->join('users', 'user_comments.id_user', '=', 'users.id')
+           ->where('user_comments.id_user_commented', '=', $_id)
+           ->select('user_comments.id as user_id', 'users.full_name', 'user_comments.description','user_comments.created_at','user_comments.skill_rating','user_comments.attitude_rating')
+           ->orderBy('created_at', 'desc')
+           ->get();
            $message= "Thành công!";
-           $response=['message'=>$message,'data'=>$_users];
+           $response=['message'=>$message,'data'=>$_users,'comments'=>$_comments];
            return response()->json($response, 200);
        } catch (Exception $error) {
         return response()->json($response, 400);
        }
+   }
+   function ratingUser(REQUEST $request){
+    $validator = Validator::make($request->all(), [
+        'description' => 'required',
+        'skill_rating' => 'required',
+        'attitude_rating' => 'required',
+        'id_user_commented' => 'required'
+    ]);
+     if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+     }else{
+         $skill_rating =$request->skill_rating;
+         $attitude_rating =$request->attitude_rating;
+        try {
+            $_new=User::where('id', $request->id_user_commented)->get();
+            $_new= $_new[0];
+            $_new->skill_rating=($request->skill_rating + $_new->skill_rating*$_new->rating_number)/($_new->rating_number+1);
+            $_new->attitude_rating=($request->attitude_rating + $_new->attitude_rating*$_new->rating_number)/($_new->rating_number+1);
+            $_new->rating_number=$_new->rating_number+1;
+            $_new->save();
+            $_new_comment=new UserComment();
+            $_new_comment->description=$request->description;
+            $_new_comment->id_user_commented=$request->id_user_commented;
+            $_new_comment->skill_rating=$request->skill_rating;
+            $_new_comment->attitude_rating=$request->attitude_rating;
+            $_new_comment->created_at=Carbon::now();
+            $_new_comment->id_user=auth()->user()->id;
+            $_new_comment->save();
+            $message="Taọ nhận xét thành công !"; 
+            $response = array('message'=>$message,'error'=>null, 'comment' => $_new_comment);
+            return  response()->json($response);
+        } catch (Exception $e) {
+            $message="Taọ nhận xét  thất bại !";
+            $response = array('message'=>$message,'error'=>$e);
+            return  response()->json($response,401);
+        }
+       
+     }
    }
 }

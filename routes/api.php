@@ -35,6 +35,7 @@ Route::put('/auth/forgotPassword',[authController::class,'forgotPassword']);
 Route::post('/auth/checkUser',[authController::class,'checkUser']);
 Route::post('/auth/roles/register', [roleController::class, 'roleRegister']);
 // Profile
+Route::post('/user/ratingUser',[profileController::class,'ratingUser']);
 Route::get('/user/getProfile',[profileController::class,'getProfile']);
 Route::get('/user/getAll',[profileController::class,'getAllUser']);
 Route::post ('/user/update/password',[profileController::class,'userChangePassWord']);
@@ -97,6 +98,8 @@ Route::put('/notification/putNotification/{id}', [notificationController::class,
 Route::put('/notification/putStatusNotification/{id}', [notificationController::class,'putStatusNotification']); 
 //team detail
 Route::get('/team/getTeam/{id}',[teamController::class,'getTeam']); 
+//rating 
+Route::post('/team/ratingTeam',[teamController::class,'ratingTeam']); 
 //all team in database
 Route::get('/team/getListTeam',[teamController::class,'getListTeam']); 
 //get teams by a specific user

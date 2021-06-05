@@ -27,7 +27,7 @@ class commentFieldController extends Controller
         $response =  DB::table('comments_field')
         ->join('users', 'comments_field.id_user', '=', 'users.id')
         ->where('comments_field.id_field', '=', $id)
-        ->select('comments_field.id','comments_field.id_user', 'users.full_name', 'comments_field.description','comments_field.created_at','comments_field.updated_at')
+        ->select('comments_field.id','comments_field.id_user', 'users.full_name', 'comments_field.description','comments_field.rating','comments_field.created_at','comments_field.updated_at')
         ->orderBy('created_at', 'desc')
         ->get();
         return  response()->json($response);
@@ -50,7 +50,7 @@ class commentFieldController extends Controller
     public function postCommentField(REQUEST $request){
         $validator = Validator::make($request->all(), [
             'id_field' => 'required',
-            'description' => 'required|max:255',
+            'description' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -62,10 +62,11 @@ class commentFieldController extends Controller
             $_new=new CommentField();
             $_new->id_field=$id_field;
             $_new->description=$description;
+            $_new->rating=$request->rating;
             $_new->id_user=$id_user;
             $_new->save();
             $message="Taọ thành công !";
-            $response = array('message'=>$message,'error'=>null);
+            $response = array('message'=>$message,'error'=>null, 'commentField'=>$_new);
             return  response()->json($response);
         } catch (Exception $e) {
             $message="Taọ thất bại !";

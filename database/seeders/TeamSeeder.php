@@ -16,6 +16,7 @@ class TeamSeeder extends Seeder
      */
     public function run()
     {
+<<<<<<< HEAD
         $_arr =['PN21 Club', 'Cộng Hòa Team', 'Gà Chiến Mỹ Khê', 'CLB Sơn Trà', 'CLB Hải Sơn Trà','PN22 Club', 'Kiên Giang Team', 'Vô Đối', 'Bất Bại', 'Xóm Ran'];
         $_address=['Sơn Trà', 'Hải Châu', 'Sơn Trà', 'Sơn Trà', 'Hải Châu','Sơn Trà', 'Ngũ Hành Sơn', 'Liên Chiểu', 'Hải Châu', 'Sơn Trà',];
         $_team=[
@@ -30,6 +31,24 @@ class TeamSeeder extends Seeder
                 'address' =>$_address[$i],
                 'image'=>$_team[rand(0,4)],
                 'create_by'=>rand(1, 20),
+=======
+        $_arr =['PN21 Club', 'Cộng Hòa Team', 'Gà Chiến Mỹ Khê', 'CLB Sơn Trà', 'CLB Hải Châu'];
+        $_address=['101B Lê Hữu Trác, Sơn Trà', 'Ông ích Kiêm, Hải Châu', 'Mỹ Khê 3, Sơn Trà', 'Tô Hiến Thành,Sơn Trà', 'Hải Châu','Sơn Trà'];
+
+        for ($i = 0; $i < 5; $i++){
+            DB::table('teams')->insert([
+                'name' => $_arr[$i],
+                'address' =>$_address[rand(0,4)],
+                'description' => Str::random(50),
+                'rating' => rand(1,5),
+                'rating_number' => rand(1,10),
+            ]);
+        }
+        for ($i = 0; $i < 60; $i++){
+            DB::table('teams')->insert([
+                'name' => Str::random(2) . rand(10,99),
+                'address' =>$_address[rand(0,4)],
+>>>>>>> 09a3f866b471cdc69aa5d6b5e327a1fdba102123
                 'description' => Str::random(50),
                 'rating' => rand(1,5),
                 'rating_number' => rand(1,5),
