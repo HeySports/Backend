@@ -25,7 +25,7 @@ class teamController extends Controller
          $commentOfTeam = DB::table('team_comments')
          ->join('users', 'users.id', '=', 'team_comments.id_user')
          ->where('team_comments.id_team', '=', $team->id)
-         ->select('users.id', 'users.full_name', 'team_comments.description','team_comments.rating')
+         ->select('users.id', 'users.full_name','user.avatar', 'team_comments.description','team_comments.rating', 'team_comment.created_at')
          ->orderBy('team_comments.created_at', 'desc')
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
@@ -129,7 +129,7 @@ class teamController extends Controller
               $_new_comment->created_at=Carbon::now();
               $_new_comment->id_user=auth()->user()->id;
               $_new_comment->save();
-              $message="Taọ nhận xét thành công !"; 
+              $message="Bạn đã nhận xét Thành công!"; 
               $response = array('message'=>$message,'error'=>null, 'comment' => $_new_comment);
               return  response()->json($response);
           } catch (Exception $e) {

@@ -22,7 +22,7 @@ class comments_fieldSeeder extends Seeder
                 'id_field' => rand(1, 6),
                 'rating' => rand(2, 5),
                 'description' =>  Str::random(50),
-                'created_at' => Carbon::now()->addHours($i+2)
+                'created_at' => Carbon::now()
             ]);
         }
     }
