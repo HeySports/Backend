@@ -14,7 +14,6 @@ class commentFieldController extends Controller
     public function getCommentField($id)
     {
         $response =  CommentField::where('id',$id)
-        
         ->get();
         return  response()->json($response[0]);
     }
