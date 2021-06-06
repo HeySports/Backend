@@ -25,7 +25,7 @@ class teamController extends Controller
          $commentOfTeam = DB::table('team_comments')
          ->join('users', 'users.id', '=', 'team_comments.id_user')
          ->where('team_comments.id_team', '=', $team->id)
-         ->select('users.id', 'users.full_name', 'team_comments.description','team_comments.rating','users.avatar', 'team_comments.created_at')
+         ->select('team_comments.id_user','team_comments.id', 'users.full_name', 'team_comments.description','team_comments.rating','users.avatar', 'team_comments.created_at')
          ->orderBy('team_comments.created_at', 'desc')
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
