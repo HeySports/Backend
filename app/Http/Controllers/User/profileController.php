@@ -147,7 +147,7 @@ class profileController extends Controller
             $_new_comment->id_user_commented=$request->id_user_commented;
             $_new_comment->skill_rating=$request->skill_rating;
             $_new_comment->attitude_rating=$request->attitude_rating;
-            $_new_comment->created_at=Carbon::now();
+            $_new_comment->created_at=Carbon::now('Asia/Ho_Chi_Minh');
             $_new_comment->id_user=auth()->user()->id;
             $_new_comment->save();
             $message="Taọ nhận xét thành công !"; 

@@ -19,8 +19,8 @@ class orderSeeder extends Seeder
     {
         //Tạo các order 
         for ($i = 0; $i < 30; $i++){
-            $min_epoch = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
-            $max_epoch = strtotime(Carbon::now()->addMonth()->format('Y-m-d H:i:s'));
+            $min_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'));
+            $max_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->addMonth()->format('Y-m-d H:i:s'));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $time_start = date('Y-m-d H:i:s', $rand_epoch);
             DB::table('orders')->insert([
@@ -37,7 +37,7 @@ class orderSeeder extends Seeder
         
         for ($i = 30; $i < 50; $i++){
             $min_epoch = strtotime('2021-05-29 14:08:29');
-            $max_epoch = strtotime(Carbon::now()->format('Y-m-d H:i:s'));
+            $max_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $time_start = date('Y-m-d H:i:s', $rand_epoch);
             DB::table('orders')->insert([
