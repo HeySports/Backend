@@ -16,7 +16,7 @@ class TeamCommentSeeder extends Seeder
     {
         for ($i = 0; $i < 100; $i++){
             DB::table('team_comments')->insert([
-                'id_user' => rand(1,99),
+                'id_user' => rand(1,50),
                 'id_team' => rand(1, 10),
                 'rating'=>rand(2,4),
                 'description' =>'Đội thái độ tích cực',
@@ -25,8 +25,8 @@ class TeamCommentSeeder extends Seeder
         }
         for ($i = 0; $i < 100; $i++){
             DB::table('team_comments')->insert([
-                'id_user' => rand(1,99),
-                'id_team' => rand(1, 49),
+                'id_user' => rand(1,50),
+                'id_team' => rand(1, 10),
                 'rating'=>rand(2,4),
                 'description' =>'Các bạn trong đội rất hòa đồng',
                 'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
