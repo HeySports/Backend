@@ -22,17 +22,8 @@ class TeamSeeder extends Seeder
         for ($i = 0; $i < 5; $i++){
             DB::table('teams')->insert([
                 'name' => $_arr[$i],
-                'address' =>$_address[rand(0,4)],
-                'description' => Str::random(50),
-                'rating' => rand(1,5),
-                'rating_number' => rand(1,10),
-            ]);
-        }
-        for ($i = 0; $i < 60; $i++){
-            DB::table('teams')->insert([
-                'name' => Str::random(2) . rand(10,99),
-                'address' =>$_address[rand(0,4)],
-                'description' => Str::random(50),
+                'address' =>$_address[$i],
+                'description' => 'Giao lưu học hỏi',
                 'rating' => rand(1,5),
                 'rating_number' => rand(1,10),
             ]);

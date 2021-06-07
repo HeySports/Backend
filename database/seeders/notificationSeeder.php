@@ -19,17 +19,17 @@ class notificationSeeder extends Seeder
         for ($i = 0; $i < 50; $i++){
             DB::table('notifications')->insert([
                 'type' => 1,
-                'id_match' => rand(1, 50),
+                'id_match' => rand(1, 20),
                 'description' => 'Hùng HLV đã tạo 1 trận đấu mới',
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }
         for ($i = 50; $i < 100; $i++){
             DB::table('notifications')->insert([
                 'type' => 0,
-                'id_match' => rand(1, 50),
+                'id_match' => rand(1, 10),
                 'description' => 'Sân bóng Duy Tân giảm 50% cho tất cả sân 5vs5',
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }
     }

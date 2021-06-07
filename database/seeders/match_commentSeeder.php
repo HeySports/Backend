@@ -17,11 +17,11 @@ class match_commentSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 200; $i++){
+        for ($i = 0; $i < 50; $i++){
             DB::table('match_comments')->insert([
-                'id_user' => rand(1,99),
-                'id_match' => rand(1, 50),
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2),
+                'id_user' => rand(1,10),
+                'id_match' => rand(1, 20),
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
                 'description' =>('Trận đấu rất hay có nhiều cầu thủ giỏi thái độ tích cực'),
             ]);
         }

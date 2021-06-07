@@ -16,13 +16,13 @@ class comments_fieldSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 100; $i++){
+        for ($i = 0; $i < 50; $i++){
             DB::table('comments_field')->insert([
-                'id_user' => rand(1, 70),
-                'id_field' => rand(1, 6),
+                'id_user' => rand(1, 10),
+                'id_field' => rand(1, 18),
                 'rating' => rand(2, 5),
-                'description' =>  Str::random(50),
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
+                'description' =>  'Sân tốt giá cả hợp lí',
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }
     }
