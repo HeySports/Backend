@@ -15,6 +15,7 @@ use App\Models\DetailNotification;
 use App\Models\Notification;
 use App\Http\Controllers\Match\matchController;
 use App\Models\Team;
+use Carbon\Carbon;
 
 class offerController extends Controller
 {
@@ -45,6 +46,7 @@ class offerController extends Controller
             $new_offer->id_team=$request->id_team;
             $new_offer->id_status=1;
             $new_offer->description=$request->description;
+            $new_offer->created_at=Carbon::now('Asia/Ho_Chi_Minh');
             $new_offer->save();
 
             $_new_notification = new Notification();

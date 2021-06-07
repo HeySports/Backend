@@ -107,6 +107,7 @@ class teamController extends Controller
                 $_new->address= $address;
                 $_new->description=$description;
                 $_new->create_by=auth()->user()->id;
+                $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
                 $_new->save();
                 $message="Tạo Đội thành công !"; 
                 $response = array('message'=>$message,'error'=>null, 'data'=>$_new);
