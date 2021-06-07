@@ -127,7 +127,7 @@ class detailMatchController extends Controller
                     auth()->user()->full_name . ' đã tham gia trận '.$m->type_field.'vs'.$m->type_field.' '.$m->name_room;
                     $_new_notification->type = 1;
                     $_new_notification->id_match = $_new->id;
-                    $_new_notification->created_at = Carbon::now();
+                    $_new_notification->created_at = Carbon::now('Asia/Ho_Chi_Minh');
                     $_new_notification->save();
                     $data_notification = ['id_match'=> $_new->id];
                     $tokens =[];

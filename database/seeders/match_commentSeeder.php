@@ -21,7 +21,7 @@ class match_commentSeeder extends Seeder
             DB::table('match_comments')->insert([
                 'id_user' => rand(1,99),
                 'id_match' => rand(1, 50),
-                'created_at' => Carbon::now()->addHours($i+2),
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2),
                 'description' =>('Trận đấu rất hay có nhiều cầu thủ giỏi thái độ tích cực'),
             ]);
         }

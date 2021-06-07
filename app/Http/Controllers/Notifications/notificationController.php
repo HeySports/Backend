@@ -104,24 +104,25 @@ class notificationController extends Controller
                 return  response()->json($response);
             }
         }
-        public function putStatusNotification($id){
-            $user = auth()->user();
-            try {
-                $response =  DetailNotification::where('id_notification',$id)
-                ->where('id_user',$user->id)
-                ->get();
-                $_new= $response[0];
-                $_new->status=1;
-                $_new->save();
-                $message="Sửa status thành công !";
-                $response = array('message'=>$message,'error'=>null);
-                return  response()->json($response);
-            } catch (Exception $e) {
-                $message="Sửa thất bại !";
-                $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response);
-            }
-         }
+        
        
     }
+    public function putStatusNotification(REQUEST $request, $id){
+        $user = auth()->user();
+        try {
+            $response =  DetailNotification::where('id_notification',$id)
+            ->where('id_user',$user->id)
+            ->get();
+            $_new= $response[0];
+            $_new->status=$request->status;
+            $_new->save();
+            $message="Sửa status thành công !";
+            $response = array('message'=>$message,'error'=>null);
+            return  response()->json($response,200);
+        } catch (Exception $e) {
+            $message="Sửa thất bại !";
+            $response = array('message'=>$message,'error'=>$e);
+            return  response()->json($response);
+        }
+     }
 }

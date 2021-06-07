@@ -680,7 +680,7 @@ class matchController extends Controller
                 auth()->user()->full_name . ' đã tạo 1 trận '.$type_field.'vs'.$type_field.' đấu vào lúc '. $time_start_play;
                 $_new_notification->type = 1;
                 $_new_notification->id_match = $_new->id;
-                $_new_notification->created_at = Carbon::now();
+                $_new_notification->created_at = Carbon::now('Asia/Ho_Chi_Minh');
                 $_new_notification->save();
                 $data_notification = ['id_match'=> $_new->id];
                 $tokens =[];
@@ -825,7 +825,7 @@ class matchController extends Controller
                     'Đội '. $request->team_name . ' đã tham trận '.$_new->type_field.'vs'.$_new->type_field.' '.$_new->name_room;
                     $_new_notification->type = 1;
                     $_new_notification->id_match = $_new->id;
-                    $_new_notification->created_at = Carbon::now();
+                    $_new_notification->created_at = Carbon::now('Asia/Ho_Chi_Minh');
                     $_new_notification->save();
                     $data_notification = ['id_match'=> $_new->id];
                     $tokens =[];

@@ -21,7 +21,7 @@ class notificationSeeder extends Seeder
                 'type' => 1,
                 'id_match' => rand(1, 50),
                 'description' => 'Hùng HLV đã tạo 1 trận đấu mới',
-                'created_at' => Carbon::now()->addHours($i+2)
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
             ]);
         }
         for ($i = 50; $i < 100; $i++){
@@ -29,7 +29,7 @@ class notificationSeeder extends Seeder
                 'type' => 0,
                 'id_match' => rand(1, 50),
                 'description' => 'Sân bóng Duy Tân giảm 50% cho tất cả sân 5vs5',
-                'created_at' => Carbon::now()->addHours($i+2)
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
             ]);
         }
     }

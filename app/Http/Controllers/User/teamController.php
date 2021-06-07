@@ -126,7 +126,7 @@ class teamController extends Controller
               $_new_comment->description=$request->description;
               $_new_comment->id_team=$request->id_team;
               $_new_comment->rating=$request->rating;
-              $_new_comment->created_at=Carbon::now();
+              $_new_comment->created_at=Carbon::now('Asia/Ho_Chi_Minh');
               $_new_comment->id_user=auth()->user()->id;
               $_new_comment->save();
               $message="Bạn đã nhận xét Thành công!"; 
