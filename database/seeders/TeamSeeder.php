@@ -7,6 +7,7 @@ use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str; 
+use Carbon\Carbon;
 class TeamSeeder extends Seeder
 {
     /**
@@ -33,7 +34,7 @@ class TeamSeeder extends Seeder
                 'description' => Str::random(50),
                 'rating' => rand(1,5),
                 'rating_number' => rand(1,5),
-              
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }
     }

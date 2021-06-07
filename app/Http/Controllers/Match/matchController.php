@@ -248,7 +248,6 @@ class matchController extends Controller
             if(count($memberTeamA)>0 && $matches[$i]->type_field*2 > $sum){
                 array_push($response,  array('match'=>$matches[$i],'field_play'=> $fieldPlay, 'missing_members'=>$matches[$i]->type_field*2 - $sum,'team_a'=>$teamA));
             }
-            
         }
         return  response()->json($response);
     }

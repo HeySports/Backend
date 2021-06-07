@@ -30,9 +30,25 @@ class teamController extends Controller
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
      }
+ public function getTeamByUser()
+     {
+         $team =  Team::where('create_by',auth()->user()->id)->get();
+         $team=$team[0];
+         $userOfTeam = DB::table('users')
+         ->join('team_details', 'users.id', '=', 'team_details.id_user')
+         ->where('team_details.id_team', '=', $team->id)
+         ->get();
+         $commentOfTeam = DB::table('team_comments')
+         ->join('users', 'users.id', '=', 'team_comments.id_user')
+         ->where('team_comments.id_team', '=', $team->id)
+         ->select('team_comments.id_user','team_comments.id', 'users.full_name', 'team_comments.description','team_comments.rating','users.avatar', 'team_comments.created_at')
+         ->orderBy('team_comments.created_at', 'desc')
+         ->get();
+         return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
+     }
      public function getListTeam()
      {
-         $response =  Team::all();
+         $response =  Team::orderBy('teams.created_at', 'desc')->get();
          return  response()->json($response);
      }
      public function getListUserByTeam($idTeam)

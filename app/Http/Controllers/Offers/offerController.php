@@ -14,6 +14,8 @@ use App\Models\TeamDetail;
 use App\Models\DetailNotification;
 use App\Models\Notification;
 use App\Http\Controllers\Match\matchController;
+use App\Models\Team;
+
 class offerController extends Controller
 {
     function postOfferTeam(REQUEST $request){
@@ -23,7 +25,7 @@ class offerController extends Controller
         ]);
         $user=auth()->user()->id;
         $checkUser=OfferTeam::where('id_user',$user)->where('id_team', $request->id_team)->get();
-        $check=TeamDetail::where('id_user',$user)->get();
+        $check=Team::where('create_by',$user)->get();
 
          if (count($checkUser)>0) {
             $message="Bạn đã gửi yêu cầu tham gia đội này trước đó hãy chờ xác nhận !";
@@ -154,11 +156,13 @@ class offerController extends Controller
         $response=array('message'=>$message, 'success'=>$success, 'data'=>$new);
         return  response()->json($response);
         }
+
         function getOfferTeam($id){
         $offers=DB::table('offer_teams')
             ->Where('id_team', $id)->where('id_status',1)
             ->join('users', 'offer_teams.id_user', '=', 'users.id')
             ->select('users.*', 'offer_teams.*')
+            ->orderBy('offer_teams.created_at', 'desc')
             ->get();
         $message="Get data thành công !";
         $success="Thành công";
