@@ -26,10 +26,10 @@ class detail_matchSeeder extends Seeder
                 'team_name' => $_name[rand(0, 4)],
             ]);
         }
-        for ($i = 0; $i < 20; $i++){
+        for ($i = 0; $i < 10; $i++){
             DB::table('detail_matches')->insert([
                 'id_user' => rand(1, 10),
-                'id_match' => rand(15, 35),
+                'id_match' => rand(15,30),
                 'status_team' => 1,
                 'numbers_user_added' => rand(1,3),
                 'team_name' => $_name[rand(0, 4)],
