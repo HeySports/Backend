@@ -234,9 +234,9 @@ class matchController extends Controller
             $sumA = 0;
             $sum = 0;
             foreach($memberTeamA as $key=>$value){
+            $sum += $value->numbers_user_added;
             if(isset($value->matches_number))
                 $sumA += $value->matches_number;
-                $sum += $value->numbers_user_added;
             }
             if(count($memberTeamA)>0){
                 $matches_number_teamA = $sumA/count($memberTeamA);

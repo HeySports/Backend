@@ -22,7 +22,7 @@ class detail_matchSeeder extends Seeder
                 'id_user' => rand(1, 10),
                 'id_match' => rand(1, 20),
                 'status_team' => 0,
-                'numbers_user_added' => rand(1,5),
+                'numbers_user_added' => rand(1,3),
                 'team_name' => $_name[rand(0, 4)],
             ]);
         }
@@ -31,7 +31,7 @@ class detail_matchSeeder extends Seeder
                 'id_user' => rand(1, 10),
                 'id_match' => rand(15, 35),
                 'status_team' => 1,
-                'numbers_user_added' => rand(1,5),
+                'numbers_user_added' => rand(1,3),
                 'team_name' => $_name[rand(0, 4)],
             ]);
         }
