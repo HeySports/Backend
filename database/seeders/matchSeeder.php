@@ -33,7 +33,7 @@ class matchSeeder extends Seeder
             $rand_epoch = rand($min_epoch, $max_epoch);
             $time_start = date('Y-m-d H:i:s', $rand_epoch);
             DB::table('matches')->insert([
-                'id_user'=>rand(1,10),
+                'id_user'=>rand(1,9),
                 'name_room' => rand(100000, 199999),
                 'lock' => rand(0, 1),
                 'type_field' => $arr[$r],
@@ -59,7 +59,7 @@ class matchSeeder extends Seeder
             DB::table('matches')->insert([
                 'id_user'=>rand(1,10),
                 'name_room' => rand(100000, 199999),
-                'lock' => rand(5, 15),
+                'lock' => rand(0,1),
                 'type_field' => $arr[$r],
                 'lose_pay' => $arr_lose[$r_lose],
                 'address' => $address[rand(0,1)],
