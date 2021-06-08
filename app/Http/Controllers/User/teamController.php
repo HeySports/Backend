@@ -11,8 +11,8 @@ use App\Models\TeamDetail;
 use App\Models\TeamComment;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class teamController extends Controller
 {
   
@@ -33,8 +33,9 @@ class teamController extends Controller
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
      }
  public function getTeamByUser()
-     {
-         $team =  Team::where('create_by',auth()->user()->id)->get();
+     { 
+         $user= auth()->user()->id;
+         $team =  Team::where('create_by',$user)->get();
          $team=$team[0];
          $userOfTeam = DB::table('users')
          ->join('team_details', 'users.id', '=', 'team_details.id_user')
