@@ -105,6 +105,7 @@ class teamController extends Controller
                     }else{
                         $_new->rating=3;
                     }
+                    $_new->create_by=auth()->user()->id;
                     $_new->rating_number=1;
                     $_new->address= $address;
                     $_new->description=$description;

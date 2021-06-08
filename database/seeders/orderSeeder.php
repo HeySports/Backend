@@ -18,13 +18,13 @@ class orderSeeder extends Seeder
     public function run()
     {
         //Tạo các order 
-        for ($i = 0; $i < 15; $i++){
+        for ($i = 0; $i < 50; $i++){
             $min_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'));
             $max_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->addMonth()->format('Y-m-d H:i:s'));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $time_start = date('Y-m-d H:i:s', $rand_epoch);
             DB::table('orders')->insert([
-                'id_match' => rand(1,10),
+                'id_match' => rand(1,30),
                 'id_child_field' => rand(1,20),
                 'id_user' => rand(1, 10),
                 'status' => rand(0,1),
@@ -35,13 +35,13 @@ class orderSeeder extends Seeder
             ]);
         }
         
-        for ($i = 15; $i < 30; $i++){
+        for ($i = 0; $i < 20; $i++){
             $min_epoch = strtotime('2021-05-29 14:08:29');
             $max_epoch = strtotime(Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s'));
             $rand_epoch = rand($min_epoch, $max_epoch);
             $time_start = date('Y-m-d H:i:s', $rand_epoch);
             DB::table('orders')->insert([
-                'id_match' => rand(10, 20),
+                'id_match' => rand(1, 30),
                 'id_child_field' => rand(1,10),
                 'id_user' => rand(1, 10),
                 'status' => rand(0,1),
