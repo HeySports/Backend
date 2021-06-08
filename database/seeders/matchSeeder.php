@@ -45,7 +45,7 @@ class matchSeeder extends Seeder
                 'description' => 'Có thể chơi lâu dài, tích cực',
                 'price'=> $price[$r],
                 'type' =>0,
-                'created_at' => $time_start
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s')
             ]);
         }
         for ($i = 0; $i < 10; $i++){
@@ -59,7 +59,7 @@ class matchSeeder extends Seeder
             DB::table('matches')->insert([
                 'id_user'=>rand(1,10),
                 'name_room' => rand(100000, 199999),
-                'lock' => rand(5, 15),
+                'lock' => rand(0, 1),
                 'type_field' => $arr[$r],
                 'lose_pay' => $arr_lose[$r_lose],
                 'address' => $address[rand(0,1)],
@@ -69,7 +69,7 @@ class matchSeeder extends Seeder
                 'description' => 'Có thể chơi lâu dài, tích cực',
                 'price'=> $price[$r],
                 'type' =>1,
-                'created_at' => $time_start
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s')
             ]);
         }
         for ($i = 10; $i < 20; $i++){
@@ -93,7 +93,7 @@ class matchSeeder extends Seeder
                 'description' => 'Tìm các bạn chung kĩ năng',
                 'price'=> $price[$r],
                 'type' =>rand(0, 1),
-                'created_at' => $time_start
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s')
             ]);
         }
     }

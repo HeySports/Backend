@@ -212,7 +212,7 @@ class matchController extends Controller
         ->where('matches.time_start_play', '>', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-        ->orderBy('matches.time_start_play', 'asc')
+        ->orderBy('matches.created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
@@ -259,7 +259,7 @@ class matchController extends Controller
         ->where('matches.time_start_play', '>', \DB::raw('NOW()'))
         ->select('matches.id', 'matches.id_user','matches.address', 'matches.name_room', 'matches.lock','matches.field_name', 'matches.password','matches.time_start_play', 'matches.time_end_play', 'matches.description'
         , 'matches.lose_pay', 'matches.type', 'matches.price', 'matches.type_field', 'matches.created_at', 'matches.updated_at')
-        ->orderBy('matches.time_start_play', 'asc')
+        ->orderBy('matches.created_at', 'desc')
         ->get();
         for ($i=0; $i< count($matches); $i++){
             $childFieldPlay = DB::table('child_fields')
