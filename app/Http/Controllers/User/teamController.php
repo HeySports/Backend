@@ -32,11 +32,11 @@ class teamController extends Controller
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
      }
- public function getTeamByUser()
+        public function getTeamDetailByUser()
      { 
          $user= auth()->user()->id;
-         $team =  Team::where('create_by',$user)->get();
-         $team=$team[0];
+        $team =  Team::where('create_by',$user)->get();
+        $team=$team[0];
          $userOfTeam = DB::table('users')
          ->join('team_details', 'users.id', '=', 'team_details.id_user')
          ->where('team_details.id_team', '=', $team->id)

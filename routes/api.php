@@ -110,7 +110,7 @@ Route::get('/team/getListUserByTeam/{idTeam}',[teamController::class,'getListUse
 Route::post('/team/postTeam',[teamController::class,'postTeam']);    
 Route::delete('/team/deleteTeam/{id}', [teamController::class,'deleteTeam']);   
 Route::put('/team/putTeam/{id}', [teamController::class,'putTeam']); 
-Route::get('/team/getTeam/byUser', [teamController::class,'getTeamByUser']); 
+Route::get('/team/getDetailTeam/byUser', [teamController::class,'getTeamDetailByUser']); 
 
 // get all comments with a specific match
 Route::get('/commentMatch/getCommentMatchByIdMatch/{id}',[commentMatchController::class,'getCommentMatchByIdMatch']); 
