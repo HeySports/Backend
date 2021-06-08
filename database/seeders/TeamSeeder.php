@@ -29,11 +29,10 @@ class TeamSeeder extends Seeder
             DB::table('teams')->insert([
                 'name' => $_arr[$i],
                 'address' =>$_address[$i],
-                'image'=>$_team[rand(0,4)],
-                'create_by'=>rand(1, 20),
-                'description' => Str::random(50),
+                'description' => 'Giao lưu học hỏi',
                 'rating' => rand(1,5),
                 'rating_number' => rand(1,5),
+                'create_by'=>rand(1,9),
                 'created_at'=> Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }

@@ -24,10 +24,10 @@ class child_fieldSeeder extends Seeder
             for($j = 0; $j < $n; $j++){
                 DB::table('child_fields')->insert([
                     'id_field' => $i+1,
-                    'name_field' =>Str::random(1).rand(1,9),
+                    'name_field' =>strtoupper(Str::random(1)).rand(1,9),
                     'type' => $arr[$r],
                     'status' => rand(0, 1),
-                    'description' =>  Str::random(50),
+                    'description' =>  'Sân mới thay cỏ nhân tạo',
                 ]);
             }
             

@@ -19,7 +19,7 @@ class detail_notificationSeeder extends Seeder
     {
         for ($i = 0; $i < 200; $i++){
             DB::table('detail_notifications')->insert([
-                'id_user' => rand(1, 30),
+                'id_user' => rand(1, 10),
                 'id_notification' => rand(1, 20),
                 'status' => rand(0,2),
             ]);

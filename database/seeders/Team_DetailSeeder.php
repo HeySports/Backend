@@ -13,25 +13,18 @@ class Team_DetailSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 10; $i++){
+        for ($i = 0; $i < 5; $i++){
             DB::table('team_details')->insert([
                 'id_user' => $i+1,
                 'id_team' =>$i+1,
                 'isCaptain' => 1,
             ]);
         }
-           for ($i = 10; $i < 20; $i++){
+        for ($i = 5; $i < 7; $i++){
             DB::table('team_details')->insert([
                 'id_user' => $i+1,
-                'id_team' =>rand(1,10),
-                'isCaptain' => 1,
-            ]);
-        }
-              for ($i = 20; $i < 50; $i++){
-            DB::table('team_details')->insert([
-                'id_user' => $i+1,
-                'id_team' =>rand(1,10),
-                'isCaptain' => 1,
+                'id_team' =>$i-4,
+                'isCaptain' => 0,
             ]);
         }
     }

@@ -16,24 +16,15 @@ class userCommentSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 100; $i++){
+        $desc= ['Kĩ thuật hơi kém nhưng thái độ ok', 'Bạn thái độ tích cực', 'Nhiệt tình'];
+        for ($i = 0; $i < 50; $i++){
             DB::table('user_comments')->insert([
-                'id_user' => rand(1,99),
-                'id_user_commented' => rand(1, 99),
+                'id_user' => rand(1,10),
+                'id_user_commented' => rand(1, 10),
                 'skill_rating'=>rand(1,10),
                 'attitude_rating'=>rand(2,5),
-                'description' =>'Bạn thái độ tích cực',
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
-            ]);
-        }
-        for ($i = 0; $i < 100; $i++){
-            DB::table('user_comments')->insert([
-                'id_user' => rand(1,99),
-                'id_user_commented' => rand(1, 99),
-                'skill_rating'=>rand(1,10),
-                'attitude_rating'=>rand(2,5),
-                'description' =>'Kĩ thuật hơi kém nhưng thái độ ok',
-                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')->addHours($i+2)
+                'description' => $desc[rand(0,2)],
+                'created_at' => Carbon::now('Asia/Ho_Chi_Minh')
             ]);
         }
     }

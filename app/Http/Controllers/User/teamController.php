@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Team;
+use App\Models\TeamDetail;
+
 use App\Models\TeamComment;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -94,24 +96,30 @@ class teamController extends Controller
             $rating=$request->rating;
             $address=$request->address;
             $description=$request->description;
-        
-            try {
-                $_new=new Team();
-                $_new->name=$name;
-                if($rating){
-                    $_new->rating=$rating;
-                }else{
-                    $_new->rating=3;
-                }
-                $_new->rating_number=1;
-                $_new->address= $address;
-                $_new->description=$description;
-                $_new->create_by=auth()->user()->id;
-                $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
-                $_new->save();
-                $message="Tạo Đội thành công !"; 
-                $response = array('message'=>$message,'error'=>null, 'data'=>$_new);
-                return  response()->json($response);
+  
+                try {
+                    $_new=new Team();
+                    $_new->name=$name;
+                    if($rating){
+                        $_new->rating=$rating;
+                    }else{
+                        $_new->rating=3;
+                    }
+                    $_new->rating_number=1;
+                    $_new->address= $address;
+                    $_new->description=$description;
+               
+                    $_new->save();
+                    $_new_detail=new TeamDetail();
+                    $_new_detail->id_user=auth()->user()->id;
+                    $_new_detail->id_team= $_new->id;
+                    $_new_detail->isCaptain=1;
+                     $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
+                    $_new_detail->save();
+    
+                    $message="Taọ Team thành công !"; 
+                    $response = array('message'=>$message,'error'=>null, 'data'=> $this->getTeam($_new->id));
+                    return  response()->json($response);
             } catch (Exception $e) {
                 $message="Taọ Team thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
