@@ -27,14 +27,30 @@ class teamController extends Controller
          $commentOfTeam = DB::table('team_comments')
          ->join('users', 'users.id', '=', 'team_comments.id_user')
          ->where('team_comments.id_team', '=', $team->id)
-         ->select('users.id', 'users.full_name', 'team_comments.description','team_comments.rating')
+         ->select('team_comments.id_user','team_comments.id', 'users.full_name', 'team_comments.description','team_comments.rating','users.avatar', 'team_comments.created_at')
+         ->orderBy('team_comments.created_at', 'desc')
+         ->get();
+         return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
+     }
+ public function getTeamByUser()
+     {
+         $team =  Team::where('create_by',auth()->user()->id)->get();
+         $team=$team[0];
+         $userOfTeam = DB::table('users')
+         ->join('team_details', 'users.id', '=', 'team_details.id_user')
+         ->where('team_details.id_team', '=', $team->id)
+         ->get();
+         $commentOfTeam = DB::table('team_comments')
+         ->join('users', 'users.id', '=', 'team_comments.id_user')
+         ->where('team_comments.id_team', '=', $team->id)
+         ->select('team_comments.id_user','team_comments.id', 'users.full_name', 'team_comments.description','team_comments.rating','users.avatar', 'team_comments.created_at')
          ->orderBy('team_comments.created_at', 'desc')
          ->get();
          return  response()->json(['team' => $team, 'userOfTeam'=> $userOfTeam, 'commentOfTeam'=> $commentOfTeam]);
      }
      public function getListTeam()
      {
-         $response =  Team::all();
+         $response =  Team::orderBy('teams.created_at', 'desc')->get();
          return  response()->json($response);
      }
      public function getListUserByTeam($idTeam)
@@ -98,6 +114,7 @@ class teamController extends Controller
                     $_new_detail->id_user=auth()->user()->id;
                     $_new_detail->id_team= $_new->id;
                     $_new_detail->isCaptain=1;
+                     $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
                     $_new_detail->save();
     
                     $message="Taọ Team thành công !"; 
@@ -137,7 +154,7 @@ class teamController extends Controller
               $_new_comment->created_at=Carbon::now('Asia/Ho_Chi_Minh');
               $_new_comment->id_user=auth()->user()->id;
               $_new_comment->save();
-              $message="Taọ nhận xét thành công !"; 
+              $message="Bạn đã nhận xét Thành công!"; 
               $response = array('message'=>$message,'error'=>null, 'comment' => $_new_comment);
               return  response()->json($response);
           } catch (Exception $e) {
@@ -172,11 +189,11 @@ class teamController extends Controller
                 $_new->description=$description;
            
                 $_new->save();
-                $message="Taọ Team thành công !"; 
+                $message="Tạo Team thành công !"; 
                 $response = array('message'=>$message,'error'=>null);
                 return  response()->json($response);
             } catch (Exception $e) {
-                $message="Taọ Team thất bại !";
+                $message="Tạo Team thất bại !";
                 $response = array('message'=>$message,'error'=>$e);
                 return  response()->json($response, 400);
             }
