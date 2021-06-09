@@ -663,6 +663,7 @@ class matchController extends Controller
                 $_new->price=$price;
                 $_new->type_field=$type_field;
                 $_new->address=$request->address;
+                $_new->created_at = Carbon::now('Asia/Ho_Chi_Minh');
                 $_new->save();
                 $_new_detail=new DetailMatch();
                 $_new_detail->id_user = auth()->user()->id;
