@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\Team;
 use App\Models\TeamDetail;
-
+use App\Models\OfferTeam;
+use App\Models\User;
+use App\Models\DetailNotification;
+use App\Models\Notification;
 use App\Models\TeamComment;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+use App\Http\Controllers\Match\matchController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 class teamController extends Controller
@@ -93,40 +97,70 @@ class teamController extends Controller
          if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
          }else{
-            $name=$request->name;
-            $rating=$request->rating;
-            $address=$request->address;
-            $description=$request->description;
-  
-                try {
-                    $_new=new Team();
-                    $_new->name=$name;
-                    if($rating){
-                        $_new->rating=$rating;
-                    }else{
-                        $_new->rating=3;
-                    }
-                    $_new->create_by=auth()->user()->id;
-                    $_new->rating_number=1;
-                    $_new->address= $address;
-                    $_new->description=$description;
-               
-                    $_new->save();
-                    $_new_detail=new TeamDetail();
-                    $_new_detail->id_user=auth()->user()->id;
-                    $_new_detail->id_team= $_new->id;
-                    $_new_detail->isCaptain=1;
-                     $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
-                    $_new_detail->save();
-    
-                    $message="Taọ Team thành công !"; 
-                    $response = array('message'=>$message,'error'=>null, 'data'=> $this->getTeam($_new->id));
-                    return  response()->json($response);
-            } catch (Exception $e) {
+            $checker =Team::where('name', $request->name)->get();
+            if(count($checker)>0){
                 $message="Taọ Team thất bại !";
-                $response = array('message'=>$message,'error'=>$e);
-                return  response()->json($response, 400);
+                $response = array('message'=>$message,'error'=>'Tên đội này đã tồn tại');
+                return  response()->json($response, 409);
+            }else{
+                $name=$request->name;
+                $rating=$request->rating;
+                $address=$request->address;
+                $description=$request->description;
+      
+                    try {
+                        $_new=new Team();
+                        $_new->name=$name;
+                        if($rating){
+                            $_new->rating=$rating;
+                        }else{
+                            $_new->rating=3;
+                        }
+                        $_new->create_by=auth()->user()->id;
+                        $_new->rating_number=1;
+                        $_new->address= $address;
+                        $_new->description=$description;
+                   
+                        $_new->save();
+                        $_new_detail=new TeamDetail();
+                        $_new_detail->id_user=auth()->user()->id;
+                        $_new_detail->id_team= $_new->id;
+                        $_new_detail->isCaptain=1;
+                         $_new->created_at=Carbon::now('Asia/Ho_Chi_Minh');
+                        $_new_detail->save();
+    
+                        $_new_notification = new Notification();
+                        $_new_notification->description = 
+                        auth()->user()->full_name . ' đã tạo một 1 đội tên '.$_new->name;
+                        $_new_notification->type = 1;
+                        $_new_notification->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                        $_new_notification->save();
+                        $data_notification = ['id_team'=> $_new->id];
+                        $tokens =[];
+                        $users = User::where('id','<>',auth()->user()->id)->get();
+                        foreach ($users as &$value) {
+                            $_detail_notification = new DetailNotification();
+                            $_detail_notification->id_user = $value->id;
+                            $_detail_notification->id_notification = $_new_notification->id;
+                            $_detail_notification->status = 0;
+                            $_new_notification->save();
+                            if($value->device_token != ''){
+                                array_push($tokens, $value->device_token);
+                            } 
+                        }
+                        $notification_Pusher = new matchController();
+                        $notification_Pusher->pushNotification ($tokens, 'Đội tạo mới', $_new_notification->description, $data_notification);
+        
+                        $message="Taọ Team thành công !"; 
+                        $response = array('message'=>$message,'error'=>null,'user'=>$users, 'data'=> $this->getTeam($_new->id));
+                        return  response()->json($response);
+                } catch (Exception $e) {
+                    $message="Taọ Team thất bại !";
+                    $response = array('message'=>$message,'error'=>$e);
+                    return  response()->json($response, 400);
+                }
             }
+            
            
          }
         

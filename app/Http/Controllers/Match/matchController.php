@@ -838,7 +838,7 @@ class matchController extends Controller
                             array_push($tokens, $value->device_token);
                         } 
                     }
-                    $this->pushNotification ($tokens,  auth()->user()->full_name.' tham gia trận', $_new_notification->description, $data_notification);
+                    $this->pushNotification ($tokens, 'Tham gia trận đấu', $_new_notification->description, $data_notification);
 
                     $message="Nhận kèo thành công!";
                     $response = array('message'=>$message,'error'=>null);

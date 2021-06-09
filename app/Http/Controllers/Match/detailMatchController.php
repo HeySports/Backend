@@ -142,7 +142,7 @@ class detailMatchController extends Controller
                         } 
                     }
                     $notification_Pusher = new matchController();
-                    $notification_Pusher->pushNotification ($tokens, 'Thành viên tham gia đội', $_new_notification->description, $data_notification);
+                    $notification_Pusher->pushNotification ($tokens, 'Thành viên tham gia trận', $_new_notification->description, $data_notification);
     
                     $message="Taọ thành công !";
                     $response = array('message'=>$message,'error'=>null);

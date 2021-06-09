@@ -150,7 +150,7 @@ class offerController extends Controller
                     } 
                 }
             $notification_Pusher = new matchController();
-            $notification_Pusher->pushNotification ($tokens, 'Chấp nhận vào đội', $_new_notification->description, $data_notification);
+            $notification_Pusher->pushNotification ($tokens, 'Từ chối vào đội', $_new_notification->description, $data_notification);
         $message="Bạn đã thêm từ chối đề nghị này !";
         $success="Thành công";
         $response=array('message'=>$message, 'success'=>$success, 'data'=>$new);
