@@ -25,9 +25,8 @@ class notificationController extends Controller
         $user = auth()->user();
         $response =  DB::table('detail_notifications')
         ->join('notifications', 'notifications.id', '=', 'detail_notifications.id_notification')
-        ->join('users', 'detail_notifications.id_user', '=', 'users.id')
         ->where('detail_notifications.id_user', '=', $user->id)
-        ->select('detail_notifications.id', 'detail_notifications.status', 'notifications.description', 'notifications.id_match', 'notifications.type', 'notifications.created_at', 'notifications.updated_at')
+        ->select('notifications.id', 'detail_notifications.status', 'notifications.description', 'notifications.id_match', 'notifications.type', 'notifications.created_at', 'notifications.updated_at')
         ->orderBy('notifications.created_at', 'desc')
         ->get();
         return  response()->json($response);
