@@ -27,5 +27,6 @@ class Team_DetailSeeder extends Seeder
                 'isCaptain' => 0,
             ]);
         }
+    
     }
 }

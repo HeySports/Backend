@@ -64,7 +64,7 @@ class offerController extends Controller
                     $_detail_notification->id_user = $value->id;
                     $_detail_notification->id_notification = $_new_notification->id;
                     $_detail_notification->status = 0;
-                    $_new_notification->save();
+                    $_detail_notification->save();
                     if($value->device_token != ''){
                         array_push($tokens, $value->device_token);
                     } 
@@ -110,7 +110,7 @@ class offerController extends Controller
                     $_detail_notification->id_user = $value->id;
                     $_detail_notification->id_notification = $_new_notification->id;
                     $_detail_notification->status = 0;
-                    $_new_notification->save();
+                    $_detail_notification->save();
                     if($value->device_token != ''){
                         array_push($tokens, $value->device_token);
                     } 
@@ -144,7 +144,7 @@ class offerController extends Controller
                     $_detail_notification->id_user = $value->id;
                     $_detail_notification->id_notification = $_new_notification->id;
                     $_detail_notification->status = 0;
-                    $_new_notification->save();
+                    $_detail_notification->save();
                     if($value->device_token != ''){
                         array_push($tokens, $value->device_token);
                     } 

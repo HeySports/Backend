@@ -684,14 +684,13 @@ class matchController extends Controller
                 $_new_notification->save();
                 $data_notification = ['id_match'=> $_new->id];
                 $tokens =[];
-                $users = User::where('id','<>', auth()->user()->id);
-                
+                $users = User::where('id','<>', auth()->user()->id)->get();
                 foreach ($users as &$value) {
                     $_detail_notification = new DetailNotification();
                     $_detail_notification->id_user = $value->id;
                     $_detail_notification->id_notification = $_new_notification->id;
                     $_detail_notification->status = 0;
-                    $_new_notification->save();
+                    $_detail_notification->save();
                     if($value->device_token != ''){
                         array_push($tokens, $value->device_token);
                     } 
@@ -710,6 +709,7 @@ class matchController extends Controller
     public function pushNotification ($tokens, $title, $body, $data){
         $fcm_server_key= "AAAAbU1mo1Y:APA91bGGlYQvtRpaNz81-GXpZCzEgn6yZiVOGMyOxO9BtHw9B0v-NpTMP_3fkOoD35ZvgrUrT3yT8RLYRx60emU-NAXIca-_WnsXgDNAjByTvWlL3BUfmrGpgyOOtK4_un-SySdPzkr1";
         $notificationData = [
+            'registration_ids' => $tokens,
             'notification' => [
                 'title' => $title,
                 'body' => $body,
@@ -718,18 +718,21 @@ class matchController extends Controller
             'data' => $data
         ];
         if (count($tokens)>1) {
-            $notificationData['registration_ids'] = $tokens;
+            $fields['registration_ids'] = $tokens;
         } else {
-            $notificationData['to'] = $tokens[0];
+            if(count($tokens)>0){
+                $fields['to'] = $tokens[0];
+            }
         }
-        
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($notificationData));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization:key=' . $fcm_server_key));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-        curl_exec($ch);
-        curl_close($ch);
+        if(count($tokens)>0){
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($notificationData));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization:key=' . $fcm_server_key));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+            curl_exec($ch);
+            curl_close($ch);
+        }
     }
     public function putMatch(REQUEST $request, $id){
         $validator = Validator::make($request->all(), [
@@ -837,7 +840,7 @@ class matchController extends Controller
                         $_detail_notification->id_user = $value->id;
                         $_detail_notification->id_notification = $_new_notification->id;
                         $_detail_notification->status = 0;
-                        $_new_notification->save();
+                        $_detail_notification->save();
                         if($value->device_token != ''){
                             array_push($tokens, $value->device_token);
                         } 
