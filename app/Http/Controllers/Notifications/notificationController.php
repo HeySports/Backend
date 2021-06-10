@@ -113,12 +113,19 @@ class notificationController extends Controller
             $response =  DetailNotification::where('id_notification',$id)
             ->where('id_user',$user->id)
             ->get();
-            $_new= $response[0];
-            $_new->status=$request->status;
-            $_new->save();
-            $message="Sửa status thành công !";
-            $response = array('message'=>$message,'error'=>null);
-            return  response()->json($response,200);
+            if(count($response)>0){
+                $_new= $response[0];
+                $_new->status=$request->status;
+                $_new->save();
+                $message="Sửa status thành công !";
+                $response = array('message'=>$message,'error'=>null);
+                return  response()->json($response,200);
+            }else{
+                $message="Sửa status thất bại do fake data!";
+                $response = array('message'=>$message,'error'=>'Người dùng không có thông báo này');
+                return  response()->json($response,400);
+            }
+           
         } catch (Exception $e) {
             $message="Sửa thất bại !";
             $response = array('message'=>$message,'error'=>$e);
