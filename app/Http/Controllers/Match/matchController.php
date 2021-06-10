@@ -684,7 +684,7 @@ class matchController extends Controller
                 $_new_notification->save();
                 $data_notification = ['id_match'=> $_new->id];
                 $tokens =[];
-                $users = User::all();
+                $users = User::where('id','<>', auth()->user()->id);
                 
                 foreach ($users as &$value) {
                     $_detail_notification = new DetailNotification();
@@ -710,7 +710,6 @@ class matchController extends Controller
     public function pushNotification ($tokens, $title, $body, $data){
         $fcm_server_key= "AAAAbU1mo1Y:APA91bGGlYQvtRpaNz81-GXpZCzEgn6yZiVOGMyOxO9BtHw9B0v-NpTMP_3fkOoD35ZvgrUrT3yT8RLYRx60emU-NAXIca-_WnsXgDNAjByTvWlL3BUfmrGpgyOOtK4_un-SySdPzkr1";
         $notificationData = [
-            'registration_ids' => $tokens,
             'notification' => [
                 'title' => $title,
                 'body' => $body,
@@ -718,7 +717,11 @@ class matchController extends Controller
             ],
             'data' => $data
         ];
-        
+        if (count($tokens)>1) {
+            $notificationData['registration_ids'] = $tokens;
+        } else {
+            $notificationData['to'] = $tokens[0];
+        }
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://fcm.googleapis.com/fcm/send");
