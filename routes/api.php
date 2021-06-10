@@ -84,6 +84,8 @@ Route::put('/field/putFieldRating/{id}', [fieldController::class,'putFieldRating
 //child field
 Route::get('/field/getChildFieldDetail/{id_field}',[childFieldController::class,'getChildFieldDetail']); 
 Route::get('/field/getChildField/{id}',[childFieldController::class,'getChildField']); 
+//child field and type field
+Route::get('/field/{id}/getChildFieldWithType/{type}',[childFieldController::class,'getChildFieldWithType']); 
 Route::post('/field/postChildField',[childFieldController::class,'postChildField']);    
 Route::delete('/field/deleteChildField/{id}', [childFieldController::class,'deleteChildField']);   
 Route::put('/field/putChildField/{id}', [childFieldController::class,'putChildField']); 

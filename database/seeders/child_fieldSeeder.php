@@ -19,9 +19,9 @@ class child_fieldSeeder extends Seeder
     {
         $arr = ['5','7','11'];
         for($i = 0; $i < 19; $i++){
-            $r = rand(0,2);
             $n = rand(5,10)*2;
             for($j = 0; $j < $n; $j++){
+                $r = rand(0,2);
                 DB::table('child_fields')->insert([
                     'id_field' => $i+1,
                     'name_field' =>strtoupper(Str::random(1)).rand(1,9),
